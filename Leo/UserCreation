@@ -4,6 +4,7 @@ from sqlalchemy_imageattach.entity import Image, image_attachment
 
 ####snake_case
 # Wardrobe model
+
 followers = db.Table('followers',
     db.Column('follower_id', db.Integer, db.ForeignKey('user.id')),
     db.Column('followed_id', db.Integer, db.ForeignKey('user.id'))
@@ -47,6 +48,10 @@ class User(db.Model, UserMixin):
     def is_following(self, user):
         return self.followed.filter(
             followers.c.followed_id == user.id).count() > 0
+
+
+
+
 
 
 # Separate model for jacket images
