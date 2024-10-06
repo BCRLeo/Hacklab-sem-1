@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<link rel="stylesheet" href="../static/css/main.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta charset="utf-8">
+	<title>Wardrobe</title>
+    <style>
+        /* Add this CSS for the plus button styling and positioning */
+        .plus-button {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 50%;
+            text-align: center;
+            font-size: 24px;
+            text-decoration: none;
+        }
+        .plus-button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+
+<body>
+	<header>
+        <nav class="nav-bar">
+            <ul>
+                <li><a href="">Sign up</a></li>
+                <li><a href="">About</a></li>
+                <li><a href="">My Wardrobe</a></li>
+                <li><a href="{{ url_for('index') }}">Home</a></li>
+            </ul>
+        </nav>
+        <!-- Plus button for the /upload link -->
+        <a href="{{ url_for('upload') }}" class="plus-button">+</a>
+    </header>
+
+	<main>
+        <h1>Wardrobe</h1>
+		<div class="carousel-wrapper">
+            <div class="card">
+                <img src="../static/images/ralph_lauren_polo.png">
+            </div>
+            <div class="card">
+                <img src="../static/images/ralph_lauren_polo.png">
+            </div>
+            <div class="card">
+                <img src="../static/images/ralph_lauren_polo.png">
+            </div>
+            <div class="card">
+                <img src="../static/images/ralph_lauren_polo.png">
+            </div>
+            <div class="card">
+                <img src="../static/images/ralph_lauren_polo.png">
+            </div>
+            <div class="card">
+                <img src="../static/images/ralph_lauren_polo.png">
+            </div>
+            <div class="card">
+                <img src="/uploads/pujers.jpg">
+            </div>
+        </div>
+
+        <div class="carousel-wrapper">
+            <div class="card">
+                <img src="../static/images/levis.png">
+            </div>
+            <div class="card">
+                <img src="../static/images/levis.png">
+            </div>
+            <div class="card">
+                <img src="../static/images/levis.png">
+            </div>
+            <div class="card">
+                <img src="../static/images/levis.png">
+            </div>
+            <div class="card">
+                <img src="../static/images/levis.png">
+            </div>
+            <div class="card">
+                <img src="../static/images/levis.png">
+            </div>
+        </div>
+	</main>
+</body>
+
+</html>
