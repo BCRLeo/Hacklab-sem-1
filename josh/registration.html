@@ -1,19 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-	<link rel="stylesheet" href="main.css">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta charset="utf-8">
+    <link rel="stylesheet" href="main.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-	<title>Home</title>
+    <title>Create an account</title>
 </head>
-
 <body>
-	<header>
+    <header>
         <nav class="nav-bar">
             <ul>
-                <li class="active">
+                <li class="inactive">
                     <a href="index.html">
                         <span>Home</span>
                     </a>
@@ -28,7 +26,7 @@
                         <span>About</span>
                     </a>
                 </li>
-                <li class="inactive">
+                <li class="active">
                     <a href="registration.html">
                         <span>Sign up</span>
                     </a>
@@ -42,10 +40,19 @@
         </nav>
     </header>
 
-	<main>
-		<a><button class="primary-button" type="button">Hi</button></a>
-		<a><button class="primary-button" type="button">Hi</button></a>
-	</main>
+    <main>
+        <h1>Create Your Remoire Account</h1>
+        <h2>one step closer to getting a girlfriend!</h2>
+        <form action="" method="post" class="registration">
+            <div class="registration__full-name">
+                <input type="text" name="firstname" id="firstName" placeholder="First name">
+                <input type="text" name="lastname" id="lastName" placeholder="Last name">
+            </div>
+            <input type="text" name="username" id="username" placeholder="Username">
+            <input type="text" name="email" id="email" placeholder="Email">
+            <input type="password" name="password" id="password" placeholder="Password">
+            <button type="submit">Sign up</button>
+        </form>
+    </main>
 </body>
-
 </html>
