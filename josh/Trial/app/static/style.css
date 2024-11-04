@@ -105,11 +105,17 @@ input::placeholder {
 }
 
 .registration__full-name {
-    display: flex;
+    display: grid;
     margin-bottom: 0;
-    flex-direction: row;
-    justify-content: center;
+    grid-template-columns: auto auto;
+    /* flex-direction: row; */
+    /* justify-content: center; */
     justify-items: center;
+}
+
+.registration__full-name label {
+    width: fit-content;
+    padding: 0;
 }
 
 .registration button {
@@ -144,11 +150,11 @@ input::placeholder {
     margin-bottom: 0;
 }
 
-label {
-    text-align: center;
+.registration label {
     display: block;
-    margin-left: auto;
-    margin-right: auto;
+    margin: 0.25rem auto;
+    padding: 0;
+    text-align: center;
 }
 
 .title {
