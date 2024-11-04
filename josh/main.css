@@ -18,8 +18,10 @@ html {
 body {
     /* background-color: #EFEDE9; */
     /* background-color: #f6f5f2; */
-    min-height: 100vh;
-    min-height: 100dvh;
+    /* min-height: 100vh;
+    min-height: 100dvh; */
+    height: 100%;
+    width: 100%;
     
     padding-top: var(--height__nav-bar);
 
@@ -73,6 +75,17 @@ h2 {
     margin: 0.5rem auto;
 }
 
+form.registration {
+    margin: 2rem auto;
+    padding: 1rem;
+
+    width: fit-content;
+    background-color: white;
+    border-radius: 1rem;
+
+    box-shadow: 0.5rem 0.5rem var(--colour__text);
+}
+
 .registration * {
     width: min(400px, 60vw);
     padding: 1rem;
@@ -87,6 +100,11 @@ input {
     border-radius: 7px;
     border: 0;
     margin: 1rem auto;
+    background-color: var(--colour__background);
+}
+
+input::placeholder {
+    color: var(--colour__text);
 }
 
 .registration__full-name {
@@ -255,15 +273,23 @@ ul.sub-menu {
     margin-right: 0;
 } */
 
+.wardrobe-carousel {
+    width: fit-content;
+
+    margin: 2rem auto;
+
+    background-color: var(--colour__overlay);
+    border-radius: 1rem;
+}
+
 .carousel-wrapper {
     display: flex;
     margin-left: auto;
     margin-right: auto;
     gap: 20px;
-    width: 80%;
+    width: 80dvw;
     overflow-x: scroll;
     scroll-snap-type: x mandatory;
-
     
     -ms-overflow-style: none; /* hide scroll bar for Microsoft browsers*/
     scrollbar-width: none; /* hide scroll bar for Gecko-based browsers */
