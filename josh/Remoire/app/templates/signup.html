@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <h1>Create Your Remoire Account</h1>
+    <h2>one step closer to getting a girlfriend!</h2>
+    <form action="" method="post" class="registration">
+        <div class="registration__full-name">
+            <label for="first-name">First name</label>
+            <label for="last-name">Last name</label>
+            <input type="text" name="firstname" id="firstName" placeholder="First name">
+            <input type="text" name="lastname" id="lastName" placeholder="Last name">
+        </div>
+        <label for="username">Username</label>
+        <input type="text" name="username" id="username" placeholder="Username">
+        <label for="email">Email</label>
+        <input type="text" name="email" id="email" placeholder="Email">
+        <label for="password">Password</label>
+        <input type="password" name="password" id="password" placeholder="Password">
+        <button type="submit">Sign up</button>
+    </form>
+
+    <h1>Sign Up</h1>
+    <form method="post">
+        <label for="email">Email</label>
+        <input type="text" name="email" id="email" required>
+        <label for="username">Username</label>
+        <input type="text" name="username" id="username" required>
+        <label for="password">Password</label>
+        <input type="password" name="password" id="password" required>
+        <button type="submit">Sign Up</button>
+    </form>
+    <p>Already have an account? <a href="{{ url_for('auth.login') }}">Login</a></p>
+{% endblock %}
