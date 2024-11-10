@@ -6,8 +6,7 @@ to build static files for Flask.
 
 Copy the `build/index.html` file to the `/app/templates` directory. Copy everything inside the `/frontend/build/static` folder to the `/app/static` directory.
 ```
-cd build
-cp index.html ../../app/templates/ && cp -r static/* ../../app/static/
+cp build/index.html ../app/templates/ && cp -r build/static/* ../app/static/
 ```
 
 To run locally, in `/frontend`, run
