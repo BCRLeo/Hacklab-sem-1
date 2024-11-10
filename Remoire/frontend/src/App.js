@@ -1,5 +1,10 @@
 import './App.css';
 import React, { useState, useEffect } from "react";
+import Header from './components/Header/Header';
+import Home from "./pages/Home/Home"
+import SignUp from "./pages/SignUp/SignUp"
+import Wardrobe from './pages/Wardrobe/Wardrobe';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 function App() {
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -21,7 +26,18 @@ function App() {
 	}, []);
 
 	return (
-		<div className="App">
+		<Router>
+			<Routes>
+				<Route path="/" element={<Home />} />
+				<Route path="/wardrobe" element={<Wardrobe />} />
+				<Route path="/signup" element={<SignUp />} />
+			</Routes>
+		</Router>
+	);
+}
+
+{/* <div className="App">
+			<Home />
 			<h1>Welcome to the React App</h1>
 			{isLoggedIn ? (
 				<div>
@@ -32,8 +48,6 @@ function App() {
 					<h2>Please log in</h2>
 				</div>
 			)}
-		</div>
-	);
-}
+		</div> */}
 
 export default App;

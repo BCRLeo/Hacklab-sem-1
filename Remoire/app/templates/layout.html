@@ -7,7 +7,7 @@
 	<link rel="stylesheet" href="{{ url_for('static', filename='css/' + get_js_and_css()['css']) }}">
 </head>
 <body>
-    {% block content %}{% endblock %}
     <script src="{{ url_for('static', filename='js/' + get_js_and_css()['js']) }}"></script>
+    {% block content %}{% endblock %}
 </body>
 </html>

@@ -24,9 +24,17 @@ def inject_js_and_css():
 
 @main.route('/')
 def index():
-    return render_template('home.html')
+    return render_template('index.html')
 
 @main.route('/home')
 @login_required
 def home():
     return render_template('home.html', name=current_user.UserName)
+
+""" @main.route('/wardrobe')
+def wardrobe():
+    return render_template('wardrobe.html')
+
+@main.route('/signup')
+def signup():
+    return render_template('signup.html') """
