@@ -14,7 +14,7 @@ To run locally, in `/frontend`, run
 npm start
 ```
 
-Run
+In `/Remoire`, Run
 ```
 python run.py
 ```

@@ -2,6 +2,7 @@ import './NavBar.css';
 import React from 'react';
 import NavItem from '../NavItem/NavItem';
 import Dropdown from '../Dropdown/Dropdown';
+import SearchBar from '../SearchBar/SearchBar';
 
 const Navbar = () => {
   return (
@@ -10,6 +11,9 @@ const Navbar = () => {
         <NavItem href="/" text="Home" />
         <NavItem href="/wardrobe" text="Wardrobe" />
         <NavItem href="/signup" text="Sign Up" />
+        <NavItem>
+			<SearchBar></SearchBar>
+        </NavItem>
         {/* Dropdown component */}
         <NavItem>
           <Dropdown title="More">
