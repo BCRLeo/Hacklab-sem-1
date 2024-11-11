@@ -31,14 +31,13 @@
 	<header>
         <nav class="nav-bar">
             <ul>
-                <li><a href="">Sign up</a></li>
-                <li><a href="">About</a></li>
                 <li><a href="">My Wardrobe</a></li>
-                <li><a href="{{ url_for('index') }}">Home</a></li>
+                <li><a href="{{ url_for('main.index') }}">Home</a></li>
+                <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
             </ul>
         </nav>
         <!-- Plus button for the /upload link -->
-        <a href="{{ url_for('upload') }}" class="plus-button">+</a>
+        <a href="{{ url_for('main.upload') }}" class="plus-button">+</a>
     </header>
 
 	<main>
@@ -63,7 +62,7 @@
                 <img src="../static/images/ralph_lauren_polo.png">
             </div>
             <div class="card">
-                <img src="/uploads/pujers.jpg">
+                <img src="../../uploads/psoitano.jpg">
             </div>
         </div>
 

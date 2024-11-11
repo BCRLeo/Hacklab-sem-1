@@ -1,0 +1,291 @@
+@import url('https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,200..800;1,200..800&display=swap');
+
+:root {
+    --colour__background: #f5f5fa;
+    --colour__overlay: #e9e9ed;
+    --colour__text: #292727;
+    --colour__accent: #8dafff;
+
+    --opacity__inactive: 50%;
+    
+    --height__nav-bar: 3.5rem;
+}
+
+html {
+    font-family: "Karla", Karla, sans-serif;
+}
+
+body {
+    /* background-color: #EFEDE9; */
+    /* background-color: #f6f5f2; */
+    min-height: 100vh;
+    min-height: 100dvh;
+    
+    padding-top: var(--height__nav-bar);
+
+    background-color: var(--colour__background, #faf4f4);
+    color: var(--colour__text, #292727);
+}
+
+svg {
+    fill: var(--colour__text);
+}
+
+button.primary-button {
+    /* border: 3px solid goldenrod; */
+    border: none;
+    /* background-color: #ededed; */
+    background-color: var(--colour__background, #faf4f4);
+    color: var(--colour__text);
+
+    padding: 16px 32px;
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    width: min(100px, 8%);
+
+    font-size: 16px;
+    text-align: center;
+    text-decoration: none;
+
+    display: block;
+    transition-duration: 0.4s;
+    cursor: pointer;
+}
+
+button.primary-button:hover {
+    box-shadow: 12px 12px 12px rgba(0, 0, 0, 0.1), -10px -10px 10px white;
+    /* background-color: goldenrod;
+    color: white; */
+}
+
+h1 {
+    text-align: center;
+
+    font-size: 4rem;
+    width: 80%;
+    margin: 0.5rem auto;
+}
+
+h2 {
+    text-align: center;
+    width: 80%;
+    margin: 0.5rem auto;
+}
+
+.registration * {
+    width: min(400px, 60vw);
+    padding: 1rem;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+
+input {
+    display: block;
+    box-sizing: border-box;
+    border-radius: 7px;
+    border: 0;
+    margin: 1rem auto;
+}
+
+.registration__full-name {
+    display: flex;
+    margin-bottom: 0;
+    flex-direction: row;
+    justify-content: center;
+    justify-items: center;
+}
+
+.registration button {
+    width: auto;
+    padding: 0.5rem;
+    border-radius: 5px;
+    border: 0px;
+    background-color: var(--colour__accent);
+    color: var(--colour__text);
+    transition-duration: 300ms;
+    cursor: pointer;
+}
+
+.registration button:hover {
+    box-shadow: 6px 6px 6px rgba(0, 0, 0, 0.1), -5px -5px 5px white;
+    border: 2px var(--colour__overlay);
+}
+
+#firstName {
+    margin-left: 0;
+    margin-right: auto;
+}
+
+#lastName {
+    margin-left: auto;
+    margin-right: 0;
+}
+
+.registration__full-name input {
+    width: min(190px, 28vw);
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+label {
+    text-align: center;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.title {
+    float: left;
+}
+
+.nav-bar ul {
+    /* margin: auto; */
+    width: 100%;
+    height: var(--height__nav-bar);
+    position: absolute;
+    top: 0;
+    left: 0;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow-y: hidden;
+    overflow-x: scroll;
+    background-color: var(--colour__overlay);
+
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.nav-bar li {
+    float: right;
+    /* margin: auto 10px; */
+    margin: 0 10px;
+    padding: 8px;
+    transition-duration: 300ms;
+}
+
+.nav-bar li.active {
+    opacity: 100%;
+}
+
+.nav-bar li.inactive {
+    opacity: var(--opacity__inactive);
+}
+
+.nav-bar li a {
+    display: inline-block;
+    text-decoration: none;
+}
+
+.nav-bar a:link, a:visited {
+    color: var(--colour__text);
+}
+
+.nav-bar li:hover {
+    opacity: 100%;
+}
+
+.nav-bar a:active {
+    color: var(--colour__text);
+}
+
+button.button-dropdown {
+    border: 0;
+    padding: 0;
+    background-color: var(--colour__overlay);
+}
+
+button.button-dropdown:hover + ul.sub-menu {
+    display: block;
+}
+
+ul.sub-menu {
+    display: hidden;
+    position: absolute;
+    background-color: var(--colour__background);
+    color: var(--colour__text);
+    top: var(--height__nav-bar);
+}
+
+ul.sub-menu li {
+    float: right;
+    color: var(--colour__text);
+}
+
+ul.sub-menu li a {
+    color: black;
+}
+
+/* ul.sub-menu {
+    display: block;
+    align-content: right;
+
+    width: 100%;
+    height: var(--height__nav-bar);
+    position: relative;
+    top: 0;
+    left: 0;
+    list-style-type: none;
+    margin: auto 0;
+    padding: 0;
+    overflow-y: hidden;
+    overflow-x: scroll;
+    background-color: var(--colour__overlay);
+} */
+
+/* button.button-dropdown:hover ul.sub-menu {
+    overflow-y: scroll;
+    overflow-x: hidden;
+
+    
+
+    display: block;
+}
+
+ul.sub-menu {
+    display: none;
+}
+
+.sub-menu li {
+    float: none;
+    margin-left: auto;
+    margin-right: 0;
+} */
+
+.carousel-wrapper {
+    display: flex;
+    margin-left: auto;
+    margin-right: auto;
+    gap: 20px;
+    width: 80%;
+    overflow-x: scroll;
+    scroll-snap-type: x mandatory;
+
+    
+    -ms-overflow-style: none; /* hide scroll bar for Microsoft browsers*/
+    scrollbar-width: none; /* hide scroll bar for Gecko-based browsers */
+}
+
+.carousel-wrapper::-webkit-scrollbar {
+    display: none; /* hide scroll bar for WebKit-based browsers */
+}
+
+.card {
+    scroll-snap-align: center;
+    box-sizing: border-box;
+    padding: 20px 30px;
+    flex-shrink: 0;
+    width: 300px;
+    /* background-color: white; */
+    border-radius: 14px;
+    text-align: center;
+}
+
+.card img {
+    margin-left: auto;
+    margin-right: auto;
+    width: 250px;
+}
