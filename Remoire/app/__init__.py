@@ -1,7 +1,7 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
-
+import os
 # Initialize extensions
 db = SQLAlchemy()
 login_manager = LoginManager()
@@ -12,6 +12,22 @@ def create_app():
     # Configuration
     app.config['SECRET_KEY'] = 'your_secret_key'  # Replace with a real secret key
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
+
+    app.config['UPLOAD_FOLDER'] = 'uploads'  # Folder to save uploaded files
+    os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+
+    #config for email verification
+    app.config['MAIL_SERVER'] = 'smtp.gmail.com'  # Example: Gmail SMTP server
+    app.config['MAIL_PORT'] = 587  # TLS port
+    app.config['MAIL_USE_TLS'] = True
+    app.config['MAIL_USE_SSL'] = False
+    app.config['MAIL_USERNAME'] = 'your-email@gmail.com'  # Your email
+    app.config['MAIL_PASSWORD'] = 'your-email-password'  # Your email password or app password
+    app.config['MAIL_DEFAULT_SENDER'] = 'your-email@gmail.com'
+
+    #config upload folder
+    app.config['UPLOAD_FOLDER'] = 'uploads'  # Folder to save uploaded files
+    os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
     # Initialize extensions
     db.init_app(app)
