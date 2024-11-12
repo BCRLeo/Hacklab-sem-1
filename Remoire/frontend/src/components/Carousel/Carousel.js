@@ -8,28 +8,28 @@ import { useState } from "react";
 
 const Carousel = ({ images, children }) => {
 	const [currentIndex, setCurrentIndex] = useState(0);
-	const visibleImages = images.map((image, index) => {
-		for (let i = -2; i <= 2; i++)
-		{
-			if (index === (currentIndex + i + images.length) % images.length) {
-				return <img key={index} src={image} alt={`slide ${index + 1}`} />;
-			}
-		}
-		/* if (index === currentIndex || index === (currentIndex - 1 + images.length) % images.length || index === (currentIndex + 1) % images.length) {
-			return <img key={index} src={image} alt={`slide ${index + 1}`} />;
-		} */
-		return null;
-	});
 
-	if (images) {
+	const handleClickPrevious = () => {
+		setCurrentIndex((currentIndex) => (currentIndex - 1 + images.length) % images.length);
+	};
+
+	const handleClickNext = () => {
+		setCurrentIndex((currentIndex) => (currentIndex + 1) % images.length);
+	};
+
+	let visibleImages = [];
+	for (let i = -1; i <= 1; i++) {
+		let index = (currentIndex + i + images.length) % images.length;
+		visibleImages.push(<img key={index} src={images[index]} alt={`slide ${index + 1}`} />);
+	}
+
+	if (images && images.length > 0) {
+		console.log(visibleImages);
 		return (
 			<div className="carousel">
-				<CarouselButton direction="left" iconPath={IconArrowLeft} />
-				<CarouselButton direction="right" iconPath={IconArrowRight} />
+				<CarouselButton direction="left" onClick={handleClickPrevious} iconPath={IconArrowLeft} />
+				<CarouselButton direction="right" onClick={handleClickNext} iconPath={IconArrowRight} />
 				{visibleImages}
-				{/* images.map((src, index) => (
-					<img className="carousel-image" key={index} src={src} alt={`Slide ${index + 1}`} />
-				)) */}
 			</div>
 		);
 	}

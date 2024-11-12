@@ -8,7 +8,7 @@
     margin-right: auto;
     gap: 20px;
     
-    overflow-x: scroll;
+    overflow-x: hidden;
     scroll-snap-type: x mandatory;
     
     -ms-overflow-style: none; /* hide scroll bar for Microsoft browsers*/
