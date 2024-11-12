@@ -14,13 +14,14 @@ const Navbar = () => {
 				<NavItem>
 					<SearchBar></SearchBar>
 				</NavItem>
+				<NavItem href="/feed" text="Feed" />
 				{/* Dropdown component */}
-				<NavItem>
+				{/* <NavItem>
 					<Dropdown title="More">
 						<NavItem href="/contact" text="Contact Us" />
 						<NavItem href="/faq" text="FAQ" />
 					</Dropdown>
-				</NavItem>
+				</NavItem> */}
 			</ul>
 		</nav>
 	);
