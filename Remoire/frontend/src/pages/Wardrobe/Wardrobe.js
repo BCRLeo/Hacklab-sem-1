@@ -10,14 +10,17 @@ const images = importAllImages(require.context('../../assets/images', false, /\.
 
 const Wardrobe = () => {
     return (
-        <div className="wardrobe">
+        <>
             <Header />
             <h1>Wardrobe</h1>
             <div className="wardrobe-carousel-container">
                 <Carousel id="carousel-tops" images={images} />
                 <Carousel id="carousel-bottoms" images={images} />
             </div>
-        </div>
+            <button>
+                <span>Upload</span>
+            </button>
+        </>
     );
 };
 

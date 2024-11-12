@@ -1,0 +1,20 @@
+.field {
+    margin: 1rem auto;
+    text-align: center;
+}
+
+.field-label {
+    width: fit-content;
+    margin: 0.25rem auto;
+}
+
+.field-input {
+    width: 60%;
+
+    padding: 0.5rem;
+
+    font-size: 1rem;
+
+    border: #b8a6b7 2px solid;
+    border-radius: 0.5rem;
+}
