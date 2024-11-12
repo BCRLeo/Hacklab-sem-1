@@ -119,7 +119,9 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(150), unique=True)
     password = db.Column(db.String(150))
     UserName = db.Column(db.String(150))
-    
+    birthday = db.Column(db.Date, nullable=False)
+
+
     # Relationships
     wardrobe = db.relationship('Wardrobe', uselist=False, back_populates='user')
     posts = db.relationship('Post', back_populates='author', lazy='dynamic')
