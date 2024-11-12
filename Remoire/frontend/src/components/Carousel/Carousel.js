@@ -17,10 +17,11 @@ const Carousel = ({ images, children }) => {
 		setCurrentIndex((currentIndex) => (currentIndex + 1) % images.length);
 	};
 
+	let visibleRange = 2;
 	let visibleImages = [];
-	for (let i = -1; i <= 1; i++) {
+	for (let i = -1 * visibleRange; i <= visibleRange; i++) {
 		let index = (currentIndex + i + images.length) % images.length;
-		visibleImages.push(<img key={index} src={images[index]} alt={`slide ${index + 1}`} />);
+		visibleImages.push(<img className="carousel-image" key={index} src={images[index]} alt={`slide ${index + 1}`} />);
 	}
 
 	if (images && images.length > 0) {
@@ -30,6 +31,9 @@ const Carousel = ({ images, children }) => {
 				<CarouselButton direction="left" onClick={handleClickPrevious} iconPath={IconArrowLeft} />
 				<CarouselButton direction="right" onClick={handleClickNext} iconPath={IconArrowRight} />
 				{visibleImages}
+				<div className="carousel-track">
+					
+				</div>
 			</div>
 		);
 	}
