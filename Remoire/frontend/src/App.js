@@ -1,8 +1,11 @@
 import './App.css';
 import React, { useState, useEffect } from "react";
+
+import Feed from './pages/Feed/Feed';
 import Home from "./pages/Home/Home"
 import SignUp from "./pages/SignUp/SignUp"
 import Wardrobe from './pages/Wardrobe/Wardrobe';
+
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 function App() {
@@ -30,6 +33,7 @@ function App() {
 				<Route path="/" element={<Home />} />
 				<Route path="/wardrobe" element={<Wardrobe />} />
 				<Route path="/signup" element={<SignUp />} />
+				<Route path="/feed" element={<Feed />} />
 			</Routes>
 		</Router>
 	);

@@ -1,4 +1,9 @@
+.carousel {
+    position: relative;
+}
+
 .carousel-image {
     height: 100%;
+    aspect-ratio: 4 / 5;
     object-fit: contain;
 }

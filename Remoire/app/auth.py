@@ -34,7 +34,7 @@ def inject_js_and_css():
 def check_login():
     if current_user.is_authenticated:
         return jsonify({"logged_in": True, "username": current_user.UserName})
-    return jsonify({"logged_in": True, "username": "ur mom"})
+    return jsonify({"logged_in": False})
 
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
