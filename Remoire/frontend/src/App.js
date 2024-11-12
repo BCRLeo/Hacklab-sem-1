@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import Feed from './pages/Feed/Feed';
 import Home from "./pages/Home/Home"
 import SignUp from "./pages/SignUp/SignUp"
+import { UserProvider } from './UserContext';
 import Wardrobe from './pages/Wardrobe/Wardrobe';
 
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
@@ -18,7 +19,7 @@ function App() {
 		fetch('/api/check-login')
 		.then((response) => response.json())
 		.then((data) => {
-			if (data.logged_in) {
+			if (data.isLoggedIn) {
 				setIsLoggedIn(true);
 				setUsername(data.username);
 				setUser(data);
@@ -30,14 +31,16 @@ function App() {
 	}, []);
 
 	return (
-		<Router>
-			<Routes>
-				<Route path="/" element={<Home user={user} />} />
-				<Route path="/wardrobe" element={<Wardrobe user={user} />} />
-				<Route path="/signup" element={<SignUp user={user} />} />
-				<Route path="/feed" element={<Feed user={user} />} />
-			</Routes>
-		</Router>
+		<UserProvider>
+			<Router>
+				<Routes>
+					<Route path="/" element={<Home />} />
+					<Route path="/wardrobe" element={<Wardrobe />} />
+					<Route path="/signup" element={<SignUp />} />
+					<Route path="/feed" element={<Feed />} />
+				</Routes>
+			</Router>
+		</UserProvider>
 	);
 }
 

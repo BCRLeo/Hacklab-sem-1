@@ -1,6 +1,6 @@
 import Header from "../../components/Header/Header";
 
-const Feed = ({ user }) => {
+const Feed = () => {
     return (
         <>
             <Header />

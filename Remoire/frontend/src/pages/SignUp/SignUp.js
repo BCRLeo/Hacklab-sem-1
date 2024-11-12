@@ -4,7 +4,7 @@ import Card from "../../components/Card/Card";
 import Field from "../../components/Field/Field";
 import Header from "../../components/Header/Header";
 
-const SignUp = ({ user }) => {
+const SignUp = () => {
     return (
         <>
             <Header />

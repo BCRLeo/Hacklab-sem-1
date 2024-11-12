@@ -1,6 +1,6 @@
 import Header from "../../components/Header/Header";
 
-const Home = ({ user }) => {
+const Home = () => {
     return (
         <>
             <Header />
