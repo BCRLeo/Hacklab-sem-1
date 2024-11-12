@@ -1,0 +1,37 @@
+.carouselbutton {
+    display: flex;
+    position: absolute;
+    z-index: 1;
+    top: 50%;
+    transform: translateY(-50%);
+
+    width: fit-content;
+    height: fit-content;
+
+    padding: 0;
+
+    background-color: white;
+    border: none;
+    border-radius: 50% 50% 50% 50%;
+
+    cursor: pointer;
+}
+
+.carouselbutton.left {
+    left: 0;
+}
+
+.carouselbutton.right {
+    right: 0;
+}
+
+.carouselbutton img {
+    width: fit-content;
+    height: fit-content;
+
+    aspect-ratio: 1;
+    vertical-align: middle;
+    padding: 0;
+
+    object-fit: contain;
+}

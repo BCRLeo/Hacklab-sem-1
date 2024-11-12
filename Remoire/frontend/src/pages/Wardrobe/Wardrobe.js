@@ -13,7 +13,10 @@ const Wardrobe = () => {
         <div className="wardrobe">
             <Header />
             <h1>Wardrobe</h1>
-            <Carousel id="carousel-tops" images={images} />
+            <div className="wardrobe-carousel-container">
+                <Carousel id="carousel-tops" images={images} />
+                <Carousel id="carousel-bottoms" images={images} />
+            </div>
         </div>
     );
 };
