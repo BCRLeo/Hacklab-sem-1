@@ -10,7 +10,8 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 function App() {
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
-	const [username, setUsername] = useState('');
+	const [username, setUsername] = useState("");
+	const [user, setUser] = useState({"isLoggedIn": isLoggedIn, "username": username});
 
 	// Fetch login status from Flask
 	useEffect(() => {
@@ -20,6 +21,7 @@ function App() {
 			if (data.logged_in) {
 				setIsLoggedIn(true);
 				setUsername(data.username);
+				setUser(data);
 			}
 		})
 		.catch((error) => {
@@ -30,10 +32,10 @@ function App() {
 	return (
 		<Router>
 			<Routes>
-				<Route path="/" element={<Home />} />
-				<Route path="/wardrobe" element={<Wardrobe />} />
-				<Route path="/signup" element={<SignUp />} />
-				<Route path="/feed" element={<Feed />} />
+				<Route path="/" element={<Home user={user} />} />
+				<Route path="/wardrobe" element={<Wardrobe user={user} />} />
+				<Route path="/signup" element={<SignUp user={user} />} />
+				<Route path="/feed" element={<Feed user={user} />} />
 			</Routes>
 		</Router>
 	);

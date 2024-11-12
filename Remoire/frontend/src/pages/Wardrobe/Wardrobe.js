@@ -8,11 +8,11 @@ const importAllImages = (requireContext) => {
 
 const images = importAllImages(require.context('../../assets/images', false, /\.(png|jpe?g|svg|webp)$/));
 
-const Wardrobe = () => {
+const Wardrobe = ({ user }) => {
     return (
         <>
             <Header />
-            <h1>Wardrobe</h1>
+            {user.isLoggedIn ? <h1>{user.username}'s wardobe</h1> : <h1>Wardrobe</h1>}
             <div className="wardrobe-carousel-container">
                 <Carousel id="carousel-tops" images={images} />
                 <Carousel id="carousel-bottoms" images={images} />
