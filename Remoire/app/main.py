@@ -2,6 +2,7 @@ from flask import Flask, Blueprint, current_app, render_template, redirect, requ
 from flask_login import LoginManager, login_required, current_user
 import os
 import app
+ 
 
 main = Blueprint('main', __name__)
 #redirect users trying to get to unaccessible pages
