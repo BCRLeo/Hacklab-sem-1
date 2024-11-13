@@ -36,7 +36,7 @@ def check_login():
         return jsonify({"isLoggedIn": True, "username": current_user.UserName})
     return jsonify({"isLoggedIn": False})
 
-@auth.route('/login', methods=['POST'])
+@auth.route('/api/login', methods=['POST'])
 def login():
     if request.method == 'POST':
         # Get form data
