@@ -46,6 +46,33 @@ def login():
         # Check if login_input and password are provided
         if not login_input or not password:
             flash('Please enter both login and password')
+            return jsonify({"success": False})
+        
+        # Check if the input is an email
+        if re.match(EMAIL_REGEX, login_input):  # Checks if the input is a valid email
+            user = User.query.filter_by(email=login_input).first()
+        else:
+            user = User.query.filter_by(UserName=login_input).first()
+
+        # Authenticate user
+        if user and check_password_hash(user.password, password):
+            login_user(user)
+            return jsonify({"success": True})
+        else:
+            flash('Invalid username/email or password')
+    return jsonify({"success": False})
+
+"""
+@auth.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        # Get form data
+        login_input = request.form.get('login')  # Could be username or email
+        password = request.form.get('password')
+
+        # Check if login_input and password are provided
+        if not login_input or not password:
+            flash('Please enter both login and password')
             return render_template('login.html')
         
         # Check if the input is an email
@@ -61,6 +88,7 @@ def login():
         else:
             flash('Invalid username/email or password')
     return render_template('login.html')
+"""
 
 @auth.route('/signup', methods=['GET', 'POST'])
 def signup():
