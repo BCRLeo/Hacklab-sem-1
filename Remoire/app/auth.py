@@ -36,17 +36,17 @@ def check_login():
         return jsonify({"isLoggedIn": True, "username": current_user.UserName})
     return jsonify({"isLoggedIn": False})
 
-@auth.route('/login', methods=['GET', 'POST'])
+@auth.route('/login', methods=['POST'])
 def login():
     if request.method == 'POST':
         # Get form data
-        login_input = request.form.get('login')  # Could be username or email
-        password = request.form.get('password')
-
+        data = request.get_json()
+        login_input = data.get("login")  # Could be username or email
+        password = data.get("password")
+        
         # Check if login_input and password are provided
         if not login_input or not password:
-            flash('Please enter both login and password')
-            return jsonify({"success": False})
+            return jsonify({"success": False, "message": "Please enter both login and password"}), 400
         
         # Check if the input is an email
         if re.match(EMAIL_REGEX, login_input):  # Checks if the input is a valid email
@@ -57,10 +57,11 @@ def login():
         # Authenticate user
         if user and check_password_hash(user.password, password):
             login_user(user)
-            return jsonify({"success": True})
+            return jsonify({"success": True, "message": "Login successful"}), 200
         else:
-            flash('Invalid username/email or password')
-    return jsonify({"success": False})
+            return jsonify({"success": False, "message": "Invalid username/email or password"}), 401
+            
+    return jsonify({"success": False, "message": "Invalid request method"}), 405
 
 """
 @auth.route('/login', methods=['GET', 'POST'])

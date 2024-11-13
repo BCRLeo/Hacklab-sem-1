@@ -11,26 +11,35 @@ const LogInPage = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
+    const handleEmailInput = (event) => {
+        setEmail(event.target.value);
+    };
+
+    const handlePasswordInput = (event) => {
+        setPassword(event.target.value);
+    };
+
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
             const response = await fetch("/login", {
                 method: "POST",
                 body: JSON.stringify({
-                    email: {email},
-                    password: {password}
+                    login: email,
+                    password: password
                 }),
                 headers: {
                     "Content-Type": "application/json"
                 }
             });
-            
+
             const data = await response.json();
+            console.log(data.success);
+            
             if (response.ok && data.success) {
-                console.log(data);
                 navigate("/wardrobe");
             } else {
-                console.log("fuck you");
+                console.log("Login failed: ", data.message);
             }
         } catch (error) {
             console.error("Error during login: ", error);
@@ -43,9 +52,9 @@ const LogInPage = () => {
             <h1>Welcome to Remoire</h1>
             <Card id="card-login">
                 <h3>Card!</h3>
-                <form onSubmit={handleSubmit} method="post" class="login">
-                    <Field label="Email" type="text" name="email" placeholder="Email" />
-                    <Field label="Password" type="password" name="password" placeholder="Create a password" />
+                <form onSubmit={handleSubmit} method="post" className="login">
+                    <Field label="Email" onChange={handleEmailInput} type="text" name="login" placeholder="Email" />
+                    <Field label="Password" onChange={handlePasswordInput} type="password" name="password" placeholder="Password" />
                     <button type="submit">Log in</button>
                 </form>
             </Card>

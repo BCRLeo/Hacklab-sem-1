@@ -4,7 +4,15 @@ import Card from "../../components/Card/Card";
 import Field from "../../components/Field/Field";
 import Header from "../../components/Header/Header";
 
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+
 const SignUpPage = () => {
+    const navigate = useNavigate();
+
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+
     return (
         <>
             <Header />
