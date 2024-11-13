@@ -16,7 +16,7 @@ const Navbar = () => {
 			<ul className="navbar-nav">
 				<NavItem href="/" text="Home" />
 				<NavItem href="/wardrobe" text="Wardrobe" />
-				{user ? <NavItem href="/logout" text="Log out" /> : <NavItem href="/signup" text="Sign Up" />}
+				{user ? <NavItem href="/logout" text="Log out" /> : <><NavItem href="/login" text="Log in" /> <NavItem href="/signup" text="Sign up" /></>}
 				<NavItem>
 					<SearchBar></SearchBar>
 				</NavItem>
