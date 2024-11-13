@@ -1,10 +1,10 @@
-import "./SignUp.css"
+import "./SignUpPage.css"
 
 import Card from "../../components/Card/Card";
 import Field from "../../components/Field/Field";
 import Header from "../../components/Header/Header";
 
-const SignUp = () => {
+const SignUpPage = () => {
     return (
         <>
             <Header />
@@ -23,4 +23,4 @@ const SignUp = () => {
     );
 };
 
-export default SignUp;
+export default SignUpPage;

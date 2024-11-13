@@ -1,11 +1,11 @@
 import './App.css';
 import React, { useState, useEffect } from "react";
 
-import Feed from './pages/Feed/Feed';
-import Home from "./pages/Home/Home"
-import SignUp from "./pages/SignUp/SignUp"
+import FeedPage from './pages/Feed/FeedPage';
+import HomePage from "./pages/Home/HomePage"
+import SignUpPage from "./pages/SignUp/SignUpPage"
 import { UserProvider } from './UserContext';
-import Wardrobe from './pages/Wardrobe/Wardrobe';
+import WardrobePage from './pages/Wardrobe/WardrobePage';
 
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
@@ -34,10 +34,10 @@ function App() {
 		<UserProvider>
 			<Router>
 				<Routes>
-					<Route path="/" element={<Home />} />
-					<Route path="/wardrobe" element={<Wardrobe />} />
-					<Route path="/signup" element={<SignUp />} />
-					<Route path="/feed" element={<Feed />} />
+					<Route path="/" element={<HomePage />} />
+					<Route path="/wardrobe" element={<WardrobePage />} />
+					<Route path="/signup" element={<SignUpPage />} />
+					<Route path="/feed" element={<FeedPage />} />
 				</Routes>
 			</Router>
 		</UserProvider>

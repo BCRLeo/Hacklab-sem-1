@@ -1,4 +1,4 @@
-import "./Wardrobe.css"
+import "./WardrobePage.css"
 
 import Header from "../../components/Header/Header";
 import Carousel from "../../components/Carousel/Carousel";
@@ -12,7 +12,7 @@ const importAllImages = (requireContext) => {
 
 const images = importAllImages(require.context('../../assets/images', false, /\.(png|jpe?g|svg|webp)$/));
 
-const Wardrobe = () => {
+const WardrobePage = () => {
     const { user, setUser } = useContext(UserContext);
 
     return (
@@ -30,4 +30,4 @@ const Wardrobe = () => {
     );
 };
 
-export default Wardrobe;
+export default WardrobePage;
