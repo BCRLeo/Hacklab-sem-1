@@ -1,8 +1,12 @@
-from flask import Flask, Blueprint, render_template, redirect, url_for
-from flask_login import login_required, current_user
+from flask import Flask, Blueprint, current_app, render_template, redirect, request, url_for
+from flask_login import LoginManager, login_required, current_user
 import os
+import app
 
 main = Blueprint('main', __name__)
+#redirect users trying to get to unaccessible pages
+login_manager = LoginManager()
+login_manager.login_view = 'auth.login'
 
 # Function to get the correct JS and CSS file paths
 def get_js_and_css():
@@ -30,6 +34,15 @@ def index():
 @login_required
 def home():
     return render_template('home.html', name=current_user.UserName)
+
+@main.route('/upload', methods=['GET', 'POST'])
+def upload():
+    if request.method == 'POST':
+        file = request.files['file']
+        if file:
+            file.save(os.path.join(current_app.config['UPLOAD_FOLDER'], file.filename))
+            return redirect(url_for('main.wardrobe'))  # Redirect to wardrobe page
+    return render_template('upload.html')
 
 """ @main.route('/wardrobe')
 def wardrobe():

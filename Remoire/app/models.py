@@ -2,6 +2,7 @@ from . import db
 from flask_login import UserMixin
 from sqlalchemy_imageattach.entity import Image, image_attachment
 from datetime import datetime
+from sqlalchemy import text
 
 
 # Followers association table
@@ -119,7 +120,18 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(150), unique=True)
     password = db.Column(db.String(150))
     UserName = db.Column(db.String(150))
-    
+    birthday = db.Column(db.Date, nullable=False)
+    CreationDate = db.Column(db.Date, nullable = False)
+    # Premium field with default value set to False
+    premium = db.Column(
+        db.Boolean,
+        nullable=False,
+        default=False,
+        server_default=text('false')  # Ensures database-level default
+    )
+
+
+
     # Relationships
     wardrobe = db.relationship('Wardrobe', uselist=False, back_populates='user')
     posts = db.relationship('Post', back_populates='author', lazy='dynamic')
@@ -141,6 +153,14 @@ class User(db.Model, UserMixin):
         back_populates='followed',
         lazy='dynamic'
     )
+    # Method to check if the user has premium status
+    def has_premium(self):
+        return self.premium
+
+    # Method to toggle premium status
+    def toggle_premium(self):
+        self.premium = not self.premium
+        db.session.commit()
 
     def follow(self, user):
         if not self.is_following(user):
