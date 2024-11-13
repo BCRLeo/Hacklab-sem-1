@@ -1,16 +1,22 @@
 import './NavBar.css';
+
 import React from 'react';
 import NavItem from '../NavItem/NavItem';
 import Dropdown from '../Dropdown/Dropdown';
 import SearchBar from '../SearchBar/SearchBar';
 
+import { useContext } from "react";
+import { UserContext } from '../../UserContext';
+
 const Navbar = () => {
+	const { user, setUser } = useContext(UserContext);
+
 	return (
 		<nav className="navbar">
 			<ul className="navbar-nav">
 				<NavItem href="/" text="Home" />
 				<NavItem href="/wardrobe" text="Wardrobe" />
-				<NavItem href="/signup" text="Sign Up" />
+				{user ? <NavItem href="/logout" text="Log out" /> : <NavItem href="/signup" text="Sign Up" />}
 				<NavItem>
 					<SearchBar></SearchBar>
 				</NavItem>

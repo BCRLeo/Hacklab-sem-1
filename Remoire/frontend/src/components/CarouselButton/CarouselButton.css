@@ -5,6 +5,8 @@
     top: 50%;
     transform: translateY(-50%);
 
+    margin: auto;
+
     width: fit-content;
     height: fit-content;
 

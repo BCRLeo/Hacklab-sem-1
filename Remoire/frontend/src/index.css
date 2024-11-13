@@ -29,6 +29,10 @@ html {
 	background-color: var(--hex__background);
 }
 
+h1, h2, h3, h4, h5, h6 {
+	margin: 2rem auto;
+	text-align: center;
+}
 
 body {
 
@@ -49,4 +53,14 @@ body {
 code {
 	font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
 		monospace;
+}
+
+button {
+	display: block;
+	margin: 2rem auto;
+	padding: 0.5rem 1rem;
+	background-color: white;
+	border: none;
+	border-radius: 1rem;
+	cursor: pointer;
 }

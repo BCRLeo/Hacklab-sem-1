@@ -4,22 +4,25 @@ import React, { useState, useEffect } from "react";
 import Feed from './pages/Feed/Feed';
 import Home from "./pages/Home/Home"
 import SignUp from "./pages/SignUp/SignUp"
+import { UserProvider } from './UserContext';
 import Wardrobe from './pages/Wardrobe/Wardrobe';
 
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 function App() {
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
-	const [username, setUsername] = useState('');
+	const [username, setUsername] = useState("");
+	const [user, setUser] = useState({"isLoggedIn": isLoggedIn, "username": username});
 
 	// Fetch login status from Flask
 	useEffect(() => {
 		fetch('/api/check-login')
 		.then((response) => response.json())
 		.then((data) => {
-			if (data.logged_in) {
+			if (data.isLoggedIn) {
 				setIsLoggedIn(true);
 				setUsername(data.username);
+				setUser(data);
 			}
 		})
 		.catch((error) => {
@@ -28,14 +31,16 @@ function App() {
 	}, []);
 
 	return (
-		<Router>
-			<Routes>
-				<Route path="/" element={<Home />} />
-				<Route path="/wardrobe" element={<Wardrobe />} />
-				<Route path="/signup" element={<SignUp />} />
-				<Route path="/feed" element={<Feed />} />
-			</Routes>
-		</Router>
+		<UserProvider>
+			<Router>
+				<Routes>
+					<Route path="/" element={<Home />} />
+					<Route path="/wardrobe" element={<Wardrobe />} />
+					<Route path="/signup" element={<SignUp />} />
+					<Route path="/feed" element={<Feed />} />
+				</Routes>
+			</Router>
+		</UserProvider>
 	);
 }
 
