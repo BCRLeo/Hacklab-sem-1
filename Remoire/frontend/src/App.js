@@ -3,11 +3,12 @@ import React, { useState, useEffect } from "react";
 
 import FeedPage from './pages/Feed/FeedPage';
 import HomePage from "./pages/Home/HomePage"
+import LogInPage from './pages/LogIn/LogInPage';
 import SignUpPage from "./pages/SignUp/SignUpPage"
-import { UserProvider } from './UserContext';
 import WardrobePage from './pages/Wardrobe/WardrobePage';
 
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { UserProvider } from './UserContext';
 
 function App() {
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -34,10 +35,11 @@ function App() {
 		<UserProvider>
 			<Router>
 				<Routes>
-					<Route path="/" element={<HomePage />} />
-					<Route path="/wardrobe" element={<WardrobePage />} />
-					<Route path="/signup" element={<SignUpPage />} />
 					<Route path="/feed" element={<FeedPage />} />
+					<Route path="/" element={<HomePage />} />
+					<Route path="/login" element={<LogInPage />} />
+					<Route path="/signup" element={<SignUpPage />} />
+					<Route path="/wardrobe" element={<WardrobePage />} />
 				</Routes>
 			</Router>
 		</UserProvider>
