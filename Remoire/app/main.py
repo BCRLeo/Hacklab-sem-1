@@ -44,6 +44,11 @@ def upload():
             return redirect(url_for('main.wardrobe'))  # Redirect to wardrobe page
     return render_template('upload.html')
 
+@main.route("/Feed", methods=['POST'])
+def Feed():
+    print("THIS FUNCTION IS WORKING")
+    return 'OK', 200
+
 """ @main.route('/wardrobe')
 def wardrobe():
     return render_template('wardrobe.html')
