@@ -22,7 +22,7 @@ const LogInPage = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            const response = await fetch("/login", {
+            const response = await fetch("/api/login", {
                 method: "POST",
                 body: JSON.stringify({
                     login: email,
@@ -35,7 +35,7 @@ const LogInPage = () => {
 
             const data = await response.json();
             console.log(data.success);
-            
+
             if (response.ok && data.success) {
                 navigate("/wardrobe");
             } else {
