@@ -3,6 +3,7 @@ import "./WardrobePage.css"
 import Carousel from "../../components/Carousel/Carousel";
 import Field from "../../components/Field/Field";
 import Header from "../../components/Header/Header";
+import Popover from "../../components/Popover/Popover";
 
 import { useContext, useState } from "react";
 import { UserContext } from "../../UserContext";
@@ -63,6 +64,10 @@ const WardrobePage = () => {
                     <span>Upload</span>
                 </button>
             </form>
+
+            <Popover label="Upload item">
+                <h1>hi</h1>
+            </Popover>
         </>
     );
 };
