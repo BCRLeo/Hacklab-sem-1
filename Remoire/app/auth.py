@@ -7,7 +7,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, login_required, logout_user, current_user
 import os
 import re
-import datetime
+from datetime import datetime, date
 
 auth = Blueprint('auth', __name__)
 # Regular expression for basic email and password validation
@@ -99,7 +99,7 @@ def signup():
     email = data.get("email")
     username = data.get("username")
     password = data.get("password")
-    birthday = data.get("birthday")
+    birthday_str = data.get("birthday")
 
     # Validate email format
     if not re.match(EMAIL_REGEX, email):
@@ -108,7 +108,13 @@ def signup():
     # Validate password format using regex
     if not re.match(PASSWORD_REGEX, password):
         return jsonify({"success": False, "message": "Password must be at least 8 characters long, contain at least one uppercase letter, and one number"})
-        
+    
+    # Convert the string 'YYYY-MM-DD' to a Python date object
+    try:
+        birthday = datetime.strptime(birthday_str, "%Y-%m-%d").date()
+    except ValueError:
+        return jsonify({"success": False, "message": "Invalid date format"})
+
     # Check if user exists
     user = User.query.filter_by(email=email).first()
     if user:
@@ -120,7 +126,7 @@ def signup():
         UserName=username,
         password=generate_password_hash(password, method='pbkdf2:sha256'),
         birthday = birthday,
-        CreationDate = datetime.date
+        CreationDate = date.today()
     )
     new_wardrobe = Wardrobe(user=new_user)
     db.session.add(new_user)
