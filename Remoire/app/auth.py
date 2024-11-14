@@ -7,6 +7,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, login_required, logout_user, current_user
 import os
 import re
+from datetime import datetime
 
 auth = Blueprint('auth', __name__)
 # Regular expression for basic email and password validation
@@ -90,7 +91,9 @@ def signup():
         new_user = User(
             email=email,
             UserName=username,
-            password=generate_password_hash(password, method='pbkdf2:sha256')
+            password=generate_password_hash(password, method='pbkdf2:sha256'),
+            birthday = birthday,
+            CreationDate = datetime.date
         )
         new_wardrobe = Wardrobe(user=new_user)
         db.session.add(new_user)
