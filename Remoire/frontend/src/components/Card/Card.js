@@ -1,9 +1,9 @@
 import "./Card.css"
 
-const Card = ({ id, className, children }) => {
+const Card = ({ id, className, children, ref }) => {
     if (children) {
         return (
-            <div id={id} className={`card ${className}`}>
+            <div id={id} className={`card ${className}`} ref={ref}>
                 {children}
             </div>
         );

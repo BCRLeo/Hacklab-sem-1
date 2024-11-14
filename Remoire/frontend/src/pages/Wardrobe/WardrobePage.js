@@ -58,15 +58,15 @@ const WardrobePage = () => {
                 <Carousel id="carousel-tops" images={images} />
                 <Carousel id="carousel-bottoms" images={images} />
             </div>
-            <form onSubmit={handleSubmit} method="post" className="upload">
-                <Field label="Upload item" onChange={handleFileChange} type="file" name="item" />
-                <button type="submit">
-                    <span>Upload</span>
-                </button>
-            </form>
+            
 
             <Popover label="Upload item">
-                <h1>hi</h1>
+                <form onSubmit={handleSubmit} method="post" className="upload">
+                    <Field label="Upload item" onChange={handleFileChange} type="file" name="item" />
+                    <button type="submit">
+                        <span>Upload</span>
+                    </button>
+                </form>
             </Popover>
         </>
     );
