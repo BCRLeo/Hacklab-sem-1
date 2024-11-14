@@ -1,4 +1,4 @@
-from flask import Flask, Blueprint, current_app, render_template, redirect, request, url_for
+from flask import Flask, Blueprint, current_app, render_template, redirect, request, url_for, jsonify
 from flask_login import LoginManager, login_required, current_user
 import os
 import app
@@ -8,7 +8,7 @@ main = Blueprint('main', __name__)
 login_manager = LoginManager()
 login_manager.login_view = 'auth.login'
 
-# Function to get the correct JS and CSS file paths
+# Get the correct JS and CSS file paths
 def get_js_and_css():
     js_dir = os.path.join(main.root_path, 'static', 'js')
     css_dir = os.path.join(main.root_path, 'static', 'css')
@@ -26,6 +26,7 @@ def get_js_and_css():
 def inject_js_and_css():
     return dict(get_js_and_css=get_js_and_css)
 
+
 @main.route('/')
 def index():
     return render_template('index.html')
@@ -35,14 +36,30 @@ def index():
 def home():
     return render_template('home.html', name=current_user.UserName)
 
-@main.route('/upload', methods=['GET', 'POST'])
+
+@main.route("/api/upload", methods=["POST"])
+def upload():
+    if "file" not in request.files:
+        return jsonify({"success": False, "message": "No file part"}), 400
+
+    file = request.files['file']
+    if file.filename == "":
+        return jsonify({"success": False, "message": "No selected file"}), 400
+    
+    if file:
+        file.save(os.path.join(current_app.config['UPLOAD_FOLDER'], file.filename))
+        return jsonify({"success": True, "message": "File successfully uploaded"})
+    
+    return jsonify({"success": False, "message": "File could not be uploaded"})
+
+""" @main.route('/upload', methods=['GET', 'POST'])
 def upload():
     if request.method == 'POST':
         file = request.files['file']
         if file:
             file.save(os.path.join(current_app.config['UPLOAD_FOLDER'], file.filename))
             return redirect(url_for('main.wardrobe'))  # Redirect to wardrobe page
-    return render_template('upload.html')
+    return render_template('upload.html') """
 
 @main.route("/FeedPage", methods=['POST'])
 def feedpage():
