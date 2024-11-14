@@ -44,10 +44,10 @@ def upload():
             return redirect(url_for('main.wardrobe'))  # Redirect to wardrobe page
     return render_template('upload.html')
 
-@main.route("/Feed", methods=['POST'])
-def Feed():
-    print("THIS FUNCTION IS WORKING")
-    return 'OK', 200
+@main.route("/FeedPage", methods=['POST'])
+def feedpage():
+    print("lets gooo")
+    return '', 200  # Return HTTP 200 OK with an empty response
 
 """ @main.route('/wardrobe')
 def wardrobe():
