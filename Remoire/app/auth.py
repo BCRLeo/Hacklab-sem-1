@@ -99,7 +99,7 @@ def signup():
         email = request.form.get('email')
         username = request.form.get('username')
         password = request.form.get('password')
-        birthday = request.form.get("birdthday")
+        birthday = request.form.get("birthday")
 
         # Validate email format
         if not re.match(EMAIL_REGEX, email):
