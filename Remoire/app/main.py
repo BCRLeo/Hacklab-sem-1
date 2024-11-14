@@ -2,7 +2,7 @@ from flask import Flask, Blueprint, current_app, render_template, redirect, requ
 from flask_login import LoginManager, login_required, current_user
 import os
 import app
-
+from . import ImageBackgroundRemoverV1
 main = Blueprint('main', __name__)
 #redirect users trying to get to unaccessible pages
 login_manager = LoginManager()
@@ -48,6 +48,7 @@ def upload():
     
     if file:
         file.save(os.path.join(current_app.config['UPLOAD_FOLDER'], file.filename))
+        ImageBackgroundRemoverV1.remove_background_file(file, "UPLOAD_FOLDER")
         return jsonify({"success": True, "message": "File successfully uploaded"})
     
     return jsonify({"success": False, "message": "File could not be uploaded"})
