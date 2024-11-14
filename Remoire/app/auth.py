@@ -7,7 +7,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, login_required, logout_user, current_user
 import os
 import re
-from datetime import datetime
+import datetime
 
 auth = Blueprint('auth', __name__)
 # Regular expression for basic email and password validation
@@ -104,7 +104,7 @@ def signup():
         # Validate email format
         if not re.match(EMAIL_REGEX, email):
             flash('Invalid email format')
-            return render_template('sign')
+            return render_template('signup.html')
         
         # Validate password format using regex
         if not re.match(PASSWORD_REGEX, password):
@@ -112,17 +112,17 @@ def signup():
             return render_template('signup.html')
         
         # Check if user exists
-        user = User.query.filter_by(email=email).first()
-        if user:
-            flash('Email address already exists')
-            return redirect(url_for('auth.signup'))
+        # user = User.query.filter_by(email=email).first()
+        # if user:
+        #     flash('Email address already exists')
+        #     return redirect(url_for('auth.signup'))
         # Create new user and wardrobe
         new_user = User(
             email=email,
             UserName=username,
             password=generate_password_hash(password, method='pbkdf2:sha256'),
             birthday = birthday,
-            CreationDate = datetime.date
+            CreationDate = datetime.date.today()
         )
         new_wardrobe = Wardrobe(user=new_user)
         db.session.add(new_user)
@@ -130,7 +130,7 @@ def signup():
         db.session.commit()
         login_user(new_user)
         return redirect(url_for('main.home'))
-    return render_template('signup.html')
+    #return render_template('signup.html')
 
 @auth.route('/logout')
 @login_required
