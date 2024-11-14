@@ -92,7 +92,44 @@ def login():
     return render_template('login.html')
 """
 
-@auth.route('/signup', methods=['GET', 'POST'])
+@auth.route("/api/signup", methods=["POST"])
+def signup():
+    # Get form data
+    data = request.get_json()
+    email = data.get("email")
+    username = data.get("username")
+    password = data.get("password")
+    birthday = data.get("birthday")
+
+    # Validate email format
+    if not re.match(EMAIL_REGEX, email):
+        return jsonify({"success": False, "message": "Invalid email format"})
+        
+    # Validate password format using regex
+    if not re.match(PASSWORD_REGEX, password):
+        return jsonify({"success": False, "message": "Password must be at least 8 characters long, contain at least one uppercase letter, and one number"})
+        
+    # Check if user exists
+    user = User.query.filter_by(email=email).first()
+    if user:
+        return jsonify({"success": False, "message": "Email address already in use"})
+    
+    # Create new user and wardrobe
+    new_user = User(
+        email=email,
+        UserName=username,
+        password=generate_password_hash(password, method='pbkdf2:sha256'),
+        birthday = birthday,
+        CreationDate = datetime.date
+    )
+    new_wardrobe = Wardrobe(user=new_user)
+    db.session.add(new_user)
+    db.session.add(new_wardrobe)
+    db.session.commit()
+    login_user(new_user)
+    return jsonify({"success": True, "message": "User successfully registered"})
+
+""" @auth.route('/signup', methods=['GET', 'POST'])
 def signup():
     if request.method == 'POST':
         # Get form data
@@ -130,7 +167,7 @@ def signup():
         db.session.commit()
         login_user(new_user)
         return redirect(url_for('main.home'))
-    #return render_template('signup.html')
+    return render_template('signup.html') """
 
 @auth.route('/logout')
 @login_required

@@ -13,22 +13,51 @@ const SignUpPage = () => {
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [birthdate, setBirthdate] = useState("");
+    const [birthday, setBirthday] = useState("");
 
     const handleUsernameInput = (event) => {
-        setEmail(event.target.value);
+        setUsername(event.target.value);
     };
 
     const handleEmailInput = (event) => {
         setEmail(event.target.value);
     };
 
+    const handleBirthdayInput = (event) => {
+        setBirthday(event.target.value);
+    };
+
     const handlePasswordInput = (event) => {
         setPassword(event.target.value);
     };
 
-    const handleBirthdateInput = (event) => {
-        setEmail(event.target.value);
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        try {
+            const response = await fetch("/api/signup", {
+                method: "POST",
+                body: JSON.stringify({
+                    username: username,
+                    email: email,
+                    birthday: birthday,
+                    password: password
+                }),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+
+            const data = await response.json();
+            console.log(data.success);
+
+            if (response.ok && data.success) {
+                navigate("/wardrobe");
+            } else {
+                console.log("Signup failed: ", data.message);
+            }
+        } catch (error) {
+            console.error("Error during signup: ", error);
+        }
     };
 
     return (
@@ -37,11 +66,11 @@ const SignUpPage = () => {
             <h1>Create your Remoire account</h1>
             <Card id="card-registration">
                 <h3>Card!</h3>
-                <form action="" method="post" class="registration">
+                <form onSubmit={handleSubmit} method="post" class="registration">
                     <Field label="Username" onChange={handleUsernameInput} type="text" name="username" placeholder="MarioRossi88" />
                     <Field label="Email" onChange={handleEmailInput} type="text" name="email" placeholder="Email" />
                     <Field label="Password" onChange={handlePasswordInput} type="password" name="password" placeholder="Create a password" />
-                    <Field label="Birthdate" onChange={handleBirthdateInput} type="date" name="birthdate" placeholder="11-12-2024" />
+                    <Field label="Birthday" onChange={handleBirthdayInput} type="date" name="birthday" placeholder="11-12-2024" />
                     <button type="submit">Sign up</button>
                 </form>
             </Card>
