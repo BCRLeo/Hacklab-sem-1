@@ -3,6 +3,12 @@ from flask_login import LoginManager, login_required, current_user
 import os
 import app
 from . import ImageBackgroundRemoverV1
+from . import db
+from . import models
+from werkzeug.utils import secure_filename
+from sqlalchemy_imageattach.context import store_context
+
+
 main = Blueprint('main', __name__)
 #redirect users trying to get to unaccessible pages
 login_manager = LoginManager()
@@ -37,8 +43,11 @@ def home():
     return render_template('home.html', name=current_user.UserName)
 
 
+
+
 @main.route("/api/upload", methods=["POST"])
 def upload():
+    wardrobe = current_user.wardrobe 
     if "file" not in request.files:
         return jsonify({"success": False, "message": "No file part"}), 400
 
@@ -47,11 +56,46 @@ def upload():
         return jsonify({"success": False, "message": "No selected file"}), 400
     
     if file:
-        file.save(os.path.join(current_app.config['UPLOAD_FOLDER'], file.filename))
-        ImageBackgroundRemoverV1.remove_background_file(file, "UPLOAD_FOLDER")
+        # Secure the filename (though not strictly necessary since we're storing in DB)
+        filename = secure_filename(file.filename)
+                
+        # Create a new Jacket instance associated with the user's wardrobe
+        new_jacket = models.Jacket(wardrobe_id=wardrobe.id)
+        
+        # Read the image data and get the MIME type
+        file_data = file.read()
+        mimetype = file.mimetype
+
+        if not mimetype.startswith('image/'):
+            return jsonify({"success": False, "message": "Uploaded file is not an image"}), 400
+
+        # Assign the image data and MIME type to the new jacket
+        new_jacket.image_data = file_data
+        new_jacket.image_mimetype = mimetype
+
+        # Add and commit the new jacket to the database
+        db.session.add(new_jacket)
+        db.session.commit()
+        
         return jsonify({"success": True, "message": "File successfully uploaded"})
+        
+    return jsonify({"success": False, "message": "File could not be uploaded"}), 400
+
+# def upload():
+#     wardrobe = current_user.wardrobe 
+#     if "file" not in request.files:
+#         return jsonify({"success": False, "message": "No file part"}), 400
+
+#     file = request.files['file']
+#     if file.filename == "":
+#         return jsonify({"success": False, "message": "No selected file"}), 400
     
-    return jsonify({"success": False, "message": "File could not be uploaded"})
+#     if file:
+#         ####PASS FILE INTO USER WARDROBE, FOR NOW LET'S SAY ITS A JACKET
+#        ##INGORE THIS LINE current_user.wardrobe.Jacket ImageBackgroundRemoverV1.remove_background_file(file, "UPLOAD_FOLDER")
+#         return jsonify({"success": True, "message": "File successfully uploaded"})
+    
+#     return jsonify({"success": False, "message": "File could not be uploaded"})
 
 """ @main.route('/upload', methods=['GET', 'POST'])
 def upload():

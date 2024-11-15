@@ -1,20 +1,20 @@
 from . import db
 from flask_login import UserMixin
-from sqlalchemy_imageattach.entity import Image, image_attachment
 from datetime import datetime
 from sqlalchemy import text
-
 
 # Followers association table
 followers = db.Table('followers',
     db.Column('follower_id', db.Integer, db.ForeignKey('user.id')),
     db.Column('followed_id', db.Integer, db.ForeignKey('user.id'))
 )
+
 # Association table for tags
 post_tags = db.Table('post_tags',
     db.Column('post_id', db.Integer, db.ForeignKey('post.id'), primary_key=True),
     db.Column('tag_id', db.Integer, db.ForeignKey('tag.id'), primary_key=True)
 )
+
 class Post(db.Model):
     __tablename__ = 'post'
     id = db.Column(db.Integer, primary_key=True)
@@ -22,7 +22,8 @@ class Post(db.Model):
     description = db.Column(db.Text, nullable=True)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     outfit_id = db.Column(db.Integer, db.ForeignKey('outfit.id'), nullable=True)
-    image = image_attachment('PostImage')
+    image_data = db.Column(db.LargeBinary, nullable=True)
+    image_mimetype = db.Column(db.String(255), nullable=True)
 
     # Relationships
     author = db.relationship('User', back_populates='posts')
@@ -33,12 +34,6 @@ class Post(db.Model):
     # Method to count likes
     def like_count(self):
         return self.likes.count()
-    
-
-class PostImage(db.Model, Image):
-    __tablename__ = 'post_image'
-    post_id = db.Column(db.Integer, db.ForeignKey('post.id'), primary_key=True)
-    post = db.relationship('Post')
 
 class Outfit(db.Model):
     __tablename__ = 'outfit'
@@ -62,16 +57,6 @@ class Outfit(db.Model):
 
     @staticmethod
     def create_outfit(user, jacket=None, shirt=None, trouser=None, shoe=None):
-        # # Ensure that the items belong to the user's wardrobe
-        # if jacket and jacket.wardrobe.user_id != user.id:
-        #     raise ValueError("Selected jacket does not belong to your wardrobe.")
-        # if shirt and shirt.wardrobe.user_id != user.id:
-        #     raise ValueError("Selected shirt does not belong to your wardrobe.")
-        # if trouser and trouser.wardrobe.user_id != user.id:
-        #     raise ValueError("Selected trouser does not belong to your wardrobe.")
-        # if shoe and shoe.wardrobe.user_id != user.id:
-        #     raise ValueError("Selected shoe does not belong to your wardrobe.")
-
         outfit = Outfit(
             user_id=user.id,
             jacket_id=jacket.id if jacket else None,
@@ -121,7 +106,7 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(150))
     UserName = db.Column(db.String(150))
     birthday = db.Column(db.Date, nullable=False)
-    CreationDate = db.Column(db.Date, nullable = False)
+    CreationDate = db.Column(db.Date, nullable=False)
     # Premium field with default value set to False
     premium = db.Column(
         db.Boolean,
@@ -129,8 +114,6 @@ class User(db.Model, UserMixin):
         default=False,
         server_default=text('false')  # Ensures database-level default
     )
-
-
 
     # Relationships
     wardrobe = db.relationship('Wardrobe', uselist=False, back_populates='user')
@@ -174,7 +157,7 @@ class User(db.Model, UserMixin):
 
     def is_following(self, user):
         return self.followed.filter(followers.c.followed_id == user.id).first() is not None
-    
+
     def is_followed(self, user):
         return self.followers.filter(followers.c.follower_id == user.id).first() is not None
 
@@ -198,59 +181,37 @@ class Jacket(db.Model):
     __tablename__ = 'jacket'
     id = db.Column(db.Integer, primary_key=True)
     wardrobe_id = db.Column(db.Integer, db.ForeignKey('wardrobe.id'), nullable=False)
-    
-    image = image_attachment('JacketImage')
+    image_data = db.Column(db.LargeBinary, nullable=True)
+    image_mimetype = db.Column(db.String(255), nullable=True)
 
     wardrobe = db.relationship('Wardrobe', back_populates='jackets')
-
-# Jacket image model
-class JacketImage(db.Model, Image):
-    __tablename__ = 'jacket_image'
-    jacket_id = db.Column(db.Integer, db.ForeignKey('jacket.id'), primary_key=True)
-    # Relationship back to Jacket
-    jacket = db.relationship('Jacket')
 
 # Shirt model
 class Shirt(db.Model):
     __tablename__ = 'shirt'
     id = db.Column(db.Integer, primary_key=True)
     wardrobe_id = db.Column(db.Integer, db.ForeignKey('wardrobe.id'), nullable=False)
-    image = image_attachment('ShirtImage')
+    image_data = db.Column(db.LargeBinary, nullable=True)
+    image_mimetype = db.Column(db.String(255), nullable=True)
 
     wardrobe = db.relationship('Wardrobe', back_populates='shirts')
-
-# Shirt image model
-class ShirtImage(db.Model, Image):
-    __tablename__ = 'shirt_image'
-    shirt_id = db.Column(db.Integer, db.ForeignKey('shirt.id'), primary_key=True)
-    shirt = db.relationship('Shirt')
 
 # Trouser model
 class Trouser(db.Model):
     __tablename__ = 'trouser'
     id = db.Column(db.Integer, primary_key=True)
     wardrobe_id = db.Column(db.Integer, db.ForeignKey('wardrobe.id'), nullable=False)
-    image = image_attachment('TrouserImage')
+    image_data = db.Column(db.LargeBinary, nullable=True)
+    image_mimetype = db.Column(db.String(255), nullable=True)
 
     wardrobe = db.relationship('Wardrobe', back_populates='trousers')
-
-# Trouser image model
-class TrouserImage(db.Model, Image):
-    __tablename__ = 'trouser_image'
-    trouser_id = db.Column(db.Integer, db.ForeignKey('trouser.id'), primary_key=True)
-    trouser = db.relationship('Trouser')
 
 # Shoe model
 class Shoe(db.Model):
     __tablename__ = 'shoe'
     id = db.Column(db.Integer, primary_key=True)
     wardrobe_id = db.Column(db.Integer, db.ForeignKey('wardrobe.id'), nullable=False)
-    image = image_attachment('ShoeImage')
+    image_data = db.Column(db.LargeBinary, nullable=True)
+    image_mimetype = db.Column(db.String(255), nullable=True)
 
     wardrobe = db.relationship('Wardrobe', back_populates='shoes')
-
-# Shoe image model
-class ShoeImage(db.Model, Image):
-    __tablename__ = 'shoe_image'
-    shoe_id = db.Column(db.Integer, db.ForeignKey('shoe.id'), primary_key=True)
-    shoe = db.relationship('Shoe')
