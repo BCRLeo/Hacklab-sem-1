@@ -17,9 +17,8 @@ def remove_background_path(input_path, output_path):
 
 
 
-def remove_background_file(img, output_path):
+def remove_background_file(img):
     try:
-        img = img.read()
         output = remove(img, force_return_bytes=True)
         # Save the output image
         return output
