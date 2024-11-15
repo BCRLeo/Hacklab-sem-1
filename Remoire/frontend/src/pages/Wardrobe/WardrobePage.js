@@ -3,6 +3,7 @@ import "./WardrobePage.css"
 import Carousel from "../../components/Carousel/Carousel";
 import Field from "../../components/Field/Field";
 import Header from "../../components/Header/Header";
+import Loading from "../../components/Loading/Loading";
 import Popover from "../../components/Popover/Popover";
 
 import { useContext, useEffect, useState } from "react";
@@ -22,6 +23,7 @@ const WardrobePage = () => {
     const [uploadStatus, setUploadStatus] = useState("");
     const [jackets, setJackets] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [isUserLoading, setIsUserLoading] = useState(true);
 
     const getJackets = async () => {
         try {
@@ -45,16 +47,21 @@ const WardrobePage = () => {
 
     useEffect(() => {
         if (user === null) {
-            setIsLoading(true);
+            setIsUserLoading(true);
             return;
-        } else {
-            setIsLoading(false);
-            if (user === -1) {
-                navigate("/login");
-            }
-            getJackets();
         }
+        setIsUserLoading(false);
+        if (user === -1) {
+            navigate("/login");
+        }
+        getJackets();
     }, [user, navigate, uploadStatus]);
+
+    if (isUserLoading) {
+        return (
+            <Loading />
+        );
+    }
 
     const handleFileChange = (event) => {
         setFile(event.target.files[0]);
