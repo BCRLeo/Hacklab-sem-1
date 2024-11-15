@@ -20,10 +20,10 @@ function App() {
 		fetch('/api/check-login')
 		.then((response) => response.json())
 		.then((data) => {
-			if (data.isLoggedIn) {
+			if (data.success) {
 				setIsLoggedIn(true);
-				setUsername(data.username);
-				setUser(data);
+				setUsername(data.user.username);
+				setUser(data.user);
 			}
 		})
 		.catch((error) => {

@@ -117,7 +117,6 @@ def get_images(image_id):
     if id < len(images):
         image_bytes = images[id]
         image_io = io.BytesIO(image_bytes)
-        print(image_io)
         return send_file(image_io, mimetype=mimetypes[id])
 
 # def upload():

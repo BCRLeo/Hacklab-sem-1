@@ -14,6 +14,8 @@ export const UserProvider = ({ children }) => {
 
                 if (data.success) {
                     setUser(data.user);
+                } else {
+                    setUser(-1);
                 }
             } catch (error) {
                 console.error('Error fetching login status:', error);

@@ -44,11 +44,17 @@ const WardrobePage = () => {
     };
 
     useEffect(() => {
-        if (!user) {
-            navigate("/login");
+        if (user === null) {
+            setIsLoading(true);
+            return;
+        } else {
+            setIsLoading(false);
+            if (user === -1) {
+                navigate("/login");
+            }
+            getJackets();
         }
-        getJackets();
-    }, [user, navigate]);
+    }, [user, navigate, uploadStatus]);
 
     const handleFileChange = (event) => {
         setFile(event.target.files[0]);
@@ -72,13 +78,16 @@ const WardrobePage = () => {
 
             if (response.ok) {
                 setUploadStatus("File uploaded successfully");
+                event.target.reset();
             } else {
                 setUploadStatus("Failed to upload file");
             }
         } catch (error) {
             console.error("Error: ", error);
-            setUploadStatus("An error occurred while uploading the file")
+            setUploadStatus("An error occurred while uploading the file");
         }
+
+        console.log(uploadStatus);
     };
 
     return (
@@ -86,19 +95,16 @@ const WardrobePage = () => {
             <Header />
             {user ? <h1>{user.username}'s wardobe</h1> : <h1>Wardrobe</h1>}
             <div className="wardrobe-carousel-container">
-                {isLoading ? <p>loading</p> : 
+                {isLoading ? <p>Loading...</p> : 
                     <div>
                         {jackets.length === 0 ? (
-                        <p>No images available.</p>
+                            <p>No images available.</p>
                         ) : (
-                        jackets.map((image) => (
-                            <div key={image.id} style={{ marginBottom: '20px' }}>
-                            <img src={image.url} alt={image.type} style={{ width: '100%', maxWidth: '400px' }} />
-                            </div>
-                        ))
+                            <Carousel id="carousel-jackets" images={jackets.map((image) => image.url)} />
                         )}
                     </div>
                 }
+                
                 <Carousel id="carousel-tops" images={images} />
                 <Carousel id="carousel-bottoms" images={images} />
             </div>
