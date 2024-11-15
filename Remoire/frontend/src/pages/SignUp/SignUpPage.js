@@ -48,7 +48,6 @@ const SignUpPage = () => {
             });
 
             const data = await response.json();
-            console.log(data.success);
 
             if (response.ok && data.success) {
                 navigate("/wardrobe");
@@ -70,7 +69,7 @@ const SignUpPage = () => {
                     <Field label="Username" onChange={handleUsernameInput} type="text" name="username" placeholder="MarioRossi88" />
                     <Field label="Email" onChange={handleEmailInput} type="text" name="email" placeholder="Email" />
                     <Field label="Password" onChange={handlePasswordInput} type="password" name="password" placeholder="Create a password" />
-                    <Field label="Birthday" onChange={handleBirthdayInput} type="date" name="birthday" placeholder="11-12-2024" />
+                    <Field label="Birthday" onChange={handleBirthdayInput} type="date" name="birthday" />
                     <button type="submit">Sign up</button>
                 </form>
             </Card>

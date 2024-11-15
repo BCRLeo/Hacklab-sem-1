@@ -7,7 +7,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, login_required, logout_user, current_user
 import os
 import re
-import datetime
+from datetime import datetime, date
 
 auth = Blueprint('auth', __name__)
 # Regular expression for basic email and password validation
@@ -64,34 +64,6 @@ def login():
             
     return jsonify({"success": False, "message": "Invalid request method"}), 405
 
-"""
-@auth.route('/login', methods=['GET', 'POST'])
-def login():
-    if request.method == 'POST':
-        # Get form data
-        login_input = request.form.get('login')  # Could be username or email
-        password = request.form.get('password')
-
-        # Check if login_input and password are provided
-        if not login_input or not password:
-            flash('Please enter both login and password')
-            return render_template('login.html')
-        
-        # Check if the input is an email
-        if re.match(EMAIL_REGEX, login_input):  # Checks if the input is a valid email
-            user = User.query.filter_by(email=login_input).first()
-        else:
-            user = User.query.filter_by(UserName=login_input).first()
-
-        # Authenticate user
-        if user and check_password_hash(user.password, password):
-            login_user(user)
-            return redirect(url_for('main.wardrobe'))
-        else:
-            flash('Invalid username/email or password')
-    return render_template('login.html')
-"""
-
 @auth.route("/api/signup", methods=["POST"])
 def signup():
     # Get form data
@@ -99,7 +71,7 @@ def signup():
     email = data.get("email")
     username = data.get("username")
     password = data.get("password")
-    birthday = data.get("birthday")
+    birthday_str = data.get("birthday")
 
     # Validate email format
     if not re.match(EMAIL_REGEX, email):
@@ -108,7 +80,13 @@ def signup():
     # Validate password format using regex
     if not re.match(PASSWORD_REGEX, password):
         return jsonify({"success": False, "message": "Password must be at least 8 characters long, contain at least one uppercase letter, and one number"})
-        
+    
+    # Convert the string 'YYYY-MM-DD' to a Python date object
+    try:
+        birthday = datetime.strptime(birthday_str, "%Y-%m-%d").date()
+    except ValueError:
+        return jsonify({"success": False, "message": "Invalid date format"})
+
     # Check if user exists
     user = User.query.filter_by(email=email).first()
     if user:
@@ -120,7 +98,7 @@ def signup():
         UserName=username,
         password=generate_password_hash(password, method='pbkdf2:sha256'),
         birthday = birthday,
-        CreationDate = datetime.date
+        CreationDate = date.today()
     )
     new_wardrobe = Wardrobe(user=new_user)
     db.session.add(new_user)
@@ -129,50 +107,8 @@ def signup():
     login_user(new_user)
     return jsonify({"success": True, "message": "User successfully registered"})
 
-""" @auth.route('/signup', methods=['GET', 'POST'])
-def signup():
-    if request.method == 'POST':
-        # Get form data
-        email = request.form.get('email')
-        username = request.form.get('username')
-        password = request.form.get('password')
-        birthday = request.form.get("birthday")
-
-        # Validate email format
-        if not re.match(EMAIL_REGEX, email):
-            flash('Invalid email format')
-            return render_template('signup.html')
-        
-        # Validate password format using regex
-        if not re.match(PASSWORD_REGEX, password):
-            flash('Password must be at least 8 characters long, contain at least one uppercase letter and one number.')
-            return render_template('signup.html')
-        
-        # Check if user exists
-        # user = User.query.filter_by(email=email).first()
-        # if user:
-        #     flash('Email address already exists')
-        #     return redirect(url_for('auth.signup'))
-        # Create new user and wardrobe
-        new_user = User(
-            email=email,
-            UserName=username,
-            password=generate_password_hash(password, method='pbkdf2:sha256'),
-            birthday = birthday,
-            CreationDate = datetime.date.today()
-        )
-        new_wardrobe = Wardrobe(user=new_user)
-        db.session.add(new_user)
-        db.session.add(new_wardrobe)
-        db.session.commit()
-        login_user(new_user)
-        return redirect(url_for('main.home'))
-    return render_template('signup.html') """
-
 @auth.route('/logout')
 @login_required
 def logout():
     logout_user()
     return redirect(url_for('auth.login'))
-
-

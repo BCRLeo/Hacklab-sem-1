@@ -34,7 +34,6 @@ const LogInPage = () => {
             });
 
             const data = await response.json();
-            console.log(data.success);
 
             if (response.ok && data.success) {
                 navigate("/wardrobe");
