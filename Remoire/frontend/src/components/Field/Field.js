@@ -4,7 +4,7 @@ const Field = ({ label, type, name, placeholder, onChange, children }) => {
     if (children) {
         return (
             <div className="field">
-                {label && <h3>{label}</h3>}
+                {label && <h4 className="field-label">{label}</h4>}
                 {children}
             </div>
         );

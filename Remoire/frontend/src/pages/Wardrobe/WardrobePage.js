@@ -20,6 +20,7 @@ const WardrobePage = () => {
     const navigate = useNavigate();
     const { user, setUser } = useContext(UserContext);
     const [file, setFile] = useState(null);
+    const [category, setCategory] = useState("");
     const [uploadStatus, setUploadStatus] = useState("");
     const [jackets, setJackets] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -67,6 +68,10 @@ const WardrobePage = () => {
         setFile(event.target.files[0]);
     };
 
+    const handleCategoryChange = (event) => {
+        setCategory(event.target.value);
+    };
+
     const handleSubmit = async (event) => {
         event.preventDefault();
         if (!file) {
@@ -76,6 +81,10 @@ const WardrobePage = () => {
 
         const formData = new FormData();
         formData.append("file", file);
+        formData.append("category", category);
+        for (const pair of formData.entries()) {
+            console.log(pair[0], pair[1]);
+        }
 
         try {
             const response = await fetch("/api/upload", {
@@ -102,15 +111,11 @@ const WardrobePage = () => {
             <Header />
             {user ? <h1>{user.username}'s wardobe</h1> : <h1>Wardrobe</h1>}
             <div className="wardrobe-carousel-container">
-                {isLoading ? <p>Loading...</p> : 
-                    <div>
-                        {jackets.length === 0 ? (
-                            <p>No images available.</p>
-                        ) : (
-                            <Carousel id="carousel-jackets" images={jackets.map((image) => image.url)} />
-                        )}
-                    </div>
-                }
+                {jackets.length === 0 ? (
+                    <p>No images available.</p>
+                ) : (
+                    <Carousel id="carousel-jackets" images={jackets.map((image) => image.url)} />
+                )}
                 
                 <Carousel id="carousel-tops" images={images} />
                 <Carousel id="carousel-bottoms" images={images} />
@@ -119,6 +124,15 @@ const WardrobePage = () => {
             <Popover label="Upload item">
                 <form onSubmit={handleSubmit} method="post" className="upload">
                     <Field label="Upload item" onChange={handleFileChange} type="file" name="item" />
+                    <Field label="Clothing category">
+                        <select name="category" onChange={handleCategoryChange}>
+                            <option value="">Select a clothing category</option>
+                            <option value="jacket">Jacket</option>
+                            <option value="shirt">Shirt</option>
+                            <option value="trouser">Trousers</option>
+                            <option value="shoe">Shoes</option>
+                        </select>
+                    </Field>
                     <button type="submit">
                         <span>Upload</span>
                     </button>
