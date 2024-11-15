@@ -20,7 +20,8 @@ const WardrobePage = () => {
     const { user, setUser } = useContext(UserContext);
     const [file, setFile] = useState(null);
     const [uploadStatus, setUploadStatus] = useState("");
-    const [jackets, setJackets] = useState();
+    const [jackets, setJackets] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
 
     const getJackets = async () => {
         try {
@@ -29,19 +30,16 @@ const WardrobePage = () => {
             });
             
             if (response.ok) {
-                // Convert the response to a Blob (binary data)
-                const imageBlob = await response.blob();
-
-                // Convert the Blob to a URL that can be used as the 'src' of an <img> element
-                const imageObjectUrl = URL.createObjectURL(imageBlob);
-
-                setJackets(imageObjectUrl);
+                const data = await response.json()
+                setJackets(data);
             } else {
-                console.error('Failed to fetch image:', response.status);
+                console.error('Failed to fetch image list');
             }
         } catch (error) {
             console.error("Error: ", error);
             setUploadStatus("An error occurred while uploading the file")
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -88,7 +86,19 @@ const WardrobePage = () => {
             <Header />
             {user ? <h1>{user.username}'s wardobe</h1> : <h1>Wardrobe</h1>}
             <div className="wardrobe-carousel-container">
-                <img src={jackets} />
+                {isLoading ? <p>loading</p> : 
+                    <div>
+                        {jackets.length === 0 ? (
+                        <p>No images available.</p>
+                        ) : (
+                        jackets.map((image) => (
+                            <div key={image.id} style={{ marginBottom: '20px' }}>
+                            <img src={image.url} alt={image.type} style={{ width: '100%', maxWidth: '400px' }} />
+                            </div>
+                        ))
+                        )}
+                    </div>
+                }
                 <Carousel id="carousel-tops" images={images} />
                 <Carousel id="carousel-bottoms" images={images} />
             </div>

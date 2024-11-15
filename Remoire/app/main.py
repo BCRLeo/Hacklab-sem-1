@@ -97,15 +97,28 @@ def upload():
         
     return jsonify({"success": False, "message": "File could not be uploaded"}), 400
 
-@main.route("/api/images", methods=["GET"])
-def get_images():
-    image_type = request.args.get("type")
+@main.route('/api/images', methods=['GET'])
+def get_all_images():
     jackets = current_user.wardrobe.jackets
     images = [jacket.image_data for jacket in jackets]
-    image_bytes = images[0]
-    image_io = io.BytesIO(image_bytes)
-    print(image_io)
-    return send_file(image_io, mimetype=jackets[0].image_mimetype)
+    # Dynamically generate metadata for each image in the images dictionary
+    image_metadata = [
+        {"id": idx, "url": f"/api/images/{idx}"}
+        for idx, img in enumerate(images)
+    ]
+    return jsonify(image_metadata)
+
+@main.route("/api/images/<image_id>", methods=["GET"])
+def get_images(image_id):
+    jackets = current_user.wardrobe.jackets
+    images = [jacket.image_data for jacket in jackets]
+    mimetypes = [jacket.image_mimetype for jacket in jackets]
+    id = int(image_id)
+    if id < len(images):
+        image_bytes = images[id]
+        image_io = io.BytesIO(image_bytes)
+        print(image_io)
+        return send_file(image_io, mimetype=mimetypes[id])
 
 # def upload():
 #     wardrobe = current_user.wardrobe 
