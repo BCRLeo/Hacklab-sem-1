@@ -1,0 +1,66 @@
+@main.route("/api/upload", methods=["POST"])
+def upload():
+    # Ensure the user provides the category and item ID
+    category = request.form.get('category')
+    item_id = request.form.get('item_id')
+
+    if not category or not item_id:
+        return jsonify({'error': 'Category and item_id are required.'}), 400
+
+    # Check if the file is included in the request
+    if 'file' not in request.files:
+        return jsonify({'error': 'No file uploaded.'}), 400
+
+    file = request.files['file']
+
+    # Validate the file
+    if file.filename == '':
+        return jsonify({'error': 'No file selected.'}), 400
+
+    if not file.mimetype.startswith('image/'):
+        return jsonify({'error': 'Invalid file type. Please upload an image.'}), 400
+
+    # Read the binary data
+    file_data = file.read()
+
+    # Map category to the appropriate model and image
+    model_map = {
+        'jacket': (Jacket, JacketImage),
+        'shirt': (Shirt, ShirtImage),
+        'trouser': (Trouser, TrouserImage),
+        'shoe': (Shoe, ShoeImage)
+    }
+
+    if category not in model_map:
+        return jsonify({'error': f'Invalid category. Allowed categories: {", ".join(model_map.keys())}'}), 400
+
+    # Retrieve the model and image class
+    ModelClass, ImageClass = model_map[category]
+
+    # Ensure the item exists in the database
+    item = ModelClass.query.get(item_id)
+    if not item:
+        return jsonify({'error': f'{category.capitalize()} with ID {item_id} not found.'}), 404
+
+    # Handle the case where the image doesn't yet exist
+    if not item.image:
+        # Create a new image entry
+        image_instance = ImageClass()
+        item.image = image_instance
+        db.session.add(image_instance)
+
+    else:
+        # Update the existing image instance
+        image_instance = item.image
+
+    # Set image data
+    image_instance.data = file_data
+    image_instance.filename = file.filename
+    image_instance.mimetype = file.mimetype
+
+    # Save changes to the database
+    db.session.commit()
+
+    return jsonify({'message': f'Image uploaded to {category} with ID {item_id} successfully.'}), 200
+
+    

@@ -34,15 +34,29 @@ def inject_js_and_css():
 
 
 @main.route('/')
-def index():
+def index_page():
     return render_template('index.html')
 
 @main.route('/home')
 @login_required
-def home():
+def home_page():
     return render_template('home.html', name=current_user.UserName)
 
+@main.route("/wardrobe")
+def wardrobe_page():
+    return render_template("index.html")
 
+@main.route("/login")
+def login_page():
+    return render_template("index.html")
+
+@main.route("/signup")
+def signup_page():
+    return render_template("index.html")
+
+@main.route("/feed")
+def feed_page():
+    return render_template("index.html")
 
 
 @main.route("/api/upload", methods=["POST"])
