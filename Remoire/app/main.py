@@ -78,6 +78,7 @@ def upload():
         
         # Read the image data and get the MIME type
         file_data = file.read()
+        file_data = ImageBackgroundRemoverV1.remove_background_file(file_data)
         mimetype = file.mimetype
 
         if not mimetype.startswith('image/'):
