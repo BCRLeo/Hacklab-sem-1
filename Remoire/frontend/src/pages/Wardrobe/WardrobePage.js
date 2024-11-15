@@ -20,12 +20,37 @@ const WardrobePage = () => {
     const { user, setUser } = useContext(UserContext);
     const [file, setFile] = useState(null);
     const [uploadStatus, setUploadStatus] = useState("");
+    const [jackets, setJackets] = useState();
 
-    /* useEffect(() => {
-        if (!user || !user.isLoggedIn) {
+    const getJackets = async () => {
+        try {
+            const response = await fetch("/api/images", {
+                method: "GET"
+            });
+            
+            if (response.ok) {
+                // Convert the response to a Blob (binary data)
+                const imageBlob = await response.blob();
+
+                // Convert the Blob to a URL that can be used as the 'src' of an <img> element
+                const imageObjectUrl = URL.createObjectURL(imageBlob);
+
+                setJackets(imageObjectUrl);
+            } else {
+                console.error('Failed to fetch image:', response.status);
+            }
+        } catch (error) {
+            console.error("Error: ", error);
+            setUploadStatus("An error occurred while uploading the file")
+        }
+    };
+
+    useEffect(() => {
+        if (!user) {
             navigate("/login");
         }
-    }, [user, navigate]); */
+        getJackets();
+    }, [user, navigate]);
 
     const handleFileChange = (event) => {
         setFile(event.target.files[0]);
@@ -63,6 +88,7 @@ const WardrobePage = () => {
             <Header />
             {user ? <h1>{user.username}'s wardobe</h1> : <h1>Wardrobe</h1>}
             <div className="wardrobe-carousel-container">
+                <img src={jackets} />
                 <Carousel id="carousel-tops" images={images} />
                 <Carousel id="carousel-bottoms" images={images} />
             </div>

@@ -1,5 +1,6 @@
-from flask import Flask, Blueprint, current_app, render_template, redirect, request, url_for, jsonify
+from flask import Flask, Blueprint, current_app, render_template, redirect, request, url_for, jsonify, send_file
 from flask_login import LoginManager, login_required, current_user
+import io
 import os
 import app
 from . import ImageBackgroundRemoverV1
@@ -95,6 +96,16 @@ def upload():
         return jsonify({"success": True, "message": "File successfully uploaded"})
         
     return jsonify({"success": False, "message": "File could not be uploaded"}), 400
+
+@main.route("/api/images", methods=["GET"])
+def get_images():
+    image_type = request.args.get("type")
+    jackets = current_user.wardrobe.jackets
+    images = [jacket.image_data for jacket in jackets]
+    image_bytes = images[0]
+    image_io = io.BytesIO(image_bytes)
+    print(image_io)
+    return send_file(image_io, mimetype=jackets[0].image_mimetype)
 
 # def upload():
 #     wardrobe = current_user.wardrobe 
