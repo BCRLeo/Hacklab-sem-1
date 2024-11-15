@@ -1,5 +1,6 @@
 from rembg import remove
 from PIL import Image
+import io
 
 def remove_background_path(input_path, output_path):
     try:
@@ -13,14 +14,22 @@ def remove_background_path(input_path, output_path):
     except Exception as e:
         print(f"Error during background removal: {e}")
 
+
+
+
 def remove_background_file(img, output_path):
     try:
-        output = remove(img)
+        img = img.read()
+        output = remove(img, force_return_bytes=True)
         # Save the output image
+        return output
         output.save(output_path)
         print(f"Background removed image saved at {output_path}")
     except Exception as e:
         print(f"Error during background removal: {e}")
+
+
+
 
 
 
