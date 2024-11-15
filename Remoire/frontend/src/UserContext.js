@@ -12,7 +12,7 @@ export const UserProvider = ({ children }) => {
                 const response = await fetch('/api/check-login');
                 const data = await response.json();
 
-                if (data.logged_in) {
+                if (data.isLoggedIn) {
                     setUser(data);
                 }
             } catch (error) {

@@ -107,8 +107,15 @@ def signup():
     login_user(new_user)
     return jsonify({"success": True, "message": "User successfully registered"})
 
-@auth.route('/logout')
+@auth.route('/api/logout', methods=["GET"])
+def logout():
+    if current_user.is_authenticated:
+        logout_user()
+        return jsonify({"success": True, "message": "User successfully logged out"}), 200
+    return jsonify({"success": False, "message": "User not originally logged in"}), 401
+
+""" @auth.route('/logout')
 @login_required
 def logout():
     logout_user()
-    return redirect(url_for('auth.login'))
+    return redirect(url_for('auth.login')) """

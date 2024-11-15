@@ -5,7 +5,8 @@ import Field from "../../components/Field/Field";
 import Header from "../../components/Header/Header";
 import Popover from "../../components/Popover/Popover";
 
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../UserContext";
 
 const importAllImages = (requireContext) => {
@@ -15,9 +16,16 @@ const importAllImages = (requireContext) => {
 const images = importAllImages(require.context('../../assets/images', false, /\.(png|jpe?g|svg|webp)$/));
 
 const WardrobePage = () => {
+    const navigate = useNavigate();
     const { user, setUser } = useContext(UserContext);
     const [file, setFile] = useState(null);
     const [uploadStatus, setUploadStatus] = useState("");
+
+    /* useEffect(() => {
+        if (!user || !user.isLoggedIn) {
+            navigate("/login");
+        }
+    }, [user, navigate]); */
 
     const handleFileChange = (event) => {
         setFile(event.target.files[0]);
@@ -53,12 +61,11 @@ const WardrobePage = () => {
     return (
         <>
             <Header />
-            {(user && user.isLoggedIn) ? <h1>{user.username}'s wardobe</h1> : <h1>Wardrobe</h1>}
+            {user ? <h1>{user.username}'s wardobe</h1> : <h1>Wardrobe</h1>}
             <div className="wardrobe-carousel-container">
                 <Carousel id="carousel-tops" images={images} />
                 <Carousel id="carousel-bottoms" images={images} />
             </div>
-            
 
             <Popover label="Upload item">
                 <form onSubmit={handleSubmit} method="post" className="upload">

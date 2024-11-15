@@ -3,10 +3,12 @@ import Field from "../../components/Field/Field";
 import Header from "../../components/Header/Header";
 
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { UserContext } from "../../UserContext";
 
 const LogInPage = () => {
     const navigate = useNavigate();
+    const { user, setUser } = useContext(UserContext);
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -36,7 +38,17 @@ const LogInPage = () => {
             const data = await response.json();
 
             if (response.ok && data.success) {
-                navigate("/wardrobe");
+                try {
+                    const userResponse = await fetch('/api/check-login');
+                    const userData = await userResponse.json();
+    
+                    if (userData.isLoggedIn) {
+                        setUser(userData);
+                        navigate("/wardrobe");
+                    }
+                } catch (error) {
+                    console.error('Error fetching login status:', error);
+                }
             } else {
                 console.log("Login failed: ", data.message);
             }

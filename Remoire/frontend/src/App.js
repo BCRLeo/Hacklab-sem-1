@@ -37,6 +37,7 @@ function App() {
 				<Routes>
 					<Route path="/feed" element={<FeedPage />} />
 					<Route path="/" element={<HomePage />} />
+					<Route path="/home" element={<HomePage />} />
 					<Route path="/login" element={<LogInPage />} />
 					<Route path="/signup" element={<SignUpPage />} />
 					<Route path="/wardrobe" element={<WardrobePage />} />
