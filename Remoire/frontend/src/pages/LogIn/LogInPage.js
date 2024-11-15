@@ -38,17 +38,8 @@ const LogInPage = () => {
             const data = await response.json();
 
             if (response.ok && data.success) {
-                try {
-                    const userResponse = await fetch('/api/check-login');
-                    const userData = await userResponse.json();
-    
-                    if (userData.isLoggedIn) {
-                        setUser(userData);
-                        navigate("/wardrobe");
-                    }
-                } catch (error) {
-                    console.error('Error fetching login status:', error);
-                }
+                setUser(data.user);
+                navigate("/wardrobe");
             } else {
                 console.log("Login failed: ", data.message);
             }
