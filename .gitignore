@@ -1,2 +1,5 @@
 .venv/
 .vscode/
+.node_modules/
+.Remoire/app/run.py
+.Remoire/frontend/package.json
