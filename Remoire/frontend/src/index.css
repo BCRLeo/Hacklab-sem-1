@@ -1,7 +1,18 @@
 :root {
-	--hex__background: #e8d8cb;
+	--hex__brand-main: #660C42;
+	--hex__brand-alt: #A01367;
+	--hex__brand-light: #C286B7;
+	--hex__brand-dark: #3F1B64;
+	--hex__brand-accent: #992C3B;
+	--hex__brand-black: #292727;
+	--hex__brand-white: #FFFBF8;
+	--hex__brand-beige: #E8D8CB;
+
+	--hex__background: var(--hex__brand-white);
 	--hex__overlay: #660c42;
-	--hex__text: #292727;
+	--hex__text: var(--hex__brand-black);
+	--hex__text-contrast: var(--hex__brand-white);
+	--hex__button: var(--hex__brand-light);
 
 	--font-size__base: 3vw;
 	--font-size__h1: clamp(4rem, var(--font-size__base) * 8, 8rem);
@@ -29,13 +40,7 @@ html {
 	background-color: var(--hex__background);
 }
 
-h1, h2, h3, h4, h5, h6 {
-	margin: 2rem auto;
-	text-align: center;
-}
-
 body {
-
 	min-height: 100dvh;
 	width: 100%;
 
@@ -50,16 +55,20 @@ body {
 	-moz-osx-font-smoothing: grayscale;
 }
 
-code {
-	font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-		monospace;
+h1, h2, h3, h4, h5, h6 {
+	margin: 2rem auto;
+	text-align: center;
+}
+
+a {
+	color: var(--hex__text-contrast);
 }
 
 button {
 	display: block;
 	margin: 2rem auto;
 	padding: 0.5rem 1rem;
-	background-color: white;
+	background-color: var(--hex__button);
 	border: none;
 	border-radius: 1rem;
 	cursor: pointer;

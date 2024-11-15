@@ -25,7 +25,6 @@ const Carousel = ({ images, children }) => {
 	}
 
 	if (images && images.length > 0) {
-		console.log(visibleImages);
 		return (
 			<div className="carousel">
 				<CarouselButton direction="left" onClick={handleClickPrevious} iconPath={IconArrowLeft} />

@@ -1,5 +1,11 @@
 .venv/
 .vscode/
+
+# Python compiled files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
 .node_modules/
 .Remoire/app/run.py
 .Remoire/frontend/package.json
