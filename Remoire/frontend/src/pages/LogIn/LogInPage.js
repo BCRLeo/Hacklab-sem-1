@@ -3,10 +3,12 @@ import Field from "../../components/Field/Field";
 import Header from "../../components/Header/Header";
 
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { UserContext } from "../../UserContext";
 
 const LogInPage = () => {
     const navigate = useNavigate();
+    const { user, setUser } = useContext(UserContext);
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -36,6 +38,7 @@ const LogInPage = () => {
             const data = await response.json();
 
             if (response.ok && data.success) {
+                setUser(data.user);
                 navigate("/wardrobe");
             } else {
                 console.log("Login failed: ", data.message);

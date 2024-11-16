@@ -30,9 +30,6 @@ const Carousel = ({ images, children }) => {
 				<CarouselButton direction="left" onClick={handleClickPrevious} iconPath={IconArrowLeft} />
 				<CarouselButton direction="right" onClick={handleClickNext} iconPath={IconArrowRight} />
 				{visibleImages}
-				<div className="carousel-track">
-					
-				</div>
 			</div>
 		);
 	}

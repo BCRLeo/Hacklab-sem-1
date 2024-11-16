@@ -20,10 +20,10 @@ function App() {
 		fetch('/api/check-login')
 		.then((response) => response.json())
 		.then((data) => {
-			if (data.isLoggedIn) {
+			if (data.success) {
 				setIsLoggedIn(true);
-				setUsername(data.username);
-				setUser(data);
+				setUsername(data.user.username);
+				setUser(data.user);
 			}
 		})
 		.catch((error) => {
@@ -37,6 +37,7 @@ function App() {
 				<Routes>
 					<Route path="/feed" element={<FeedPage />} />
 					<Route path="/" element={<HomePage />} />
+					<Route path="/home" element={<HomePage />} />
 					<Route path="/login" element={<LogInPage />} />
 					<Route path="/signup" element={<SignUpPage />} />
 					<Route path="/wardrobe" element={<WardrobePage />} />
