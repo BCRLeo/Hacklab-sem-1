@@ -16,7 +16,7 @@ const importAllImages = (requireContext) => {
 
 const images = importAllImages(require.context('../../assets/images', false, /\.(png|jpe?g|svg|webp)$/));
 
-const WardrobePage = () => {
+function WardrobePage() {
     const navigate = useNavigate();
     const { user, setUser } = useContext(UserContext);
     const [file, setFile] = useState(null);
