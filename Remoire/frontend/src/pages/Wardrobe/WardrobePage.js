@@ -22,13 +22,18 @@ const WardrobePage = () => {
     const [file, setFile] = useState(null);
     const [category, setCategory] = useState("");
     const [uploadStatus, setUploadStatus] = useState("");
+
     const [jackets, setJackets] = useState([]);
+    const [shirts, setShirts] = useState([]);
+    const [trousers, setTrousers] = useState([]);
+    const [shoes, setShoes] = useState([]);
+
     const [isLoading, setIsLoading] = useState(true);
     const [isUserLoading, setIsUserLoading] = useState(true);
 
     const getJackets = async () => {
         try {
-            const response = await fetch("/api/images", {
+            const response = await fetch("/api/images/jacket", {
                 method: "GET"
             });
             

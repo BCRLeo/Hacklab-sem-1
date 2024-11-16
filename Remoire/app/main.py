@@ -119,7 +119,7 @@ def upload():
         
     return jsonify({"success": True, "message": "File successfully uploaded"}), 200
 
-@main.route('/api/images', methods=['GET'])
+""" @main.route('/api/images', methods=['GET'])
 def get_all_images():
     jackets = current_user.wardrobe.jackets
     images = [jacket.image_data for jacket in jackets]
@@ -128,9 +128,49 @@ def get_all_images():
         {"id": idx, "url": f"/api/images/{idx}"}
         for idx, img in enumerate(images)
     ]
+    return jsonify(image_metadata) """
+
+@main.route('/api/images/<item_type>', methods=['GET'])
+def get_all_images(item_type):
+    items = None
+    match item_type:
+        case "jacket":
+            items = current_user.wardrobe.jackets
+        case "shirt":
+            items = current_user.wardrobe.shirts
+        case "trousers":
+            items = current_user.wardrobe.trousers
+        case "shoes":
+            items = current_user.wardrobe.shoes
+        case _:
+            print("bad type")
+            return jsonify({"success": False, "message": "Invalid item type"})
+
+    images = [item.image_data for item in items]
+
+    id = request.args.get("id")
+
+    if id:
+        print(id)
+        id = int(id)
+        if id >= len(images):
+            print("bad id")
+            return jsonify({"success": False, "message": "Invalid image ID"})
+        mimetypes = [item.image_mimetype for item in items]
+        image_bytes = images[id]
+        image_io = io.BytesIO(image_bytes)
+        print("send!")
+        return send_file(image_io, mimetype = mimetypes[id])
+
+    # Dynamically generate metadata for each image in the images dictionary
+    image_metadata = [
+        {"id": idx, "url": f"/api/images/{item_type}?id={idx}"}
+        for idx, img in enumerate(images)
+    ]
+    print(image_metadata)
     return jsonify(image_metadata)
 
-@main.route("/api/images/<image_id>", methods=["GET"])
+""" @main.route("/api/images/<image_id>", methods=["GET"])
 def get_images(image_id):
     jackets = current_user.wardrobe.jackets
     images = [jacket.image_data for jacket in jackets]
@@ -139,7 +179,7 @@ def get_images(image_id):
     if id < len(images):
         image_bytes = images[id]
         image_io = io.BytesIO(image_bytes)
-        return send_file(image_io, mimetype=mimetypes[id])
+        return send_file(image_io, mimetype=mimetypes[id]) """
 
 # def upload():
 #     wardrobe = current_user.wardrobe 
