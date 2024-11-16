@@ -36,7 +36,7 @@ const Navbar = () => {
 		<nav className="navbar">
 			<ul className="navbar-nav">
 				<NavItem href="/" text="Home" />
-				{user ? 
+				{user && user !== -1 ? 
 					<>
 						<NavItem href="/wardrobe" text="Wardrobe" />
 						<NavItem text="Log out" onClick={handleLogout} />
