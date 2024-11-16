@@ -151,15 +151,12 @@ def get_all_images(item_type):
     id = request.args.get("id")
 
     if id:
-        print(id)
         id = int(id)
         if id >= len(images):
-            print("bad id")
             return jsonify({"success": False, "message": "Invalid image ID"})
         mimetypes = [item.image_mimetype for item in items]
         image_bytes = images[id]
         image_io = io.BytesIO(image_bytes)
-        print("send!")
         return send_file(image_io, mimetype = mimetypes[id])
 
     # Dynamically generate metadata for each image in the images dictionary

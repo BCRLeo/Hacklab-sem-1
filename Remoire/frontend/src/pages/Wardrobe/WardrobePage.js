@@ -31,25 +31,36 @@ const WardrobePage = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [isUserLoading, setIsUserLoading] = useState(true);
 
-    const getJackets = async () => {
+    const getImages = async (itemType, setImagesCallback) => {
         try {
-            const response = await fetch("/api/images/jacket", {
+            const response = await fetch(`/api/images/${itemType}`, {
                 method: "GET"
             });
-            
+
             if (response.ok) {
-                const data = await response.json()
-                setJackets(data);
+                const data = await response.json();
+                setImagesCallback(data);
             } else {
-                console.error('Failed to fetch image list');
+                console.error(`"Failed to fetch ${itemType} image list"`);
             }
         } catch (error) {
             console.error("Error: ", error);
-            setUploadStatus("An error occurred while uploading the file")
         } finally {
             setIsLoading(false);
         }
-    };
+    }
+
+    const getAllImages = async () => {
+        setIsLoading(true);
+        try {
+            await getImages("jacket", setJackets);
+            await getImages("shirt", setShirts);
+            await getImages("trousers", setTrousers);
+            await getImages("shoes", setShoes);
+        } catch (error) {
+            console.error("Error: ", error);
+        }
+    }
 
     useEffect(() => {
         if (user === null) {
@@ -60,7 +71,7 @@ const WardrobePage = () => {
         if (user === -1) {
             navigate("/login");
         }
-        getJackets();
+        getAllImages();
     }, [user, navigate, uploadStatus]);
 
     if (isUserLoading) {
@@ -121,9 +132,24 @@ const WardrobePage = () => {
                 ) : (
                     <Carousel id="carousel-jackets" images={jackets.map((image) => image.url)} />
                 )}
-                
-                <Carousel id="carousel-tops" images={images} />
-                <Carousel id="carousel-bottoms" images={images} />
+
+                {shirts.length === 0 ? (
+                    <p>No images available.</p>
+                ) : (
+                    <Carousel id="carousel-shirts" images={shirts.map((image) => image.url)} />
+                )}
+
+                {trousers.length === 0 ? (
+                    <p>No images available.</p>
+                ) : (
+                    <Carousel id="carousel-trousers" images={trousers.map((image) => image.url)} />
+                )}
+
+                {shoes.length === 0 ? (
+                    <p>No images available.</p>
+                ) : (
+                    <Carousel id="carousel-shoes" images={shoes.map((image) => image.url)} />
+                )}
             </div>
 
             <Popover label="Upload item">
