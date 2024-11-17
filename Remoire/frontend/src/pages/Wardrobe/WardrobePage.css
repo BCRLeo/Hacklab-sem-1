@@ -17,4 +17,13 @@
 
 #upload-status {
     margin: 1rem auto;
+    text-align: center;
+}
+
+button.button-upload {
+    cursor: pointer;
+}
+
+button.button-uploading {
+    cursor: wait;
 }

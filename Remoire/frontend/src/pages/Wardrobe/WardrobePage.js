@@ -114,7 +114,6 @@ function WardrobePage() {
             if (response.ok) {
                 setUploadStatus("File uploaded successfully");
                 event.target.reset();
-                setIsUploading(false);
             } else {
                 setUploadStatus("Failed to upload file");
             }
@@ -122,8 +121,7 @@ function WardrobePage() {
             console.error("Error: ", error);
             setUploadStatus("An error occurred while uploading the file");
         }
-
-        console.log(uploadStatus);
+        setIsUploading(false);
     };
 
     return (
@@ -168,9 +166,15 @@ function WardrobePage() {
                             <option value="shoe">Shoes</option>
                         </select>
                     </Field>
-                    <button type="submit">
-                        <span>Upload</span>
-                    </button>
+                    {!isUploading ?
+                        <button type="submit" className="button-upload">
+                            <span>Upload</span>
+                        </button>
+                    :
+                        <button type="button" className="button-uploading">
+                            <span>Uploading...</span>
+                        </button>
+                    }
                 </form>
                 <p id="upload-status">{uploadStatus}</p>
             </Popover>
