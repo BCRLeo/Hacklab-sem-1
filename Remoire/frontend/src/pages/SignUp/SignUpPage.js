@@ -5,10 +5,12 @@ import Field from "../../components/Field/Field";
 import Header from "../../components/Header/Header";
 
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { UserContext } from "../../UserContext";
 
 const SignUpPage = () => {
     const navigate = useNavigate();
+    const { user, setUser } = useContext(UserContext);
 
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
@@ -50,6 +52,7 @@ const SignUpPage = () => {
             const data = await response.json();
 
             if (response.ok && data.success) {
+                setUser(data.user);
                 navigate("/wardrobe");
             } else {
                 console.log("Signup failed: ", data.message);

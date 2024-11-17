@@ -12,8 +12,10 @@ export const UserProvider = ({ children }) => {
                 const response = await fetch('/api/check-login');
                 const data = await response.json();
 
-                if (data.logged_in) {
-                    setUser(data);
+                if (data.success) {
+                    setUser(data.user);
+                } else {
+                    setUser(-1);
                 }
             } catch (error) {
                 console.error('Error fetching login status:', error);

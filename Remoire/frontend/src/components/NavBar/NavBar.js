@@ -6,17 +6,48 @@ import Dropdown from '../Dropdown/Dropdown';
 import SearchBar from '../SearchBar/SearchBar';
 
 import { useContext } from "react";
+import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../../UserContext';
 
 const Navbar = () => {
+	const navigate = useNavigate();
 	const { user, setUser } = useContext(UserContext);
+
+	const handleLogout = async (event) => {
+		try {
+			const response = await fetch("/api/logout", {
+				method: "GET"
+			});
+
+			const data = await response.json();
+
+			if (response.ok && data.success) {
+				setUser(null);
+				navigate("/");
+			} else {
+				console.log("Logout failed: ", data.message);
+			}
+		} catch (error) {
+			console.error("Error during logout: ", error);
+		}
+	};
 
 	return (
 		<nav className="navbar">
 			<ul className="navbar-nav">
 				<NavItem href="/" text="Home" />
-				<NavItem href="/wardrobe" text="Wardrobe" />
-				{user ? <NavItem href="/logout" text="Log out" /> : <><NavItem href="/login" text="Log in" /> <NavItem href="/signup" text="Sign up" /></>}
+				{user && user !== -1 ? 
+					<>
+						<NavItem href="/wardrobe" text="Wardrobe" />
+						<NavItem text="Log out" onClick={handleLogout} />
+					</>
+					: 
+					<>
+						<NavItem href="/login" text="Wardrobe" />
+						<NavItem href="/login" text="Log in" />
+						<NavItem href="/signup" text="Sign up" />
+					</>
+				}
 				<NavItem>
 					<SearchBar></SearchBar>
 				</NavItem>

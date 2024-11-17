@@ -1,5 +1,6 @@
-from flask import Flask, Blueprint, current_app, render_template, redirect, request, url_for, jsonify
+from flask import Flask, Blueprint, current_app, render_template, redirect, request, url_for, jsonify, send_file
 from flask_login import LoginManager, login_required, current_user
+import io
 import os
 import app
 from . import ImageBackgroundRemoverV1
@@ -66,70 +67,96 @@ def upload():
         return jsonify({"success": False, "message": "No file part"}), 400
 
     file = request.files['file']
+    if not file:
+        return jsonify({"success": False, "message": "File could not be uploaded"}), 400
+    
     if file.filename == "":
         return jsonify({"success": False, "message": "No selected file"}), 400
+    print(request.form)
+    if "category" not in request.form:
+        return jsonify({"success": False, "message": "No category part"}), 400
     
-    if file:
-        # Secure the filename (though not strictly necessary since we're storing in DB)
-        filename = secure_filename(file.filename)
+    category = request.form["category"]
+    if not category:
+        return jsonify({"success": False, "message": "File could not be uploaded"}), 400
+
+    if category == "":
+        return jsonify({"success": False, "message": "No selected category"}), 400
+    
+    # Secure the filename (though not strictly necessary since we're storing in DB)
+    filename = secure_filename(file.filename)
                 
-        # Create a new Jacket instance associated with the user's wardrobe
-        new_jacket = models.Jacket(wardrobe_id=wardrobe.id)
+    # Create a new Jacket instance associated with the user's wardrobe
+    new_clothing = ""
+    match category:
+        case "jacket":
+            new_clothing = models.Jacket(wardrobe_id=wardrobe.id)
+        case "shirt":
+            new_clothing = models.Shirt(wardrobe_id=wardrobe.id)
+        case "trouser":
+            new_clothing = models.Trouser(wardrobe_id=wardrobe.id)
+        case "shoe":
+            new_clothing = models.Shoe(wardrobe_id=wardrobe.id)
+        case _:
+            return jsonify({"success": False, "message": "Invalid clothing category"}), 400
+    new_jacket = models.Jacket(wardrobe_id=wardrobe.id)
         
-        # Read the image data and get the MIME type
-        file_data = file.read()
-        file_data = ImageBackgroundRemoverV1.remove_background_file(file_data)
-        mimetype = file.mimetype
+    # Read the image data and get the MIME type
+    file_data = file.read()
+    file_data = ImageBackgroundRemoverV1.remove_background_file(file_data)
+    mimetype = file.mimetype
 
-        if not mimetype.startswith('image/'):
-            return jsonify({"success": False, "message": "Uploaded file is not an image"}), 400
+    if not mimetype.startswith('image/'):
+        return jsonify({"success": False, "message": "Uploaded file is not an image"}), 400
 
-        # Assign the image data and MIME type to the new jacket
-        new_jacket.image_data = file_data
-        new_jacket.image_mimetype = mimetype
+    # Assign the image data and MIME type to the new jacket
+    new_clothing.image_data = file_data
+    new_clothing.image_mimetype = mimetype
 
-        # Add and commit the new jacket to the database
-        db.session.add(new_jacket)
-        db.session.commit()
+     # Add and commit the new jacket to the database
+    db.session.add(new_clothing)
+    db.session.commit()
         
-        return jsonify({"success": True, "message": "File successfully uploaded"})
-        
-    return jsonify({"success": False, "message": "File could not be uploaded"}), 400
+    return jsonify({"success": True, "message": "File successfully uploaded"}), 200
 
-# def upload():
-#     wardrobe = current_user.wardrobe 
-#     if "file" not in request.files:
-#         return jsonify({"success": False, "message": "No file part"}), 400
+@main.route('/api/images/<item_type>', methods=['GET'])
+def get_all_images(item_type):
+    items = None
+    match item_type:
+        case "jacket":
+            items = current_user.wardrobe.jackets
+        case "shirt":
+            items = current_user.wardrobe.shirts
+        case "trousers":
+            items = current_user.wardrobe.trousers
+        case "shoes":
+            items = current_user.wardrobe.shoes
+        case _:
+            print("bad type")
+            return jsonify({"success": False, "message": "Invalid item type"})
 
-#     file = request.files['file']
-#     if file.filename == "":
-#         return jsonify({"success": False, "message": "No selected file"}), 400
-    
-#     if file:
-#         ####PASS FILE INTO USER WARDROBE, FOR NOW LET'S SAY ITS A JACKET
-#        ##INGORE THIS LINE current_user.wardrobe.Jacket ImageBackgroundRemoverV1.remove_background_file(file, "UPLOAD_FOLDER")
-#         return jsonify({"success": True, "message": "File successfully uploaded"})
-    
-#     return jsonify({"success": False, "message": "File could not be uploaded"})
+    images = [item.image_data for item in items]
 
-""" @main.route('/upload', methods=['GET', 'POST'])
-def upload():
-    if request.method == 'POST':
-        file = request.files['file']
-        if file:
-            file.save(os.path.join(current_app.config['UPLOAD_FOLDER'], file.filename))
-            return redirect(url_for('main.wardrobe'))  # Redirect to wardrobe page
-    return render_template('upload.html') """
+    id = request.args.get("id")
+
+    if id:
+        id = int(id)
+        if id >= len(images):
+            return jsonify({"success": False, "message": "Invalid image ID"})
+        mimetypes = [item.image_mimetype for item in items]
+        image_bytes = images[id]
+        image_io = io.BytesIO(image_bytes)
+        return send_file(image_io, mimetype = mimetypes[id])
+
+    # Dynamically generate metadata for each image in the images dictionary
+    image_metadata = [
+        {"id": idx, "url": f"/api/images/{item_type}?id={idx}"}
+        for idx, img in enumerate(images)
+    ]
+    print(image_metadata)
+    return jsonify(image_metadata)
 
 @main.route("/FeedPage", methods=['POST'])
 def feedpage():
     print("lets gooo")
     return '', 200  # Return HTTP 200 OK with an empty response
-
-""" @main.route('/wardrobe')
-def wardrobe():
-    return render_template('wardrobe.html')
-
-@main.route('/signup')
-def signup():
-    return render_template('signup.html') """

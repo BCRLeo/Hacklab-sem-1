@@ -48,17 +48,12 @@ to build the static files from the React code.
 ## Step 2 - copy static files 
 Run the following command
 ```
-cp build/index.html ../app/templates/ && cp -r build/static/* ../app/static/
+cp build/index.html ../app/templates/ && rm -rf ../app/static/* && cp -r build/static/* ../app/static/
 ```
-to copy `build/index.html` to `/app/templates` and the contents inside the `/frontend/build/static` folder to the `/app/static` directory.
+to copy `build/index.html` to `/app/templates`, and replacing the contents of the `/app/static` directory with the `/frontend/build/static` directory. If prompted to confirm, type `y`.
 
 ## Step 3 - running the full web app
-To run the web app locally, while still in `/frontend`, run
-```
-npm start
-```
-
-Then, in a new terminal, enter `cd Remoire` and run
+In a new terminal, enter `cd Remoire` and run
 ```
 python run.py
 ```
