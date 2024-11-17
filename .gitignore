@@ -3,6 +3,7 @@
 
 # Python compiled files
 __pycache__/
+Remoire/app/__pycache__
 *.pyc
 *.pyo
 *.pyd
