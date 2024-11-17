@@ -30,6 +30,7 @@ function WardrobePage() {
 
     const [isLoading, setIsLoading] = useState(true);
     const [isUserLoading, setIsUserLoading] = useState(true);
+    const [isUploading, setIsUploading] = useState(false);
 
     const getImages = async (itemType, setImagesCallback) => {
         try {
@@ -89,6 +90,7 @@ function WardrobePage() {
     };
 
     const handleSubmit = async (event) => {
+        setIsUploading(true);
         event.preventDefault();
         if (!file) {
             setUploadStatus("Please select a file");
@@ -103,6 +105,7 @@ function WardrobePage() {
         }
 
         try {
+            setUploadStatus("Uploading file");
             const response = await fetch("/api/upload", {
                 method: "POST",
                 body: formData
@@ -111,6 +114,7 @@ function WardrobePage() {
             if (response.ok) {
                 setUploadStatus("File uploaded successfully");
                 event.target.reset();
+                setIsUploading(false);
             } else {
                 setUploadStatus("Failed to upload file");
             }
@@ -168,6 +172,7 @@ function WardrobePage() {
                         <span>Upload</span>
                     </button>
                 </form>
+                <p id="upload-status">{uploadStatus}</p>
             </Popover>
         </>
     );

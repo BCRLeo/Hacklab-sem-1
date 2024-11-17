@@ -37,11 +37,17 @@ def check_login():
         return jsonify({
             "success": True,
             "user": {
+                "isLoggedIn": True,
                 "username": current_user.UserName,
                 "email": current_user.email
             }
             }), 200
-    return jsonify({"success": False})
+    return jsonify({
+        "success": False,
+        "user": {
+            "isLoggedIn": False
+        }
+        })
 
 @auth.route('/api/login', methods=['POST'])
 def login():
