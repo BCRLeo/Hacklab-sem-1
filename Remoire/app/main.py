@@ -62,6 +62,9 @@ def feed_page():
 
 @main.route("/api/upload", methods=["POST"])
 def upload():
+    if not current_user.is_authenticated:
+        return jsonify({"success": False, "message": "User not logged in"}), 401
+
     wardrobe = current_user.wardrobe 
     if "file" not in request.files:
         return jsonify({"success": False, "message": "No file part"}), 400
@@ -121,6 +124,9 @@ def upload():
 
 @main.route('/api/images/<item_type>', methods=['GET'])
 def get_all_images(item_type):
+    if not current_user.is_authenticated:
+        return jsonify({"success": False, "message": "User not logged in"}), 401
+
     items = None
     match item_type:
         case "jacket":
@@ -133,7 +139,7 @@ def get_all_images(item_type):
             items = current_user.wardrobe.shoes
         case _:
             print("bad type")
-            return jsonify({"success": False, "message": "Invalid item type"})
+            return jsonify({"success": False, "message": "Invalid item type"}), 400
 
     images = [item.image_data for item in items]
 
@@ -142,7 +148,7 @@ def get_all_images(item_type):
     if id:
         id = int(id)
         if id >= len(images):
-            return jsonify({"success": False, "message": "Invalid image ID"})
+            return jsonify({"success": False, "message": "Invalid image ID"}), 404
         mimetypes = [item.image_mimetype for item in items]
         image_bytes = images[id]
         image_io = io.BytesIO(image_bytes)
@@ -156,16 +162,47 @@ def get_all_images(item_type):
     print(image_metadata)
     return jsonify(image_metadata)
 
-@main.route("/FeedPage", methods=['POST'])
-def feedpage():
-    print("lets gooo")
-    return '', 200  # Return HTTP 200 OK with an empty response
+@main.route("/api/delete-item/<item_type>", methods=["DELETE"])
+def delete_item(item_type):
+    if not current_user.is_authenticated:
+        return jsonify({"success": False, "message": "User not logged in"}), 401
+    
+    items = None
+    match item_type:
+        case "jacket":
+            items = current_user.wardrobe.jackets
+        case "shirt":
+            items = current_user.wardrobe.shirts
+        case "trousers":
+            items = current_user.wardrobe.trousers
+        case "shoes":
+            items = current_user.wardrobe.shoes
+        case _:
+            return jsonify({"success": False, "message": "Invalid item type"}), 400
+        
+    id = request.args.get("id")
+    if not id:
+        return jsonify({"success": False, "message": "No item ID provided"}), 400
+    
+    if id >= len(items):
+            return jsonify({"success": False, "message": "Invalid item ID"}), 404
+    
+    item = items.query.get(id)
+    if not item:
+        return jsonify({"success": False, "message": "Item not found"}), 404
+    
+    if item.wardrobe.user_id == current_user.id:
+        db.session.delete(item)
+        db.session.commit()
+        return jsonify({"success": True, "message": f"{item_type.capitalize()} deleted successfully"}), 200
+    
+    return jsonify({"success": False, "message": "You do not have permission to delete this item"}), 403
 
 
 
 @main.route('/delete_item/<item_type>/<int:item_id>', methods=['POST'])
 @login_required
-def delete_item(item_type, item_id):
+def delete_itemm(item_type, item_id):
     # Map item types to their corresponding models
     items = None
     match item_type:
