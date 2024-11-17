@@ -99,7 +99,7 @@ def upload():
             new_clothing = models.Shoe(wardrobe_id=wardrobe.id)
         case _:
             return jsonify({"success": False, "message": "Invalid clothing category"}), 400
-    new_jacket = models.Jacket(wardrobe_id=wardrobe.id)
+
         
     # Read the image data and get the MIME type
     file_data = file.read()
@@ -160,3 +160,43 @@ def get_all_images(item_type):
 def feedpage():
     print("lets gooo")
     return '', 200  # Return HTTP 200 OK with an empty response
+
+
+
+@main.route('/delete_item/<item_type>/<int:item_id>', methods=['POST'])
+@login_required
+def delete_item(item_type, item_id):
+    # Map item types to their corresponding models
+    items = None
+    match item_type:
+        case "jacket":
+            items = current_user.wardrobe.jackets
+        case "shirt":
+            items = current_user.wardrobe.shirts
+        case "trousers":
+            items = current_user.wardrobe.trousers
+        case "shoes":
+            items = current_user.wardrobe.shoes
+        case _:
+            print("bad type")
+            return jsonify({"success": False, "message": "Invalid item type"})
+
+    # Get the item class based on the item_type
+    
+
+    if not items:
+        print('Invalid item type.')
+        return redirect(url_for('views.wardrobe'))
+
+    # Query the item by ID
+    item = items.query.get(item_id)
+
+    # Check if the item exists and belongs to the current user's wardrobe
+    if item and item.wardrobe.user_id == current_user.id:
+        db.session.delete(item)
+        db.session.commit()
+        print(f'{item_type.capitalize()} deleted successfully.')
+    else:
+        print('Item not found or you do not have permission to delete it.')
+
+    return redirect(url_for('views.wardrobe'))
