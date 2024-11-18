@@ -10,13 +10,7 @@ import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../UserContext";
 
-const importAllImages = (requireContext) => {
-    return requireContext.keys().map(requireContext);
-};
-
-const images = importAllImages(require.context('../../assets/images', false, /\.(png|jpe?g|svg|webp)$/));
-
-function WardrobePage() {
+export default function WardrobePage() {
     const navigate = useNavigate();
     const { user, setUser } = useContext(UserContext);
     const [file, setFile] = useState(null);
@@ -81,6 +75,33 @@ function WardrobePage() {
         );
     }
 
+    const handleClothingClick = async (event) => {
+        if (event.target.className !== "carousel-image") {
+            return;
+        }
+
+        const url = new URL(event.target.src);
+        const path = url.pathname;
+        const query = url.search;
+        const newPath = path.replace("/api/images/", "/api/delete-item/") + query;
+        console.log(newPath);
+
+        try {
+            const response = await fetch(newPath, {
+                method: "DELETE"
+            });
+
+            const data = await response.json();
+            if (response.ok && data.success) {
+                console.log(`${newPath} successfully deleted`);
+                return;
+            }
+            console.log("Image deletion failed: ", data.message);
+        } catch (error) {
+            console.error("Error: ", error);
+        }
+    };
+
     const handleFileChange = (event) => {
         setFile(event.target.files[0]);
     };
@@ -128,7 +149,7 @@ function WardrobePage() {
         <>
             <Header />
             {user ? <h1>{user.username}'s wardobe</h1> : <h1>Wardrobe</h1>}
-            <div className="wardrobe-carousel-container">
+            <div className="wardrobe-carousel-container" onClick={handleClothingClick}>
                 {jackets.length === 0 ? (
                     <p>No images available.</p>
                 ) : (
@@ -178,8 +199,8 @@ function WardrobePage() {
                 </form>
                 <p id="upload-status">{uploadStatus}</p>
             </Popover>
+
+            <button><span>Edit wardrobe</span></button>
         </>
     );
 };
-
-export default WardrobePage;

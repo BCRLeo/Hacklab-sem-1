@@ -142,22 +142,23 @@ def get_all_images(item_type):
             return jsonify({"success": False, "message": "Invalid item type"}), 400
 
     images = [item.image_data for item in items]
+    ids = [item.id for item in items]
 
     id = request.args.get("id")
-
     if id:
         id = int(id)
-        if id >= len(images):
+        if id not in ids:
             return jsonify({"success": False, "message": "Invalid image ID"}), 404
+        
+        index = ids.index(id)
         mimetypes = [item.image_mimetype for item in items]
-        image_bytes = images[id]
+        image_bytes = images[index]
         image_io = io.BytesIO(image_bytes)
-        return send_file(image_io, mimetype = mimetypes[id])
+        return send_file(image_io, mimetype = mimetypes[index])
 
-    # Dynamically generate metadata for each image in the images dictionary
     image_metadata = [
         {"id": idx, "url": f"/api/images/{item_type}?id={idx}"}
-        for idx, img in enumerate(images)
+        for idx in ids
     ]
     print(image_metadata)
     return jsonify(image_metadata)
@@ -183,21 +184,23 @@ def delete_item(item_type):
     id = request.args.get("id")
     if not id:
         return jsonify({"success": False, "message": "No item ID provided"}), 400
-    
-    if id >= len(items):
+    id = int(id)
+
+    ids = [item.id for item in items]
+
+    if id not in ids:
             return jsonify({"success": False, "message": "Invalid item ID"}), 404
     
-    item = items.query.get(id)
-    if not item:
-        return jsonify({"success": False, "message": "Item not found"}), 404
-    
-    if item.wardrobe.user_id == current_user.id:
-        db.session.delete(item)
-        db.session.commit()
-        return jsonify({"success": True, "message": f"{item_type.capitalize()} deleted successfully"}), 200
+    for element in items:
+        print(element.id, id)
+        if element.id != id:
+            continue
+        if element.wardrobe.user_id == current_user.id:
+            db.session.delete(element)
+            db.session.commit()
+            return jsonify({"success": True, "message": f"{item_type.capitalize()} deleted successfully"}), 200
     
     return jsonify({"success": False, "message": "You do not have permission to delete this item"}), 403
-
 
 
 @main.route('/delete_item/<item_type>/<int:item_id>', methods=['POST'])
