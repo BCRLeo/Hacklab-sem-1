@@ -124,6 +124,11 @@ def upload():
 
 @main.route('/api/images/<item_type>', methods=['GET'])
 def get_all_images(item_type):
+    user_id = request.args.get("user-id")
+    if user_id:
+        user_id = int(user_id)
+        
+
     if not current_user.is_authenticated:
         return jsonify({"success": False, "message": "User not logged in"}), 401
 

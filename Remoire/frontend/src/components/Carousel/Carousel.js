@@ -8,6 +8,7 @@ import { useEffect, useRef, useState } from "react";
 
 const Carousel = ({ images, children }) => {
 	const [currentIndex, setCurrentIndex] = useState(0);
+	const [visibleImages, setVisibleImages] = useState([]);
 	const carouselRef = useRef(null);
 	const [carouselSize, setCarouselSize] = useState({ width: 0, height: 0 });
 	const [imageSize, setImageSize] = useState({ width: 0, height: 0 });
@@ -41,6 +42,16 @@ const Carousel = ({ images, children }) => {
 		};
 	}, []);
 
+	useEffect(() => {
+		const newVisibleImages = [];
+		for (let i = 0; i < visibleImageCount; i++) {
+			let index = (currentIndex + i + images.length) % images.length;
+			newVisibleImages.push(<img className="carousel-image" key={i} src={images[index]} alt={`slide ${index + 1}`} />);
+		}
+		newVisibleImages.forEach((element) => console.log(element.key));
+		setVisibleImages(newVisibleImages);
+	}, [currentIndex, visibleImageCount, images]);
+
 	const handleClickPrevious = () => {
 		setCurrentIndex((currentIndex) => (currentIndex - 1 + images.length) % images.length);
 	};
@@ -48,24 +59,6 @@ const Carousel = ({ images, children }) => {
 	const handleClickNext = () => {
 		setCurrentIndex((currentIndex) => (currentIndex + 1) % images.length);
 	};
-
-	let visibleRange = 2;
-	// width / (height / 5 * 4)
-	/* if (visibleRange * 2 + 1 > images.length) {
-		visibleRange = Math.min(Math.floor(images.length / 2) - 1, 0);
-	} */
-	// FIX FIX FIX
-
-	let visibleImages = [];
-	for (let i = 0; i < visibleImageCount; i++) {
-		let index = (currentIndex + i + images.length) % images.length;
-		visibleImages.push(<img className="carousel-image" key={index} src={images[index]} alt={`slide ${index + 1}`} />);
-	}
-	/* for (let i = -1 * visibleRange; i <= visibleRange; i++) {
-		let index = (currentIndex + i + images.length) % images.length;
-		visibleImages.push(<img className="carousel-image" key={index} src={images[index]} alt={`slide ${index + 1}`} />);
-		console.log(`i = ${i}, index = ${index}`);
-	} */
 
 	if (images && images.length > 0) {
 		return (
