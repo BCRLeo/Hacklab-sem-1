@@ -3,6 +3,7 @@ from flask_login import LoginManager, login_required, current_user
 import io
 import os
 import app
+from .models import User
 from . import ImageBackgroundRemoverV1
 from . import db
 from . import models
@@ -240,3 +241,31 @@ def delete_itemm(item_type, item_id):
         print('Item not found or you do not have permission to delete it.')
 
     return redirect(url_for('views.wardrobe'))
+
+@main.route("/search", methods=["GET", "POST"])
+def search_users():
+    """
+    Search users and render the results in the same HTML page.
+    """
+    if request.method == 'POST':
+        query = request.form.get('query', '').strip()  # Get query from form input
+
+        if len(query) < 2:
+            return render_template('search.html', results=[], message="Query must be at least 2 characters long.")
+
+        # Perform the search in the database
+        results = User.query.filter(
+            (User.UserName.ilike(f"%{query}%")) |  # Search by username
+            (User.email.ilike(f"%{query}%"))       # Search by email
+        ).all()
+
+        return render_template('search.html', results=results, message=None)
+
+    # Default GET request (renders search page with no results)
+    return render_template('search.html', results=None, message=None)
+
+
+@main.route('/view_wardrobe/<item_type>', methods=['GET'])
+def view_wardrobe(item_type):
+
+    pass
