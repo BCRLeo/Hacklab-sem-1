@@ -102,7 +102,7 @@ def upload():
             new_clothing = models.Shoe(wardrobe_id=wardrobe.id)
         case _:
             return jsonify({"success": False, "message": "Invalid clothing category"}), 400
-
+    
         
     # Read the image data and get the MIME type
     file_data = file.read()
