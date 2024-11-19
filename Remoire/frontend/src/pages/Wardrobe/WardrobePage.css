@@ -14,3 +14,16 @@
     -ms-overflow-style: none; /* hide scroll bar for Microsoft browsers*/
     scrollbar-width: none; /* hide scroll bar for Gecko-based browsers */
 }
+
+#upload-status {
+    margin: 1rem auto;
+    text-align: center;
+}
+
+button.button-upload {
+    cursor: pointer;
+}
+
+button.button-uploading {
+    cursor: wait;
+}

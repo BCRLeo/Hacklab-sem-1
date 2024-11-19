@@ -36,6 +36,8 @@ const Carousel = ({ images, children }) => {
 
 	return (
 		<div className="carousel">
+			<CarouselButton direction="left" onClick={handleClickPrevious} iconPath={IconArrowLeft} />
+			<CarouselButton direction="right" onClick={handleClickNext} iconPath={IconArrowRight} />
 			{children}
 		</div>
 	);

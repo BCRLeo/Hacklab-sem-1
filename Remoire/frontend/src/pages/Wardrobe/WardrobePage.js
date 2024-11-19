@@ -10,13 +10,7 @@ import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../UserContext";
 
-const importAllImages = (requireContext) => {
-    return requireContext.keys().map(requireContext);
-};
-
-const images = importAllImages(require.context('../../assets/images', false, /\.(png|jpe?g|svg|webp)$/));
-
-function WardrobePage() {
+export default function WardrobePage() {
     const navigate = useNavigate();
     const { user, setUser } = useContext(UserContext);
     const [file, setFile] = useState(null);
@@ -30,6 +24,7 @@ function WardrobePage() {
 
     const [isLoading, setIsLoading] = useState(true);
     const [isUserLoading, setIsUserLoading] = useState(true);
+    const [isUploading, setIsUploading] = useState(false);
 
     const getImages = async (itemType, setImagesCallback) => {
         try {
@@ -80,6 +75,33 @@ function WardrobePage() {
         );
     }
 
+    const handleClothingClick = async (event) => {
+        if (event.target.className !== "carousel-image") {
+            return;
+        }
+
+        const url = new URL(event.target.src);
+        const path = url.pathname;
+        const query = url.search;
+        const newPath = path.replace("/api/images/", "/api/delete-item/") + query;
+        console.log(newPath);
+
+        try {
+            const response = await fetch(newPath, {
+                method: "DELETE"
+            });
+
+            const data = await response.json();
+            if (response.ok && data.success) {
+                console.log(`${newPath} successfully deleted`);
+                return;
+            }
+            console.log("Image deletion failed: ", data.message);
+        } catch (error) {
+            console.error("Error: ", error);
+        }
+    };
+
     const handleFileChange = (event) => {
         setFile(event.target.files[0]);
     };
@@ -89,6 +111,7 @@ function WardrobePage() {
     };
 
     const handleSubmit = async (event) => {
+        setIsUploading(true);
         event.preventDefault();
         if (!file) {
             setUploadStatus("Please select a file");
@@ -103,6 +126,7 @@ function WardrobePage() {
         }
 
         try {
+            setUploadStatus("Uploading file");
             const response = await fetch("/api/upload", {
                 method: "POST",
                 body: formData
@@ -118,15 +142,14 @@ function WardrobePage() {
             console.error("Error: ", error);
             setUploadStatus("An error occurred while uploading the file");
         }
-
-        console.log(uploadStatus);
+        setIsUploading(false);
     };
 
     return (
         <>
             <Header />
             {user ? <h1>{user.username}'s wardobe</h1> : <h1>Wardrobe</h1>}
-            <div className="wardrobe-carousel-container">
+            <div className="wardrobe-carousel-container" onClick={handleClothingClick}>
                 {jackets.length === 0 ? (
                     <p>No images available.</p>
                 ) : (
@@ -164,13 +187,20 @@ function WardrobePage() {
                             <option value="shoe">Shoes</option>
                         </select>
                     </Field>
-                    <button type="submit">
-                        <span>Upload</span>
-                    </button>
+                    {!isUploading ?
+                        <button type="submit" className="button-upload">
+                            <span>Upload</span>
+                        </button>
+                    :
+                        <button type="button" className="button-uploading">
+                            <span>Uploading...</span>
+                        </button>
+                    }
                 </form>
+                <p id="upload-status">{uploadStatus}</p>
             </Popover>
+
+            <button><span>Edit wardrobe</span></button>
         </>
     );
 };
-
-export default WardrobePage;
