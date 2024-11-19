@@ -1,20 +1,17 @@
-.carousel {
-    display: flex;
-
+.wardrobe-carousel-container div.carousel {
     width: 70dvw;
     height: 35dvh;
-
-    margin-left: auto;
-    margin-right: auto;
-    gap: 20px;
-    
-    overflow-x: hidden;
-    scroll-snap-type: x mandatory;
-    
-    -ms-overflow-style: none; /* hide scroll bar for Microsoft browsers*/
-    scrollbar-width: none; /* hide scroll bar for Gecko-based browsers */
 }
 
 #upload-status {
     margin: 1rem auto;
+    text-align: center;
+}
+
+button.button-upload {
+    cursor: pointer;
+}
+
+button.button-uploading {
+    cursor: wait;
 }

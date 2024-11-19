@@ -1,5 +1,15 @@
 .carousel {
+    display: flex;
     position: relative;
+
+    margin-left: auto;
+    margin-right: auto;
+
+    overflow-x: hidden;
+    scroll-snap-type: x mandatory;
+    
+    -ms-overflow-style: none; /* hide scroll bar for Microsoft browsers*/
+    scrollbar-width: none; /* hide scroll bar for Gecko-based browsers */
 }
 
 .carousel-image {
