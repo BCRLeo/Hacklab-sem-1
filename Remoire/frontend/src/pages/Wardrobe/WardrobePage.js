@@ -26,6 +26,8 @@ export default function WardrobePage() {
     const [isUserLoading, setIsUserLoading] = useState(true);
     const [isUploading, setIsUploading] = useState(false);
 
+    const [status, setStatus] = useState("");
+
     const getImages = async (itemType, setImagesCallback) => {
         try {
             const response = await fetch(`/api/images/${itemType}`, {
@@ -67,7 +69,7 @@ export default function WardrobePage() {
             navigate("/login");
         }
         getAllImages();
-    }, [user, navigate, uploadStatus]);
+    }, [user, uploadStatus]);
 
     if (isUserLoading) {
         return (
