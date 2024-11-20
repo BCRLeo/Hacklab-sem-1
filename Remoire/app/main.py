@@ -245,3 +245,15 @@ def delete_itemm(item_type, item_id):
         print('Item not found or you do not have permission to delete it.')
 
     return redirect(url_for('views.wardrobe'))
+
+
+##this is just a quick function to return the favorited items, chnage it as you need
+# @app.route('/wardrobe/favorites')
+# def favorite_items():
+#     favorite_jackets = current_user.wardrobe.get_favorite_jackets()
+#     favorite_shirts = current_user.wardrobe.get_favorite_shirts()
+#     favorite_trousers = current_user.wardrobe.get_favorite_trousers()
+#     favorite_shoes = current_user.wardrobe.get_favorite_shoes()
+#     favorite_outfits = current_user.get_favorite_outfits()
+#     return render_template('favorites.html', jackets=favorite_jackets, shirts=favorite_shirts,
+#                            trousers=favorite_trousers, shoes=favorite_shoes, outfits=favorite_outfits)

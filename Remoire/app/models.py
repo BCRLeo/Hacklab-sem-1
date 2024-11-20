@@ -39,6 +39,12 @@ class Outfit(db.Model):
     __tablename__ = 'outfit'
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    favorite = db.Column(
+        db.Boolean,
+        nullable=False,
+        default=False,
+        server_default=text('false')
+    )
 
     # Relationships
     user = db.relationship('User', back_populates='outfits')
@@ -67,6 +73,13 @@ class Outfit(db.Model):
         db.session.add(outfit)
         db.session.commit()
         return outfit
+    def mark_as_favorite(self):
+        self.favorite = True
+        db.session.commit()
+
+    def unmark_as_favorite(self):
+        self.favorite = False
+        db.session.commit()
 
 class Like(db.Model):
     __tablename__ = 'like'
@@ -99,6 +112,18 @@ class Wardrobe(db.Model):
     trousers = db.relationship('Trouser', back_populates='wardrobe', lazy=True)
     shoes = db.relationship('Shoe', back_populates='wardrobe', lazy=True)
 
+    def get_favorite_jackets(self):
+        return [jacket for jacket in self.jackets if jacket.favorite]
+
+    def get_favorite_shirts(self):
+        return [shirt for shirt in self.shirts if shirt.favorite]
+
+    def get_favorite_trousers(self):
+        return [trouser for trouser in self.trousers if trouser.favorite]
+
+    def get_favorite_shoes(self):
+        return [shoe for shoe in self.shoes if shoe.favorite]
+
 # User model
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
@@ -108,7 +133,7 @@ class User(db.Model, UserMixin):
     birthday = db.Column(db.Date, nullable=False)
     CreationDate = db.Column(db.Date, nullable=False)
     PhoneNumber = db.Column(db.String(20), nullable=True, unique = True)
-    
+
     # Premium field with default value set to False
     premium = db.Column(
         db.Boolean,
@@ -134,6 +159,9 @@ class User(db.Model, UserMixin):
     posts = db.relationship('Post', back_populates='author', lazy='dynamic')
     likes = db.relationship('Like', back_populates='user', lazy='dynamic')
     outfits = db.relationship('Outfit', back_populates='user')
+
+    def get_favorite_outfits(self):
+        return [outfit for outfit in self.outfits if outfit.favorite]
 
     # Self-referential followers relationship
     followed = db.relationship(
@@ -208,7 +236,23 @@ class Jacket(db.Model):
     image_data = db.Column(db.LargeBinary, nullable=True)
     image_mimetype = db.Column(db.String(255), nullable=True)
 
+    favorite = db.Column(
+        db.Boolean,
+        nullable=False,
+        default=False,
+        server_default=text('false')  # Ensures database-level default
+    )
+
     wardrobe = db.relationship('Wardrobe', back_populates='jackets')
+
+    # Methods to toggle favorite status
+    def mark_as_favorite(self):
+        self.favorite = True
+        db.session.commit()
+
+    def unmark_as_favorite(self):
+        self.favorite = False
+        db.session.commit()
 
 # Shirt model
 class Shirt(db.Model):
@@ -218,7 +262,23 @@ class Shirt(db.Model):
     image_data = db.Column(db.LargeBinary, nullable=True)
     image_mimetype = db.Column(db.String(255), nullable=True)
 
-    wardrobe = db.relationship('Wardrobe', back_populates='shirts')
+    favorite = db.Column(
+        db.Boolean,
+        nullable=False,
+        default=False,
+        server_default=text('false')  # Ensures database-level default
+    )
+
+    wardrobe = db.relationship('Wardrobe', back_populates='jackets')
+
+    # Methods to toggle favorite status
+    def mark_as_favorite(self):
+        self.favorite = True
+        db.session.commit()
+
+    def unmark_as_favorite(self):
+        self.favorite = False
+        db.session.commit()
 
 # Trouser model
 class Trouser(db.Model):
@@ -228,7 +288,23 @@ class Trouser(db.Model):
     image_data = db.Column(db.LargeBinary, nullable=True)
     image_mimetype = db.Column(db.String(255), nullable=True)
 
-    wardrobe = db.relationship('Wardrobe', back_populates='trousers')
+    favorite = db.Column(
+        db.Boolean,
+        nullable=False,
+        default=False,
+        server_default=text('false')  # Ensures database-level default
+    )
+
+    wardrobe = db.relationship('Wardrobe', back_populates='jackets')
+
+    # Methods to toggle favorite status
+    def mark_as_favorite(self):
+        self.favorite = True
+        db.session.commit()
+
+    def unmark_as_favorite(self):
+        self.favorite = False
+        db.session.commit()
 
 # Shoe model
 class Shoe(db.Model):
@@ -238,4 +314,20 @@ class Shoe(db.Model):
     image_data = db.Column(db.LargeBinary, nullable=True)
     image_mimetype = db.Column(db.String(255), nullable=True)
 
-    wardrobe = db.relationship('Wardrobe', back_populates='shoes')
+    favorite = db.Column(
+        db.Boolean,
+        nullable=False,
+        default=False,
+        server_default=text('false')  # Ensures database-level default
+    )
+
+    wardrobe = db.relationship('Wardrobe', back_populates='jackets')
+
+    # Methods to toggle favorite status
+    def mark_as_favorite(self):
+        self.favorite = True
+        db.session.commit()
+
+    def unmark_as_favorite(self):
+        self.favorite = False
+        db.session.commit()
