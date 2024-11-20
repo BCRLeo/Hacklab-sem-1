@@ -25,6 +25,7 @@ export default function WardrobePage() {
     const [isLoading, setIsLoading] = useState(true);
     const [isUserLoading, setIsUserLoading] = useState(true);
     const [isUploading, setIsUploading] = useState(false);
+    const [isPendingUpdate, setIsPendingUpdate] = useState(false);
 
     const [status, setStatus] = useState("");
 
@@ -69,7 +70,8 @@ export default function WardrobePage() {
             navigate("/login");
         }
         getAllImages();
-    }, [user, uploadStatus]);
+        setIsPendingUpdate(false);
+    }, [user, uploadStatus, isPendingUpdate]);
 
     if (isUserLoading) {
         return (
@@ -96,6 +98,7 @@ export default function WardrobePage() {
             const data = await response.json();
             if (response.ok && data.success) {
                 console.log(`${newPath} successfully deleted`);
+                setIsPendingUpdate(true);
                 return;
             }
             console.log("Image deletion failed: ", data.message);
