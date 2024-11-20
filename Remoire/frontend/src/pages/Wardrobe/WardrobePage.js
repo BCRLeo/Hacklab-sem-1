@@ -25,6 +25,7 @@ export default function WardrobePage() {
     const [isLoading, setIsLoading] = useState(true);
     const [isUserLoading, setIsUserLoading] = useState(true);
     const [isUploading, setIsUploading] = useState(false);
+    const [isPendingUpdate, setIsPendingUpdate] = useState(false);
 
     const [status, setStatus] = useState("");
 
@@ -69,7 +70,8 @@ export default function WardrobePage() {
             navigate("/login");
         }
         getAllImages();
-    }, [user, uploadStatus]);
+        setIsPendingUpdate(false);
+    }, [user, uploadStatus, isPendingUpdate]);
 
     if (isUserLoading) {
         return (
@@ -96,6 +98,7 @@ export default function WardrobePage() {
             const data = await response.json();
             if (response.ok && data.success) {
                 console.log(`${newPath} successfully deleted`);
+                setIsPendingUpdate(true);
                 return;
             }
             console.log("Image deletion failed: ", data.message);
@@ -153,25 +156,25 @@ export default function WardrobePage() {
             {user ? <h1>{user.username}'s wardobe</h1> : <h1>Wardrobe</h1>}
             <div className="wardrobe-carousel-container" onClick={handleClothingClick}>
                 {jackets.length === 0 ? (
-                    <p>No images available.</p>
+                    <p>No jackets available.</p>
                 ) : (
                     <Carousel id="carousel-jackets" images={jackets.map((image) => image.url)} />
                 )}
 
                 {shirts.length === 0 ? (
-                    <p>No images available.</p>
+                    <p>No shirts available.</p>
                 ) : (
                     <Carousel id="carousel-shirts" images={shirts.map((image) => image.url)} />
                 )}
 
                 {trousers.length === 0 ? (
-                    <p>No images available.</p>
+                    <p>No trousers available.</p>
                 ) : (
                     <Carousel id="carousel-trousers" images={trousers.map((image) => image.url)} />
                 )}
 
                 {shoes.length === 0 ? (
-                    <p>No images available.</p>
+                    <p>No shoes available.</p>
                 ) : (
                     <Carousel id="carousel-shoes" images={shoes.map((image) => image.url)} />
                 )}
