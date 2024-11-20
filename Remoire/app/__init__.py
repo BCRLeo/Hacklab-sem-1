@@ -2,9 +2,12 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 import os
+from flask_migrate import Migrate
 # Initialize extensions
 db = SQLAlchemy()
 login_manager = LoginManager()
+migrate = Migrate()
+
 
 def create_app():
     app = Flask(__name__)
@@ -24,6 +27,9 @@ def create_app():
     app.config['MAIL_USERNAME'] = 'your-email@gmail.com'  # Your email
     app.config['MAIL_PASSWORD'] = 'your-email-password'  # Your email password or app password
     app.config['MAIL_DEFAULT_SENDER'] = 'your-email@gmail.com'
+
+    login_manager.init_app(app)
+    migrate.init_app(app, db)
 
     #config upload folder
     app.config['UPLOAD_FOLDER'] = 'uploads'  # Folder to save uploaded files

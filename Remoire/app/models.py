@@ -107,8 +107,22 @@ class User(db.Model, UserMixin):
     UserName = db.Column(db.String(150))
     birthday = db.Column(db.Date, nullable=False)
     CreationDate = db.Column(db.Date, nullable=False)
+    PhoneNumber = db.Column(db.String(20), nullable=True, unique = True)
+    
     # Premium field with default value set to False
     premium = db.Column(
+        db.Boolean,
+        nullable=False,
+        default=False,
+        server_default=text('false')  # Ensures database-level default
+    )
+    # Define unique constraints with explicit names THIS IS VERY IMPORTANT FOR FUTURE MIGRATIONS, ADD THIS WHEN ADDING VALUES WITH CONSTRAINTS
+    __table_args__ = (
+        db.UniqueConstraint('PhoneNumber', name='uq_user_phone_number'),
+    )
+
+    # New is_public boolean field set to False by default
+    IsPublic = db.Column(
         db.Boolean,
         nullable=False,
         default=False,
@@ -175,6 +189,16 @@ class User(db.Model, UserMixin):
 
     def has_liked_post(self, post):
         return Like.query.filter_by(user_id=self.id, post_id=post.id).first() is not None
+    
+    def toggle_is_public(self):
+        self.IsPublic = not self.IsPublic
+        db.session.commit()
+        
+
+    def set_phone_number(self, phone_number):
+        self.phone_number = phone_number
+        db.session.commit()
+        
 
 # Jacket model
 class Jacket(db.Model):
