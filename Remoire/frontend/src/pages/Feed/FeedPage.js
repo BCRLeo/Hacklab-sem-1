@@ -11,22 +11,41 @@ import Gracie from "../../assets/images/gracie.jpeg";
 import Header from "../../components/Header/Header";
 import Post from "../../components/Post/Post";
 
+import { useEffect, useState } from "react";
+
 export default function FeedPage() {
+    const posts = [
+        <Post className="feed-post" image={Sab}/>,
+        <Post className="feed-post" image={Liv}/>,
+        <Post className="feed-post" image={Niall}/>,
+        <Post className="feed-post" image={Gracie}/>,
+        <Post className="feed-post" image={Wallows}/>,
+        <Post className="feed-post" image={Novo}/>,
+        <Post className="feed-post" image={Wallows}/>,
+        <Post className="feed-post" image={Sab}/>,
+        <Post className="feed-post" image={Swing}/>,
+        <Post className="feed-post" image={Gracie}/>
+    ]
+
+    const [postWidth, setPostWidth] = useState(0);
+    const [columns, setColumns] = useState([]);
+
+    useEffect(() => {
+        const rootStyles = getComputedStyle(document.documentElement);
+        const width = rootStyles.getPropertyValue('--width__post');
+        setPostWidth(width.trim());
+    }, []);
+
+    for (let i = 0; i < posts.length; i++) {
+
+    }
+
     return (
         <>
             <Header />
             <h1>Feed</h1>
             <div className="feed-container">
-                <Post className="feed-post" image={Sab}/>
-                <Post className="feed-post" image={Liv}/>
-                <Post className="feed-post" image={Niall}/>
-                <Post className="feed-post" image={Gracie}/>
-                <Post className="feed-post" image={Wallows}/>
-                <Post className="feed-post" image={Novo}/>
-                <Post className="feed-post" image={Wallows}/>
-                <Post className="feed-post" image={Sab}/>
-                <Post className="feed-post" image={Swing}/>
-                <Post className="feed-post" image={Gracie}/>
+                {posts}
             </div>
             <button />
         </>

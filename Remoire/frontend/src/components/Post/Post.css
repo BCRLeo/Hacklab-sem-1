@@ -1,5 +1,5 @@
 div.post {
-    width: fit-content;
+    width: var(--width__post);
     height: fit-content;
 
     margin: 0 auto;
@@ -10,7 +10,7 @@ div.post {
 
 div.post-container {
     position: relative;
-    width: var(--width__post);
+    width: 100%;
     height: fit-content;
     margin: 0;
     padding: 0;

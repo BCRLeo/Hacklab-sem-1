@@ -1,5 +1,6 @@
 import './App.css';
 import React, { useState, useEffect } from "react";
+import MediaQueryProvider from './MediaQueryContext';
 
 import FeedPage from './pages/Feed/FeedPage';
 import HomePage from "./pages/Home/HomePage"
@@ -32,18 +33,20 @@ function App() {
 	}, []);
 
 	return (
-		<UserProvider>
-			<Router>
-				<Routes>
-					<Route path="/feed" element={<FeedPage />} />
-					<Route path="/" element={<HomePage />} />
-					<Route path="/home" element={<HomePage />} />
-					<Route path="/login" element={<LogInPage />} />
-					<Route path="/signup" element={<SignUpPage />} />
-					<Route path="/wardrobe" element={<WardrobePage />} />
-				</Routes>
-			</Router>
-		</UserProvider>
+		<MediaQueryProvider>
+			<UserProvider>
+				<Router>
+					<Routes>
+						<Route path="/feed" element={<FeedPage />} />
+						<Route path="/" element={<HomePage />} />
+						<Route path="/home" element={<HomePage />} />
+						<Route path="/login" element={<LogInPage />} />
+						<Route path="/signup" element={<SignUpPage />} />
+						<Route path="/wardrobe" element={<WardrobePage />} />
+					</Routes>
+				</Router>
+			</UserProvider>
+		</MediaQueryProvider>
 	);
 }
 
