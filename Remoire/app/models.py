@@ -269,7 +269,7 @@ class Shirt(db.Model):
         server_default=text('false')  # Ensures database-level default
     )
 
-    wardrobe = db.relationship('Wardrobe', back_populates='jackets')
+    wardrobe = db.relationship('Wardrobe', back_populates='shirts')
 
     # Methods to toggle favorite status
     def mark_as_favorite(self):
@@ -295,7 +295,7 @@ class Trouser(db.Model):
         server_default=text('false')  # Ensures database-level default
     )
 
-    wardrobe = db.relationship('Wardrobe', back_populates='jackets')
+    wardrobe = db.relationship('Wardrobe', back_populates='trousers')
 
     # Methods to toggle favorite status
     def mark_as_favorite(self):
@@ -321,7 +321,7 @@ class Shoe(db.Model):
         server_default=text('false')  # Ensures database-level default
     )
 
-    wardrobe = db.relationship('Wardrobe', back_populates='jackets')
+    wardrobe = db.relationship('Wardrobe', back_populates='shoes')
 
     # Methods to toggle favorite status
     def mark_as_favorite(self):
