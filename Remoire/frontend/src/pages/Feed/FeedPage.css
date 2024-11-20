@@ -1,0 +1,6 @@
+.feed-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(var(--width__post), 1fr));
+    width: 95dvw;
+    margin: auto;
+}

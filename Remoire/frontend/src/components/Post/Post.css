@@ -1,0 +1,56 @@
+div.post {
+    width: fit-content;
+    height: fit-content;
+
+    margin: 0 auto;
+    padding: 0;
+
+    filter: drop-shadow(0 0 1rem var(--hex__drop-shadow));
+}
+
+div.post-container {
+    position: relative;
+    width: var(--width__post);
+    height: fit-content;
+    margin: 0;
+    padding: 0;
+
+    clip-path: fill-box;
+    background-color: var(--hex__background);
+    border-radius: var(--border-radius);
+    
+    /* box-shadow: 0.75rem 0.75rem black; */
+}
+
+span.post-username {
+    display: block;
+    width: fit-content;
+    height: fit-content;
+
+    margin-right: auto;
+    padding: 1rem 1.5rem;
+
+    text-align: center;
+    ;
+}
+
+img.profile-picture {
+    width: 2rem;
+    aspect-ratio: 1;
+    object-fit: cover;
+}
+
+.post-image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+
+    object-fit: cover;
+    /* clip-path: inherit; */
+    clip-path:margin-box;
+    /* overflow: hidden; */
+    border: none;
+    box-shadow: none;
+}
