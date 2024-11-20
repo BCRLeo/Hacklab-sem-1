@@ -156,25 +156,25 @@ export default function WardrobePage() {
             {user ? <h1>{user.username}'s wardobe</h1> : <h1>Wardrobe</h1>}
             <div className="wardrobe-carousel-container" onClick={handleClothingClick}>
                 {jackets.length === 0 ? (
-                    <p>No images available.</p>
+                    <p>No jackets available.</p>
                 ) : (
                     <Carousel id="carousel-jackets" images={jackets.map((image) => image.url)} />
                 )}
 
                 {shirts.length === 0 ? (
-                    <p>No images available.</p>
+                    <p>No shirts available.</p>
                 ) : (
                     <Carousel id="carousel-shirts" images={shirts.map((image) => image.url)} />
                 )}
 
                 {trousers.length === 0 ? (
-                    <p>No images available.</p>
+                    <p>No trousers available.</p>
                 ) : (
                     <Carousel id="carousel-trousers" images={trousers.map((image) => image.url)} />
                 )}
 
                 {shoes.length === 0 ? (
-                    <p>No images available.</p>
+                    <p>No shoes available.</p>
                 ) : (
                     <Carousel id="carousel-shoes" images={shoes.map((image) => image.url)} />
                 )}
