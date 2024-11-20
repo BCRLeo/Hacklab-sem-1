@@ -64,3 +64,21 @@ Click the resulting link to open the web app.
 ---
 # Note
 Make sure the `package.json` file has `"proxy": "http://localhost:5000"` (or whatever port the Python runs from)
+
+
+for db migrations these are the commands you need to run:
+for mac/linux (non of use linux but whatever):
+```
+export FLASK_APP=run.py
+```
+for windows :
+```
+set FLASK_APP=run.py
+```
+once that's done, run these two commands:
+```
+flask db migrate -m "Initial migration."
+flask db upgrade
+```
+NOTE: make sure to add unique constraint names if your new attributes have constraints or alembic will pull a hissy fit (there's a comment in models reminding you to do that as well)
+
