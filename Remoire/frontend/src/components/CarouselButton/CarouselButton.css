@@ -12,7 +12,7 @@
 
     padding: 0;
 
-    background-color: white;
+    background-color: var(--hex__button);
     border: none;
     border-radius: 50% 50% 50% 50%;
 
@@ -28,8 +28,8 @@
 }
 
 .carouselbutton img {
-    width: fit-content;
-    height: fit-content;
+    width: 2rem;
+    height: 2rem;
 
     aspect-ratio: 1;
     vertical-align: middle;
