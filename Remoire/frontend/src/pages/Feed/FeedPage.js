@@ -19,10 +19,10 @@ export default function FeedPage() {
 
     const posts = [
         <Post className="feed-post" image={Sab}/>,
+        <Post className="feed-post" image={Wallows}/>,
         <Post className="feed-post" image={Liv}/>,
         <Post className="feed-post" image={Niall}/>,
         <Post className="feed-post" image={Gracie}/>,
-        <Post className="feed-post" image={Wallows}/>,
         <Post className="feed-post" image={Novo}/>,
         <Post className="feed-post" image={Wallows}/>,
         <Post className="feed-post" image={Sab}/>,
