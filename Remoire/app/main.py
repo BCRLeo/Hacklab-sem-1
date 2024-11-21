@@ -9,7 +9,7 @@ from . import db
 from . import models
 from werkzeug.utils import secure_filename
 from sqlalchemy_imageattach.context import store_context
-
+from json import dumps
 
 main = Blueprint('main', __name__)
 #redirect users trying to get to unaccessible pages
@@ -58,6 +58,10 @@ def signup_page():
 
 @main.route("/feed")
 def feed_page():
+    return render_template("index.html")
+
+@main.route("/search")
+def search_page():
     return render_template("index.html")
 
 
@@ -247,11 +251,32 @@ def delete_itemm(item_type, item_id):
 
     return redirect(url_for('views.wardrobe'))
 
-@main.route("/search", methods=["GET", "POST"])
+
+@main.route("/api/search", methods=["POST"])
 def search_users():
-    """
-    Search users and render the results in the same HTML page.
-    """
+
+    data = request.get_json()
+    query = data.get("query").strip()
+
+    if len(query) < 2:
+            return jsonify({"success" : False, "message" : "Query must be at least 2 characters long."})
+
+    results = User.query.filter(
+            (User.UserName.ilike(f"%{query}%"))   # Search by username
+        ).all()
+
+    if not results:
+        return jsonify({"success" : False, "message" : "No user found"})
+    
+    userIds = [user.id for user in results]
+
+    return jsonify({"success" : True, "message" : "Bravo!", "userIds" : userIds})
+
+
+
+""" @main.route("/search", methods=["GET", "POST"])
+def search_users():
+   
     if request.method == 'POST':
         query = request.form.get('query', '').strip()  # Get query from form input
 
@@ -260,15 +285,14 @@ def search_users():
 
         # Perform the search in the database
         results = User.query.filter(
-            (User.UserName.ilike(f"%{query}%")) |  # Search by username
-            (User.email.ilike(f"%{query}%"))       # Search by email
+            (User.UserName.ilike(f"%{query}%"))   # Search by username
         ).all()
 
         return render_template('search.html', results=results, message=None)
 
     # Default GET request (renders search page with no results)
     return render_template('search.html', results=None, message=None)
-
+ """
 
 @main.route('/view_wardrobe/<item_type>', methods=['GET'])
 def view_wardrobe(item_type):
