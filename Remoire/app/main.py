@@ -268,31 +268,13 @@ def search_users():
     if not results:
         return jsonify({"success" : False, "message" : "No user found"})
     
-    userIds = [user.id for user in results]
+    userNames = [user.UserName for user in results]
 
-    return jsonify({"success" : True, "message" : "Bravo!", "userIds" : userIds})
+    return jsonify({"success" : True, "message" : "Bravo!", "userNames" : userNames})
 
-
-
-""" @main.route("/search", methods=["GET", "POST"])
-def search_users():
-   
-    if request.method == 'POST':
-        query = request.form.get('query', '').strip()  # Get query from form input
-
-        if len(query) < 2:
-            return render_template('search.html', results=[], message="Query must be at least 2 characters long.")
-
-        # Perform the search in the database
-        results = User.query.filter(
-            (User.UserName.ilike(f"%{query}%"))   # Search by username
-        ).all()
-
-        return render_template('search.html', results=results, message=None)
-
-    # Default GET request (renders search page with no results)
-    return render_template('search.html', results=None, message=None)
- """
+@main.route("/api/profile/:userName", methods=["POST"])
+def profile_page():
+    return jsonify({"success" : True, "message" : "Bravo!"})
 
 @main.route('/view_wardrobe/<item_type>', methods=['GET'])
 def view_wardrobe(item_type):
