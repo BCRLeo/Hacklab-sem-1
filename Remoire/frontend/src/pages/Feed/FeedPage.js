@@ -12,8 +12,11 @@ import Header from "../../components/Header/Header";
 import Post from "../../components/Post/Post";
 
 import { useEffect, useState } from "react";
+import { useMediaQueryContext } from "../../MediaQueryContext";
 
 export default function FeedPage() {
+    const screenSize = useMediaQueryContext();
+
     const posts = [
         <Post className="feed-post" image={Sab}/>,
         <Post className="feed-post" image={Liv}/>,
@@ -32,20 +35,34 @@ export default function FeedPage() {
 
     useEffect(() => {
         const rootStyles = getComputedStyle(document.documentElement);
-        const width = rootStyles.getPropertyValue('--width__post');
+        const width = rootStyles.getPropertyValue("--width__post");
+        const columnCount = rootStyles.getPropertyValue("--count__post-columns");
+        let columnDivs = [];
+
         setPostWidth(width.trim());
-    }, []);
 
-    for (let i = 0; i < posts.length; i++) {
+        for (let i = 0; i < columnCount; i++) {
+            columnDivs.push([]);
+        }
 
-    }
+        for (let i = 0; i < posts.length; i++) {
+            columnDivs[i % columnCount].push(posts[i]);
+        }
+        console.log(columnDivs);
+        setColumns(columnDivs.map((column, i) => {
+            return (<div id={`column-${i}`} className="column">{column}</div>)
+        }));
+    }, [screenSize]);
+
+    
 
     return (
         <>
             <Header />
             <h1>Feed</h1>
             <div className="feed-container">
-                {posts}
+                {/* {posts} */}
+                {columns}
             </div>
             <button />
         </>

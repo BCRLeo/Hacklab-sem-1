@@ -32,20 +32,33 @@
 
 	--border-radius: 2rem;
 
-	--width__post: 90dvw;
+	--count__post-columns: 1;
+	--width__display: 90dvw;
+	/* --width__post: 90dvw; */
+	--width__post: calc(var(--width__display) / var(--count__post-columns));
+	
 
 	--height__nav-bar: 3.5rem;
 }
 
 @media (width >= 576px) {
 	:root {
-		--width__post: 45dvw;
+		--count__post-columns: 2;
+		/* --width__post: 45dvw; */
 	}
 }
 
 @media (width >= 768px) {
 	:root {
-		--width__post: 30dvw;
+		--count__post-columns: 3;
+		/* --width__post: 30dvw; */
+	}
+}
+
+@media (width >= 991px) {
+	:root {
+		--count__post-columns: 4;
+		/* --width__post: 30dvw; */
 	}
 }
 

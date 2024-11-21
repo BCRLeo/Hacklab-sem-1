@@ -1,8 +1,16 @@
 .feed-container {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(var(--width__post), 1fr));
-    grid-auto-flow: row dense;
+    grid-template-columns: repeat(var(--count__post-columns), var(--width__post));
 
-    width: 95dvw;
-    margin: auto;
+    width: fit-content;
+    margin: 0 auto;
+    gap: 1rem;
+}
+
+div.column {
+    width: fit-content;
+}
+
+div.feed-post {
+    margin-bottom: 1rem;
 }
