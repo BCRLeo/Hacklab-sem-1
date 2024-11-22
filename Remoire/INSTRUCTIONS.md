@@ -45,7 +45,7 @@ to build the static files from the React code.
 ## Step 2 - copy static files 
 Run the following command
 ```
-cp build/index.html ../app/templates/ && cp -r build/static/* ../app/static/
+cp build/index.html ../app/templates/ && rm -rf ../app/static/* && cp -r build/static/* ../app/static/
 ```
 to copy `build/index.html` to `/app/templates` and the contents inside the `/frontend/build/static` folder to the `/app/static` directory.
 
