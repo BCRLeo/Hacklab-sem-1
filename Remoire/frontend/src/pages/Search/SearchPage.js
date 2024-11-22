@@ -27,10 +27,10 @@ export default function SearchPage() {
 
         if (response.ok && data.success){
             console.log(data);
-            const userIds = await data.userIds;
-            if (userIds) {
-                setText(userIds);
-                console.log(userIds);
+            const userNames = await data.userNames;
+            if (userNames) {
+                setText(userNames);
+                console.log(userNames);
             }
         }
         else{
@@ -42,8 +42,6 @@ export default function SearchPage() {
         }
         
     };
-
-
 
     return (
         <>
