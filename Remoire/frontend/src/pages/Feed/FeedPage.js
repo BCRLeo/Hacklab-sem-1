@@ -8,7 +8,9 @@ import Novo from "../../assets/images/novoamor.jpeg";
 import Swing from "../../assets/images/swing.jpeg";
 import Gracie from "../../assets/images/gracie.jpeg";
 
+import Field from "../../components/Field/Field";
 import Header from "../../components/Header/Header";
+import Popover from "../../components/Popover/Popover";
 import Post from "../../components/Post/Post";
 
 import { useEffect, useState } from "react";
@@ -32,6 +34,45 @@ export default function FeedPage() {
 
     const [postWidth, setPostWidth] = useState(0);
     const [columns, setColumns] = useState([]);
+
+    const [postFile, setPostFile] = useState(null);
+    const [isUploading, setIsUploading] = useState(false);
+    const [uploadStatus, setUploadStatus] = useState("");
+
+    const handleFileChange = (event) => {
+        setPostFile(event.target.files[0]);
+    };
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        setIsUploading(true);
+        if (!postFile) {
+            setUploadStatus("Please select a file");
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append("file", postFile);
+
+        try {
+            setUploadStatus("Uploading file");
+            const response = await fetch("/api/upload/feed-post", {
+                method: "POST",
+                body: formData
+            });
+
+            if (response.ok) {
+                setUploadStatus("File uploaded successfully");
+                event.target.reset();
+            } else {
+                setUploadStatus("Failed to upload file");
+            }
+        } catch (error) {
+            console.error("Error: ", error);
+            setUploadStatus("An error occurred while uploading the file");
+        }
+        setIsUploading(false);
+    };
 
     useEffect(() => {
         const rootStyles = getComputedStyle(document.documentElement);
@@ -64,7 +105,22 @@ export default function FeedPage() {
                 {/* {posts} */}
                 {columns}
             </div>
-            <button />
+            
+            <Popover label="Create post">
+                <form onSubmit={handleSubmit} method="post" className="upload">
+                    <Field label="Upload item" onChange={handleFileChange} type="file" name="item" />
+                    {!isUploading ?
+                        <button type="submit" className="button-upload">
+                            <span>Post</span>
+                        </button>
+                    :
+                        <button type="button" className="button-uploading">
+                            <span>Posting...</span>
+                        </button>
+                    }
+                </form>
+                <p id="upload-status">{uploadStatus}</p>
+            </Popover>
         </>
     );
 };

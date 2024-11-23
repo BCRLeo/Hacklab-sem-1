@@ -251,6 +251,45 @@ def delete_itemm(item_type, item_id):
 
     return redirect(url_for('views.wardrobe'))
 
+@main.route("/api/upload/feed-post", methods=["POST"])
+def upload_feed_post():
+    if not current_user.is_authenticated:
+        return jsonify({"success": False, "message": "User not logged in"}), 401
+    
+    if "file" not in request.files:
+        return jsonify({"success": False, "message": "No file uploaded"}), 400
+
+    file = request.files["file"]
+    if not file:
+        return jsonify({"success": False, "message": "File could not be uploaded"}), 400
+    
+    if file.filename == "":
+        return jsonify({"success": False, "message": "No selected file"}), 400
+    
+    # Secure the filename (though not strictly necessary since we're storing in DB)
+    filename = secure_filename(file.filename)
+    
+    posts = current_user.posts
+
+    new_post = models.Post()
+        
+    # Read the image data and get the MIME type
+    file_data = file.read()
+    mimetype = file.mimetype
+
+    if not mimetype.startswith('image/'):
+        return jsonify({"success": False, "message": "Uploaded file is not an image"}), 400
+
+    # Assign the image data and MIME type to the new jacket
+    new_post.user_id = current_user.id
+    new_post.image_data = file_data
+    new_post.image_mimetype = mimetype
+
+     # Add and commit the new jacket to the database
+    db.session.add(new_post)
+    db.session.commit()
+        
+    return jsonify({"success": True, "message": "File successfully uploaded"}), 200
 
 @main.route("/api/search", methods=["POST"])
 def search_users():
