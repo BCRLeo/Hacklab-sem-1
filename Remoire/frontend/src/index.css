@@ -15,6 +15,7 @@
 	--hex__text-contrast: var(--hex__brand-white);
 	--hex__button: var(--hex__brand-light);
 	--hex__drop-shadow: var(--hex__brand-grey);
+	--hex__icon: var(--hex__brand-white);
 
 	--font-size__base: 3vw;
 	--font-size__h1: clamp(4rem, var(--font-size__base) * 8, 8rem);

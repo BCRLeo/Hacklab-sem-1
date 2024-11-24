@@ -1,7 +1,7 @@
 .navbar-nav {
     margin: auto;
     padding: 0.25rem 1rem;
-    height: fit-content;
+    height: 4.5rem;
 
     font-size: var(--font-size__p);
     list-style-type: none;
@@ -14,4 +14,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.nav-item.search {
+    width: 100%;
 }

@@ -1,7 +1,22 @@
 .searchbar {
     margin: auto;
+    width: 100%;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+}
+
+.searchbar a {
+    margin: auto 1rem;
 }
 
 .searchbar-container {
-    margin: auto;
+    width: 100%;
+}
+
+.searchbar-container input {
+    height: 2.5rem;
+    width: 100%;
+    border-radius: 1.5rem;
+    border: none;
 }

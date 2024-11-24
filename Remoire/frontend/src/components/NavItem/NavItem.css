@@ -1,9 +1,10 @@
 .nav-item {
     display: flex;
+    width: fit-content;
+    align-items: center;
     box-sizing: border-box;
     padding: 0;
     margin: auto 1.5rem;
-    height: 3rem;
 }
 
 .nav-link {  

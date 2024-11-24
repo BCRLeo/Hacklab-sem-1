@@ -1,3 +1,5 @@
+import "./Icon.css"
+
 import { ReactComponent as AccountIcon } from "../../assets/icons/icon__account-circle.svg";
 import { ReactComponent as ArrowLeftIcon } from "../../assets/icons/icon__arrow-left.svg";
 import { ReactComponent as ArrowRightIcon } from "../../assets/icons/icon__arrow-right.svg";

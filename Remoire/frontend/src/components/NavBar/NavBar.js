@@ -38,7 +38,7 @@ export default function Navbar() {
 			<ul className="navbar-nav">
 				<NavItem href="/" text="Home" />
 				<NavItem href="/feed" text="Feed" />
-				<NavItem>
+				<NavItem className="search">
 					<SearchBar></SearchBar>
 				</NavItem>
 				{user && user !== -1 ? 
