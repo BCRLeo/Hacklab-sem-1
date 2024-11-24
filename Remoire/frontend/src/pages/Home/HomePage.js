@@ -11,4 +11,4 @@ export default function HomePage() {
             {user && user.isLoggedIn ? <h1>Hi, {user.username}</h1> : <h1>Home</h1>}
         </>
     );
-};
+}

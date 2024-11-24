@@ -2,7 +2,7 @@ import "./CarouselButton.css"
 
 import React from "react";
 
-const CarouselButton = ({ direction, onClick, iconPath, text }) => {
+export default function CarouselButton({ direction, onClick, iconPath, text }) {
     return (
         <button onClick={onClick} className={`carouselbutton ${direction}`}>
             {iconPath && <img src={iconPath} alt={`${direction} arrow`} />}
@@ -10,5 +10,3 @@ const CarouselButton = ({ direction, onClick, iconPath, text }) => {
         </button>
     );
 }
-
-export default CarouselButton;

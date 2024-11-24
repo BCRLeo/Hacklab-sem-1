@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { useState, useContext } from "react";
 import { UserContext } from "../../UserContext";
 
-const SignUpPage = () => {
+export default function SignUpPage() {
     const navigate = useNavigate();
     const { user, setUser } = useContext(UserContext);
 
@@ -78,6 +78,4 @@ const SignUpPage = () => {
             </Card>
         </>
     );
-};
-
-export default SignUpPage;
+}

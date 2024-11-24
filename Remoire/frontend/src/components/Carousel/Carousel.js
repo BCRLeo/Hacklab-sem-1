@@ -6,7 +6,7 @@ import IconArrowRight from "../../assets/icons/icon__arrow-right.svg";
 
 import { useEffect, useRef, useState } from "react";
 
-const Carousel = ({ images, children }) => {
+export default function Carousel({ images, children }) {
 	const [currentIndex, setCurrentIndex] = useState(0);
 	const [visibleImages, setVisibleImages] = useState([]);
 	const carouselRef = useRef(null);
@@ -77,6 +77,4 @@ const Carousel = ({ images, children }) => {
 			{children}
 		</div>
 	);
-};
-
-export default Carousel;
+}

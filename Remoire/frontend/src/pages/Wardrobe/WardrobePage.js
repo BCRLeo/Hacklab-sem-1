@@ -37,7 +37,9 @@ export default function WardrobePage() {
 
             if (response.ok) {
                 const data = await response.json();
-                setImagesCallback(data);
+                if (data) {
+                    setImagesCallback(data);
+                }
             } else {
                 console.error(`"Failed to fetch ${itemType} image list"`);
             }
@@ -205,4 +207,4 @@ export default function WardrobePage() {
             <button><span>Edit wardrobe</span></button>
         </>
     );
-};
+}

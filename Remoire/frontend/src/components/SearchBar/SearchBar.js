@@ -2,7 +2,7 @@ import './SearchBar.css';
 import IconSearch from "../../assets/icons/icon__search.svg";
 import { Link } from 'react-router-dom';
 
-const SearchBar = () => {
+export default function SearchBar() {
 	return (
 		<div className="searchbar">
 			<div className="searchbar-container">
@@ -10,6 +10,4 @@ const SearchBar = () => {
 			</div>
 		</div>
 	);
-};
-
-export default SearchBar;
+}

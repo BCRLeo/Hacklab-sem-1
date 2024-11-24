@@ -19,7 +19,7 @@ import { useMediaQueryContext } from "../../MediaQueryContext";
 export default function FeedPage() {
     const screenSize = useMediaQueryContext();
 
-    const posts = [
+    /* const posts = [
         <Post className="feed-post" image={Sab}/>,
         <Post className="feed-post" image={Wallows}/>,
         <Post className="feed-post" image={Liv}/>,
@@ -30,8 +30,9 @@ export default function FeedPage() {
         <Post className="feed-post" image={Sab}/>,
         <Post className="feed-post" image={Swing}/>,
         <Post className="feed-post" image={Gracie}/>
-    ]
+    ] */
 
+    const [posts, setPosts] = useState([]);
     const [postWidth, setPostWidth] = useState(0);
     const [columns, setColumns] = useState([]);
 
@@ -73,6 +74,28 @@ export default function FeedPage() {
         }
         setIsUploading(false);
     };
+
+    const getPosts = async (setPostsCallback) => {
+        try {
+            const response = await fetch("/api/posts", {
+                method: "GET"
+            });
+
+            if (!response.ok) {
+                console.error("Failed to fetch posts");
+                return;
+            }
+
+            const data = await response.json();
+            if (data) {
+                setPostsCallback(data);
+                return;
+            }
+            console.error("Failed to fetch posts");
+        } catch (error) {
+            console.error("Error: ", error);
+        }
+    }
 
     useEffect(() => {
         const rootStyles = getComputedStyle(document.documentElement);
@@ -123,4 +146,4 @@ export default function FeedPage() {
             </Popover>
         </>
     );
-};
+}
