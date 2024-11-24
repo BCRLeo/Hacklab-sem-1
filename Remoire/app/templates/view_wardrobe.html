@@ -1,0 +1,22 @@
+<!-- wardrobe.html -->
+<h2>{{ user.UserName }}'s Wardrobe</h2>
+
+<h3>Jackets</h3>
+{% for jacket in jackets %}
+    <img src="{{ url_for('main.get_all_images', item_type='jacket', id=jacket.id) }}" alt="Jacket">
+{% endfor %}
+
+<h3>Shirts</h3>
+{% for shirt in shirts %}
+    <img src="{{ url_for('main.get_all_images', item_type='shirt', id=shirt.id) }}" alt="Shirt">
+{% endfor %}
+
+<h3>Trousers</h3>
+{% for trouser in trousers %}
+    <img src="{{ url_for('main.get_all_images', item_type='trousers', id=trouser.id) }}" alt="Trouser">
+{% endfor %}
+
+<h3>Shoes</h3>
+{% for shoe in shoes %}
+    <img src="{{ url_for('main.get_all_images', item_type='shoes', id=shoe.id) }}" alt="Shoe">
+{% endfor %}

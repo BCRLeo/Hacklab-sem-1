@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { useContext, useState } from "react";
 import { UserContext } from "../../UserContext";
 
-const LogInPage = () => {
+export default function LogInPage() {
     const navigate = useNavigate();
     const { user, setUser } = useContext(UserContext);
 
@@ -62,6 +62,4 @@ const LogInPage = () => {
             </Card>
         </>
     );
-};
-
-export default LogInPage;
+}

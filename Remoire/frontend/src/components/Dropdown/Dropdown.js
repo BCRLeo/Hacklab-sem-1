@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const Dropdown = ({ title, children }) => {
+export default function Dropdown({ title, children }) {
     const [isOpen, setIsOpen] = useState(false);
 
     const toggleDropdown = () => {
@@ -19,6 +19,4 @@ const Dropdown = ({ title, children }) => {
             )}
         </div>
     );
-};
-
-export default Dropdown;
+}

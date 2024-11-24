@@ -9,7 +9,7 @@ import { useContext } from "react";
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../../UserContext';
 
-const Navbar = () => {
+export default function Navbar() {
 	const navigate = useNavigate();
 	const { user, setUser } = useContext(UserContext);
 
@@ -62,6 +62,4 @@ const Navbar = () => {
 			</ul>
 		</nav>
 	);
-};
-
-export default Navbar;
+}

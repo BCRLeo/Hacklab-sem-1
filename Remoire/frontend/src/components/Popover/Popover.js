@@ -4,7 +4,7 @@ import Card from "../Card/Card";
 
 import { useState, useRef, useEffect } from "react";
 
-const Popover = ({ label, children }) => {
+export default function Popover({ label, children }) {
     const [isOpen, setIsOpen] = useState(false);
     const newRef = useRef(null);
 
@@ -37,6 +37,4 @@ const Popover = ({ label, children }) => {
             )}
         </div>
     );
-};
-
-export default Popover;
+}

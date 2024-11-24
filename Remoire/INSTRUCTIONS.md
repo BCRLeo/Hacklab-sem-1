@@ -46,7 +46,7 @@ to build the static files from the React code.
 Run the following command
 mac os:
 ```
-cp build/index.html ../app/templates/ && cp -r build/static/* ../app/static/
+cp build/index.html ../app/templates/ && rm -rf ../app/static/* && cp -r build/static/* ../app/static/
 ```
 Windows:
 ```

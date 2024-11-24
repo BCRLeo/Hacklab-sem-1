@@ -1,29 +1,15 @@
 import { useEffect, useState } from "react";
 import Header from "../../components/Header/Header";
 
-const HomePage = () => {
-    const [name, setname] = useState("");
-    const suckmynuts = async () => {
-        const display = await fetch("/api/check-login");
-        const data = await display.json();
-        
-        if (display.ok){
-            if (data.success){
-                setname(data.user.username);
-                
-            }
-        }
-    
+import { useContext } from "react";
+import { UserContext } from "../../UserContext";
 
-    }
-    useEffect(()=>{suckmynuts()}, [])
+export default function HomePage() {
+    const { user, setUser } = useContext(UserContext);
     return (
         <>
             <Header />
-            <h1>hello, {name}</h1>
+            {user && user.isLoggedIn ? <h1>Hi, {user.username}</h1> : <h1>Home</h1>}
         </>
     );
-};
-
-export default HomePage;
-
+}

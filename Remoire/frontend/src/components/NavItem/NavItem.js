@@ -2,7 +2,7 @@ import './NavItem.css';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const NavItem = ({ href, text, children, onClick }) => {
+export default function NavItem({ href, text, children, onClick }) {
     if (children) {
         return <li className="nav-item">{children}</li>;
     }
@@ -12,6 +12,4 @@ const NavItem = ({ href, text, children, onClick }) => {
             <Link to={href} className="nav-link" onClick={onClick}>{text}</Link>
         </li>
     );
-};
-
-export default NavItem;
+}

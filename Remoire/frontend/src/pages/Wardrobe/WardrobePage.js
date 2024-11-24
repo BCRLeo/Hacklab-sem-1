@@ -37,7 +37,9 @@ export default function WardrobePage() {
 
             if (response.ok) {
                 const data = await response.json();
-                setImagesCallback(data);
+                if (data) {
+                    setImagesCallback(data);
+                }
             } else {
                 console.error(`"Failed to fetch ${itemType} image list"`);
             }
@@ -126,9 +128,6 @@ export default function WardrobePage() {
         const formData = new FormData();
         formData.append("file", file);
         formData.append("category", category);
-        for (const pair of formData.entries()) {
-            console.log(pair[0], pair[1]);
-        }
 
         try {
             setUploadStatus("Uploading file");
@@ -208,4 +207,4 @@ export default function WardrobePage() {
             <button><span>Edit wardrobe</span></button>
         </>
     );
-};
+}

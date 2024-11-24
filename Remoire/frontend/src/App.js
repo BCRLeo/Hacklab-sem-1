@@ -1,16 +1,18 @@
 import './App.css';
 import React, { useState, useEffect } from "react";
+import MediaQueryProvider from './MediaQueryContext';
 
 import FeedPage from './pages/Feed/FeedPage';
 import HomePage from "./pages/Home/HomePage"
 import LogInPage from './pages/LogIn/LogInPage';
+import SearchPage from './pages/Search/SearchPage';
 import SignUpPage from "./pages/SignUp/SignUpPage"
 import WardrobePage from './pages/Wardrobe/WardrobePage';
 
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { UserProvider } from './UserContext';
 
-function App() {
+export default function App() {
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
 	const [username, setUsername] = useState("");
 	const [user, setUser] = useState({"isLoggedIn": isLoggedIn, "username": username});
@@ -32,33 +34,20 @@ function App() {
 	}, []);
 
 	return (
-		<UserProvider>
-			<Router>
-				<Routes>
-					<Route path="/feed" element={<FeedPage />} />
-					<Route path="/" element={<HomePage />} />
-					<Route path="/home" element={<HomePage />} />
-					<Route path="/login" element={<LogInPage />} />
-					<Route path="/signup" element={<SignUpPage />} />
-					<Route path="/wardrobe" element={<WardrobePage />} />
+		<MediaQueryProvider>
+			<UserProvider>
+				<Router>
+					<Routes>
+						<Route path="/feed" element={<FeedPage />} />
+						<Route path="/" element={<HomePage />} />
+						<Route path="/home" element={<HomePage />} />
+						<Route path="/login" element={<LogInPage />} />
+						<Route path="/signup" element={<SignUpPage />} />
+						<Route path="/wardrobe" element={<WardrobePage />} />
+						<Route path="/search" element={<SearchPage />} />
 				</Routes>
-			</Router>
-		</UserProvider>
+				</Router>
+			</UserProvider>
+		</MediaQueryProvider>
 	);
 }
-
-{/* <div className="App">
-			<Home />
-			<h1>Welcome to the React App</h1>
-			{isLoggedIn ? (
-				<div>
-					<h2>Welcome back, {username}!</h2>
-				</div>
-			) : (
-				<div>
-					<h2>Please log in</h2>
-				</div>
-			)}
-		</div> */}
-
-export default App;

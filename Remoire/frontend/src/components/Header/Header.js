@@ -1,12 +1,10 @@
 import './Header.css';
 import NavBar from '../NavBar/NavBar';
 
-const Header = () => {
+export default function Header() {
   return (
     <header className="header">
         <NavBar />
     </header>
   );
-};
-
-export default Header;
+}

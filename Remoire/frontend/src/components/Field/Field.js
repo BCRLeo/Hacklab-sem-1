@@ -1,6 +1,6 @@
 import "./Field.css"
 
-const Field = ({ label, type, name, placeholder, onChange, children }) => {
+export default function Field({ label, type, name, placeholder, onChange, children }) {
     if (children) {
         return (
             <div className="field">
@@ -16,6 +16,4 @@ const Field = ({ label, type, name, placeholder, onChange, children }) => {
             <input className="field-input" onChange={onChange} type={type} name={name} placeholder={placeholder} />
         </div>
     );
-};
-
-export default Field;
+}

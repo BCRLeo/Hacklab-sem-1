@@ -3,12 +3,13 @@ from flask_login import LoginManager, login_required, current_user
 import io
 import os
 import app
+from .models import User
 from . import ImageBackgroundRemoverV1
 from . import db
 from . import models
 from werkzeug.utils import secure_filename
 from sqlalchemy_imageattach.context import store_context
-
+from json import dumps
 
 main = Blueprint('main', __name__)
 #redirect users trying to get to unaccessible pages
@@ -57,6 +58,10 @@ def signup_page():
 
 @main.route("/feed")
 def feed_page():
+    return render_template("index.html")
+
+@main.route("/search")
+def search_page():
     return render_template("index.html")
 
 
@@ -246,6 +251,105 @@ def delete_itemm(item_type, item_id):
 
     return redirect(url_for('views.wardrobe'))
 
+@main.route("/api/upload/feed-post", methods=["POST"])
+def upload_feed_post():
+    if not current_user.is_authenticated:
+        return jsonify({"success": False, "message": "User not logged in"}), 401
+    
+    if "file" not in request.files:
+        return jsonify({"success": False, "message": "No file uploaded"}), 400
+
+    file = request.files["file"]
+    if not file:
+        return jsonify({"success": False, "message": "File could not be uploaded"}), 400
+    
+    if file.filename == "":
+        return jsonify({"success": False, "message": "No selected file"}), 400
+    
+    # Secure the filename (though not strictly necessary since we're storing in DB)
+    filename = secure_filename(file.filename)
+    
+    posts = current_user.posts
+
+    new_post = models.Post()
+        
+    # Read the image data and get the MIME type
+    file_data = file.read()
+    mimetype = file.mimetype
+
+    if not mimetype.startswith('image/'):
+        return jsonify({"success": False, "message": "Uploaded file is not an image"}), 400
+
+    # Assign the image data and MIME type to the new jacket
+    new_post.user_id = current_user.id
+    new_post.image_data = file_data
+    new_post.image_mimetype = mimetype
+
+     # Add and commit the new jacket to the database
+    db.session.add(new_post)
+    db.session.commit()
+        
+    return jsonify({"success": True, "message": "File successfully uploaded"}), 200
+
+@main.route("/api/posts", methods=["POST"])
+def get_feed_posts():
+    user_id = request.args.get("user-id")
+    if user_id:
+        user_id = int(user_id)
+        
+    if not current_user.is_authenticated:
+        return jsonify({"success": False, "message": "User not logged in"}), 401
+
+    posts = current_user.posts
+    ids = [post.id for post in posts]
+
+    """ id = request.args.get("id")
+    if id:
+        id = int(id)
+        if id not in ids:
+            return jsonify({"success": False, "message": "Invalid post ID"}), 404
+        
+        index = ids.index(id)
+        mimetypes = [item.image_mimetype for item in items]
+        image_bytes = images[index]
+        image_io = io.BytesIO(image_bytes)
+        return send_file(image_io, mimetype = mimetypes[index]) """
+
+    posts_metadata = [
+        {"id": idx, "url": f"/api/images?id={idx}"}
+        for idx in ids
+    ]
+    print(posts_metadata)
+    return jsonify(posts_metadata)
+
+@main.route("/api/search", methods=["POST"])
+def search_users():
+
+    data = request.get_json()
+    query = data.get("query").strip()
+
+    if len(query) < 2:
+            return jsonify({"success" : False, "message" : "Query must be at least 2 characters long."})
+
+    results = User.query.filter(
+            (User.UserName.ilike(f"%{query}%"))   # Search by username
+        ).all()
+
+    if not results:
+        return jsonify({"success" : False, "message" : "No user found"})
+    
+    userNames = [user.UserName for user in results]
+
+    return jsonify({"success" : True, "message" : "Bravo!", "userNames" : userNames})
+
+@main.route("/api/profile/:userName", methods=["POST"])
+def profile_page():
+    return jsonify({"success" : True, "message" : "Bravo!"})
+
+@main.route('/view_wardrobe/<item_type>', methods=['GET'])
+def view_wardrobe(item_type):
+
+    pass
 
 ##this is just a quick function to return the favorited items, chnage it as you need
 # @app.route('/wardrobe/favorites')
