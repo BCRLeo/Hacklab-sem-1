@@ -44,8 +44,13 @@ to build the static files from the React code.
 
 ## Step 2 - copy static files 
 Run the following command
+mac os:
 ```
 cp build/index.html ../app/templates/ && cp -r build/static/* ../app/static/
+```
+Windows:
+```
+copy build\index.html ..\app\templates\ && xcopy build\static\* ..\app\static\ /E /I /H
 ```
 to copy `build/index.html` to `/app/templates` and the contents inside the `/frontend/build/static` folder to the `/app/static` directory.
 
@@ -67,14 +72,19 @@ Make sure the `package.json` file has `"proxy": "http://localhost:5000"` (or wha
 
 
 for db migrations these are the commands you need to run:
+
 for mac/linux (non of use linux but whatever):
 ```
 export FLASK_APP=run.py
 ```
+
 for windows :
 ```
 set FLASK_APP=run.py
 ```
+
+
+
 once that's done, run these two commands:
 ```
 flask db migrate -m "Initial migration."
