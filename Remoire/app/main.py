@@ -10,6 +10,7 @@ from . import models
 from werkzeug.utils import secure_filename
 from sqlalchemy_imageattach.context import store_context
 from json import dumps
+from .algorithm import get_posts
 
 main = Blueprint('main', __name__)
 #redirect users trying to get to unaccessible pages
@@ -28,6 +29,8 @@ def get_js_and_css():
         'js': js_file if js_file else 'main.js',  # Default fallback
         'css': css_file if css_file else 'main.css',  # Default fallback
     }
+
+
 
 # Register the function globally in all templates
 @main.context_processor
@@ -299,6 +302,14 @@ def get_feed_posts():
         
     if not current_user.is_authenticated:
         return jsonify({"success": False, "message": "User not logged in"}), 401
+
+    posts_to_display = get_posts(user_id)
+    #this gets the posts to be displayed, still need to add dynamics as this returns a fixed 20 posts
+    #a mix of website wide top posts and followed user posts, if you call it again it will return the same
+    #ones assuming the top likes and followed don't change, doesnt account for a user scrolling past 20 posts, 
+    #should be relativly easy to implement, just pass in up to how many posts you need (e.g. 35, or even (20,40) if you want the next top 20)
+    #but it still needs to be figured out
+
 
     posts = current_user.posts
     ids = [post.id for post in posts]
