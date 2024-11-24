@@ -9,6 +9,8 @@ import { useContext } from "react";
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../../UserContext';
 
+import Account from "../../assets/icons/icon__account-circle.svg";
+
 export default function Navbar() {
 	const navigate = useNavigate();
 	const { user, setUser } = useContext(UserContext);
@@ -36,6 +38,10 @@ export default function Navbar() {
 		<nav className="navbar">
 			<ul className="navbar-nav">
 				<NavItem href="/" text="Home" />
+				<NavItem href="/feed" text="Feed" />
+				<NavItem>
+					<SearchBar></SearchBar>
+				</NavItem>
 				{user && user !== -1 ? 
 					<>
 						<NavItem href="/wardrobe" text="Wardrobe" />
@@ -48,10 +54,9 @@ export default function Navbar() {
 						<NavItem href="/signup" text="Sign up" />
 					</>
 				}
-				<NavItem>
-					<SearchBar></SearchBar>
+				<NavItem href="/" text="Account">
+					<img src={Account} />
 				</NavItem>
-				<NavItem href="/feed" text="Feed" />
 				{/* Dropdown component */}
 				{/* <NavItem>
 					<Dropdown title="More">

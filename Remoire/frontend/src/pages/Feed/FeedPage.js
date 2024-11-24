@@ -19,7 +19,7 @@ import { useMediaQueryContext } from "../../MediaQueryContext";
 export default function FeedPage() {
     const screenSize = useMediaQueryContext();
 
-    /* const posts = [
+    const posts = [
         <Post className="feed-post" image={Sab}/>,
         <Post className="feed-post" image={Wallows}/>,
         <Post className="feed-post" image={Liv}/>,
@@ -30,9 +30,9 @@ export default function FeedPage() {
         <Post className="feed-post" image={Sab}/>,
         <Post className="feed-post" image={Swing}/>,
         <Post className="feed-post" image={Gracie}/>
-    ] */
+    ]
 
-    const [posts, setPosts] = useState([]);
+    /* const [posts, setPosts] = useState([]); */
     const [postWidth, setPostWidth] = useState(0);
     const [columns, setColumns] = useState([]);
 
