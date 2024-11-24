@@ -1,15 +1,14 @@
 import './NavBar.css';
 
 import React from 'react';
-import NavItem from '../NavItem/NavItem';
 import Dropdown from '../Dropdown/Dropdown';
+import Icon from '../Icon/Icon';
+import NavItem from '../NavItem/NavItem';
 import SearchBar from '../SearchBar/SearchBar';
 
 import { useContext } from "react";
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../../UserContext';
-
-import Account from "../../assets/icons/icon__account-circle.svg";
 
 export default function Navbar() {
 	const navigate = useNavigate();
@@ -55,7 +54,7 @@ export default function Navbar() {
 					</>
 				}
 				<NavItem href="/" text="Account">
-					<img src={Account} />
+					<Icon name="accountIcon" />
 				</NavItem>
 				{/* Dropdown component */}
 				{/* <NavItem>
