@@ -20,14 +20,20 @@ def remove_background_path(input_path, output_path):
 def remove_background_file(img):
     try:
         output = remove(img, force_return_bytes=True)
-        # Save the output image
-        return output
-        output.save(output_path)
-        print(f"Background removed image saved at {output_path}")
+        # Ensure the image is in RGBA mode (to have an alpha channel)
+        output = output.convert("RGBA")
+        # Get the alpha channel
+        alpha = output.split()[-1]
+
+        bbox = alpha.getbbox()
+        if bbox:
+            cropped_output = output.crop(bbox)
+        else:
+            cropped_output = output
+        
+        return cropped_output
     except Exception as e:
         print(f"Error during background removal: {e}")
-
-
 
 
 
