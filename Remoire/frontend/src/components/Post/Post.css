@@ -4,7 +4,7 @@ div.post {
 
     padding: 0;
 
-    filter: drop-shadow(0 0 1rem var(--hex__drop-shadow));
+    filter: drop-shadow(0 0 0.3rem var(--hex__drop-shadow));
 }
 
 div.post-container {
