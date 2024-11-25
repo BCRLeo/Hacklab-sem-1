@@ -1,0 +1,10 @@
+Flask
+Flask-SQLAlchemy
+Flask-Login
+Flask-Migrate
+Werkzeug
+Pillow
+rembg
+sqlalchemy-imageattach
+SQLAlchemy
+alembic
