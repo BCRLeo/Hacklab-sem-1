@@ -26,13 +26,13 @@ import { ReactComponent as SearchIcon } from "../../assets/icons/icon__search.sv
  * <Icon name="avatarIcon" />
  */
 export default function Icon(props) {
-    const { name, ...svgProps } = props;
+    const { name, className, ...svgProps } = props;
 
     const Icons = {
-        accountIcon: <AccountIcon className="icon" {...svgProps} />,
-        arrowLeftIcon: <ArrowLeftIcon className="icon" {...svgProps} />,
-        arrowRightIcon: <ArrowRightIcon className="icon" {...svgProps} />,
-        searchIcon: <SearchIcon className="icon" {...svgProps} />,
+        accountIcon: <AccountIcon className={`icon ${className ? className : ""}`} {...svgProps} />,
+        arrowLeftIcon: <ArrowLeftIcon className={`icon ${className ? className : ""}`} {...svgProps} />,
+        arrowRightIcon: <ArrowRightIcon className={`icon ${className ? className : ""}`} {...svgProps} />,
+        searchIcon: <SearchIcon className={`icon ${className ? className : ""}`} {...svgProps} />,
     };
 
     return Icons[name] || null;

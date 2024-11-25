@@ -45,25 +45,25 @@ export default function Navbar() {
 				{user && user !== -1 ? 
 					<>
 						<NavItem href="/wardrobe" text="Wardrobe" className={location.pathname === "/wardrobe" ? "active" : ""} />
+					</>
+					: 
+					<>
+					</>
+				}
+				<NavItem>
+					<Dropdown renderItem={(dropdownProps) => <Icon name="accountIcon" {...dropdownProps} />}>
+					{user && user !== -1 ? 
+					<>
 						<NavItem text="Log out" onClick={handleLogout} />
 					</>
 					: 
 					<>
-						<NavItem href="/login" text="Wardrobe" />
 						<NavItem href="/login" text="Log in" className={location.pathname === "/login" ? "active" : ""} />
 						<NavItem href="/signup" text="Sign up" className={location.pathname === "/signup" ? "active" : ""} />
 					</>
 				}
-				<NavItem href="/" text="Account">
-					<Icon name="accountIcon" />
-				</NavItem>
-				{/* Dropdown component */}
-				{/* <NavItem>
-					<Dropdown title="More">
-						<NavItem href="/contact" text="Contact Us" />
-						<NavItem href="/faq" text="FAQ" />
 					</Dropdown>
-				</NavItem> */}
+				</NavItem>
 			</ul>
 		</nav>
 	);

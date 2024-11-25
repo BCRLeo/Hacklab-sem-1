@@ -1,0 +1,28 @@
+.dropdown {
+    position: relative;
+}
+
+.dropdown-toggle {
+    cursor: pointer;
+}
+
+ul.dropdown-menu {
+    display: none;
+    z-index: 2;
+    position: fixed;
+    top: 1rem;
+    right: 5rem;
+
+    padding: 0;
+    background-color: var(--hex__background);
+    filter: drop-shadow(0 0 0.3rem var(--hex__drop-shadow));
+    border-radius: 1rem;
+}
+
+.dropdown:hover ul.dropdown-menu {
+    display: block;
+}
+
+ul.dropdown-menu li * {
+    color: var(--hex__text);
+}
