@@ -7,10 +7,11 @@ import NavItem from '../NavItem/NavItem';
 import SearchBar from '../SearchBar/SearchBar';
 
 import { useContext } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { UserContext } from '../../UserContext';
 
 export default function Navbar() {
+	const location = useLocation();
 	const navigate = useNavigate();
 	const { user, setUser } = useContext(UserContext);
 
@@ -36,21 +37,21 @@ export default function Navbar() {
 	return (
 		<nav className="navbar">
 			<ul className="navbar-nav">
-				<NavItem href="/" text="Home" />
-				<NavItem href="/feed" text="Feed" />
+				<NavItem href="/" text="Home" className={location.pathname === "/" ? "active" : ""} />
+				<NavItem href="/feed" text="Feed" className={location.pathname === "/feed" ? "active" : ""} />
 				<NavItem className="search">
 					<SearchBar></SearchBar>
 				</NavItem>
 				{user && user !== -1 ? 
 					<>
-						<NavItem href="/wardrobe" text="Wardrobe" />
+						<NavItem href="/wardrobe" text="Wardrobe" className={location.pathname === "/wardrobe" ? "active" : ""} />
 						<NavItem text="Log out" onClick={handleLogout} />
 					</>
 					: 
 					<>
 						<NavItem href="/login" text="Wardrobe" />
-						<NavItem href="/login" text="Log in" />
-						<NavItem href="/signup" text="Sign up" />
+						<NavItem href="/login" text="Log in" className={location.pathname === "/login" ? "active" : ""} />
+						<NavItem href="/signup" text="Sign up" className={location.pathname === "/signup" ? "active" : ""} />
 					</>
 				}
 				<NavItem href="/" text="Account">

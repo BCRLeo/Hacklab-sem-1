@@ -3,10 +3,16 @@
     width: fit-content;
     align-items: center;
     box-sizing: border-box;
-    padding: 0;
-    margin: auto 1.5rem;
+    margin: auto;
 }
 
 .nav-link {  
     margin: auto;
+    padding: 1rem 1.5rem;
+    width: max-content;
+}
+
+.nav-link:link {  
+    text-decoration: none;
+    font-weight: 550;
 }
