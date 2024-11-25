@@ -7,9 +7,7 @@ export default function SearchBar() {
 	return (
 		<div className="searchbar">
 			<Link to="/search"><Icon name="searchIcon" /></Link>
-			<div className="searchbar-container">
-				<input type="text" name="search" placeholder="Search" />
-			</div>
+			<input type="text" name="search" placeholder="Search" />
 		</div>
 	);
 }
