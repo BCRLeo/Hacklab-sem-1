@@ -203,7 +203,8 @@ export default function WardrobePage() {
                 </form>
                 <p id="upload-status">{uploadStatus}</p>
             </Popover>
-
+            
+            
             <button><span>Edit wardrobe</span></button>
         </>
     );
