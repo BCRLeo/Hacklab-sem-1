@@ -11,7 +11,7 @@ ul.dropdown-menu {
     z-index: 2;
     position: fixed;
     top: 1rem;
-    right: 5rem;
+    right: 3rem;
 
     padding: 0;
     background-color: var(--hex__background);
