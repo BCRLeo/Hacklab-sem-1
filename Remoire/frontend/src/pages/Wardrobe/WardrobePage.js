@@ -29,6 +29,7 @@ export default function WardrobePage() {
     const [isUserLoading, setIsUserLoading] = useState(true);
     const [isUploading, setIsUploading] = useState(false);
     const [isPendingUpdate, setIsPendingUpdate] = useState(false);
+    const [isEditing, setIsEditing] = useState(false);
 
     const [status, setStatus] = useState("");
 
@@ -84,8 +85,12 @@ export default function WardrobePage() {
         );
     }
 
+    const toggleIsEditing = () => {
+        setIsEditing(isEditing => !isEditing);
+    };
+
     const handleClothingClick = async (event) => {
-        if (event.target.className !== "carousel-image") {
+        if (event.target.className !== "carousel-image" || !isEditing) {
             return;
         }
 
@@ -182,7 +187,7 @@ export default function WardrobePage() {
                     </form>
                     <p id="upload-status">{uploadStatus}</p>
                 </Popover>
-                <ToggleButton labels={{"before": "Edit", "after": "Done"}} content={{"before": <Icon name="editIcon" />, "after": <Icon name="checkIcon" />}} />
+                <ToggleButton labels={{"before": "Edit", "after": "Done"}} content={{"before": <Icon name="editIcon" />, "after": <Icon name="checkIcon" />}} onClick={toggleIsEditing} />
             </Bar>
 
             <div className="wardrobe-carousel-container" onClick={handleClothingClick}>
