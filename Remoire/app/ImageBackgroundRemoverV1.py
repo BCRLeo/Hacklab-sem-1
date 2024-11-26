@@ -32,7 +32,7 @@ def remove_background_file(img):
         else:
             cropped_output = output
         img_io = io.BytesIO()
-        output.save(img_io, format='PNG')  # Use PNG to preserve transparency
+        cropped_output.save(img_io, format='PNG')  # Use PNG to preserve transparency
         img_io.seek(0)
 
         # Step 7: Return the processed image bytes
