@@ -6,7 +6,7 @@ from sqlalchemy import text
 # Followers association table
 followers = db.Table('followers',
     db.Column('follower_id', db.Integer, db.ForeignKey('user.id')),
-    db.Column('followed_id', db.Integer, db.ForeignKey('user.id'))
+    db.Column('following_id', db.Integer, db.ForeignKey('user.id'))
 )
 
 # Association table for tags
@@ -15,6 +15,30 @@ post_tags = db.Table('post_tags',
     db.Column('tag_id', db.Integer, db.ForeignKey('tag.id'), primary_key=True)
 )
 
+class OutfitUsage(db.Model):
+    __tablename__ = 'outfit_usage'
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    outfit_id = db.Column(db.Integer, db.ForeignKey('outfit.id'), nullable=False)
+    timestamp = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+
+    # Relationships
+    user = db.relationship('User', back_populates='outfit_usages')
+    outfit = db.relationship('Outfit', back_populates='outfit_usages')
+
+    @classmethod
+    def get_outfits_on_day(cls, user_id, date):
+        
+        start_datetime = datetime.combine(date, datetime.min.time())
+        end_datetime = datetime.combine(date, datetime.max.time())
+
+        usages = cls.query.filter(
+            cls.user_id == user_id,
+            cls.timestamp >= start_datetime,
+            cls.timestamp <= end_datetime
+        ).all()
+
+        return [usage.outfit_id for usage in usages]
 class Post(db.Model):
     __tablename__ = 'post'
     id = db.Column(db.Integer, primary_key=True)
@@ -49,6 +73,8 @@ class Outfit(db.Model):
     # Relationships
     user = db.relationship('User', back_populates='outfits')
     posts = db.relationship('Post', back_populates='outfit')
+    outfit_usages = db.relationship('OutfitUsage', back_populates='outfit', lazy='dynamic')
+
 
     # Clothing item relationships
     jacket_id = db.Column(db.Integer, db.ForeignKey('jacket.id'), nullable=True)
@@ -79,6 +105,11 @@ class Outfit(db.Model):
 
     def unmark_as_favorite(self):
         self.favorite = False
+        db.session.commit()
+
+    def mark_as_worn_today(self):
+        usage = OutfitUsage(user_id=self.user_id, outfit_id=self.id)
+        db.session.add(usage)
         db.session.commit()
 
 class Like(db.Model):
@@ -133,6 +164,8 @@ class User(db.Model, UserMixin):
     birthday = db.Column(db.Date, nullable=False)
     CreationDate = db.Column(db.Date, nullable=False)
     PhoneNumber = db.Column(db.String(20), nullable=True, unique = True)
+    ProfilePicture = db.Column(db.LargeBinary, nullable=True)
+    Bio = db.Column(db.String(500), nullable = True)
 
     # Premium field with default value set to False
     premium = db.Column(
@@ -159,23 +192,25 @@ class User(db.Model, UserMixin):
     posts = db.relationship('Post', back_populates='author', lazy='dynamic')
     likes = db.relationship('Like', back_populates='user', lazy='dynamic')
     outfits = db.relationship('Outfit', back_populates='user')
+    outfit_usages = db.relationship('OutfitUsage', back_populates='user', lazy='dynamic')
+
 
     def get_favorite_outfits(self):
         return [outfit for outfit in self.outfits if outfit.favorite]
 
     # Self-referential followers relationship
-    followed = db.relationship(
+    following = db.relationship(
         'User', secondary=followers,
         primaryjoin=(followers.c.follower_id == id),
-        secondaryjoin=(followers.c.followed_id == id),
+        secondaryjoin=(followers.c.following_id == id),
         back_populates='followers',
         lazy='dynamic'
     )
     followers = db.relationship(
         'User', secondary=followers,
-        primaryjoin=(followers.c.followed_id == id),
+        primaryjoin=(followers.c.following_id == id),
         secondaryjoin=(followers.c.follower_id == id),
-        back_populates='followed',
+        back_populates='following',
         lazy='dynamic'
     )
     # Method to check if the user has premium status
@@ -189,18 +224,18 @@ class User(db.Model, UserMixin):
 
     def follow(self, user):
         if not self.is_following(user):
-            self.followed.append(user)
+            self.following.append(user)
             db.session.commit()
 
     def unfollow(self, user):
         if self.is_following(user):
-            self.followed.remove(user)
+            self.following.remove(user)
             db.session.commit()
 
     def is_following(self, user):
-        return self.followed.filter(followers.c.followed_id == user.id).first() is not None
+        return self.following.filter(followers.c.following_id == user.id).first() is not None
 
-    def is_followed(self, user):
+    def is_following(self, user):
         return self.followers.filter(followers.c.follower_id == user.id).first() is not None
 
     def like_post(self, post):

@@ -21,7 +21,8 @@ def remove_background_file(img):
     try:
         output = remove(img, force_return_bytes=True)
         # Ensure the image is in RGBA mode (to have an alpha channel)
-        output = output.convert("RGBA")
+        #output = output.convert("RGBA")
+        output = Image.open(io.BytesIO(output)).convert("RGBA")
         # Get the alpha channel
         alpha = output.split()[-1]
 
@@ -30,8 +31,15 @@ def remove_background_file(img):
             cropped_output = output.crop(bbox)
         else:
             cropped_output = output
+        img_io = io.BytesIO()
+        cropped_output.save(img_io, format='PNG')  # Use PNG to preserve transparency
+        img_io.seek(0)
+
+        # Step 7: Return the processed image bytes
+        processed_bytes = img_io.getvalue()
+        return processed_bytes
         
-        return cropped_output
+
     except Exception as e:
         print(f"Error during background removal: {e}")
 

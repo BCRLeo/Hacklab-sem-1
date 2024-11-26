@@ -1,6 +1,7 @@
 .icon {
-    padding: 1rem;
+    /* padding: 1rem; */
+    width: 2rem;
+    height: 2rem;
     margin: auto 0;
     fill: var(--hex__brand-white);
-    width: 2rem;
 }

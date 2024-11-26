@@ -37,9 +37,10 @@
 	--width__display: 90dvw;
 	/* --width__post: 90dvw; */
 	--width__post: calc(var(--width__display) / var(--count__post-columns));
-	
 
 	--height__nav-bar: 3.5rem;
+
+	--filter__drop-shadow: drop-shadow(0 0 0.3rem var(--hex__drop-shadow));
 }
 
 @media (width >= 576px) {

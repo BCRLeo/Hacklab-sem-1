@@ -18,19 +18,19 @@ def get_posts(user_id):
     # Get the user
     user = User.query.get(user_id)
 
-    # Get list of followed user IDs
-    followed_user_ids = [u.id for u in user.followed]
+    # Get list of following user IDs
+    following_user_ids = [u.id for u in user.following]
 
-    # Top 10 most liked posts in the past month by followed users
-    top_followed_posts = db.session.query(
+    # Top 10 most liked posts in the past month by following users
+    top_following_posts = db.session.query(
         Post,
         func.count(Like.id).label('like_count')
     ).outerjoin(Like).filter(
         Post.timestamp >= one_month_ago,
-        Post.user_id.in_(followed_user_ids)
+        Post.user_id.in_(following_user_ids)
     ).group_by(Post.id).order_by(func.count(Like.id).desc()).limit(10).all()
 
-    posts = top_posts + top_followed_posts
+    posts = top_posts + top_following_posts
     random.shuffle(posts)
 
     return posts
