@@ -19,26 +19,31 @@ import { useMediaQueryContext } from "../../MediaQueryContext";
 export default function FeedPage() {
     const screenSize = useMediaQueryContext();
 
-    const posts = [
-        <Post className="feed-post" image={Sab}/>,
-        <Post className="feed-post" image={Wallows}/>,
-        <Post className="feed-post" image={Liv}/>,
-        <Post className="feed-post" image={Niall}/>,
-        <Post className="feed-post" image={Gracie}/>,
-        <Post className="feed-post" image={Novo}/>,
-        <Post className="feed-post" image={Wallows}/>,
-        <Post className="feed-post" image={Sab}/>,
-        <Post className="feed-post" image={Swing}/>,
-        <Post className="feed-post" image={Gracie}/>
-    ]
-
-    /* const [posts, setPosts] = useState([]); */
+    const [posts, setPosts] = useState([]); 
     const [postWidth, setPostWidth] = useState(0);
     const [columns, setColumns] = useState([]);
-
+    
     const [postFile, setPostFile] = useState(null);
     const [isUploading, setIsUploading] = useState(false);
     const [uploadStatus, setUploadStatus] = useState("");
+
+    const fetchPosts = async () => {
+        try {
+            const response = await fetch("/api/posts", {
+                method: "GET"
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                setPosts(data.map((source) => {<img src={source}/>})); // Save posts to state
+            } else {
+                console.error("Failed to fetch posts");
+            }
+        } catch (error) {
+            console.error("Error fetching posts:", error);
+        }
+    };
+
 
     const handleFileChange = (event) => {
         setPostFile(event.target.files[0]);
@@ -56,7 +61,6 @@ export default function FeedPage() {
         formData.append("file", postFile);
 
         try {
-            setUploadStatus("Uploading file");
             const response = await fetch("/api/upload/feed-post", {
                 method: "POST",
                 body: formData
@@ -64,39 +68,18 @@ export default function FeedPage() {
 
             if (response.ok) {
                 setUploadStatus("File uploaded successfully");
-                event.target.reset();
+                fetchPosts(); // Refresh posts after upload
             } else {
                 setUploadStatus("Failed to upload file");
             }
         } catch (error) {
-            console.error("Error: ", error);
+            console.error("Error uploading file:", error);
             setUploadStatus("An error occurred while uploading the file");
         }
         setIsUploading(false);
     };
 
-    const getPosts = async (setPostsCallback) => {
-        try {
-            const response = await fetch("/api/posts", {
-                method: "GET"
-            });
-
-            if (!response.ok) {
-                console.error("Failed to fetch posts");
-                return;
-            }
-
-            const data = await response.json();
-            if (data) {
-                setPostsCallback(data);
-                return;
-            }
-            console.error("Failed to fetch posts");
-        } catch (error) {
-            console.error("Error: ", error);
-        }
-    }
-
+    
     useEffect(() => {
         const rootStyles = getComputedStyle(document.documentElement);
         const width = rootStyles.getPropertyValue("--width__post");
@@ -118,12 +101,16 @@ export default function FeedPage() {
         }));
     }, [screenSize]);
 
+    useEffect(() => {
+        fetchPosts();
+    }, []);
+
     return (
         <>
             <Header />
             <h1>Feed</h1>
             <div className="feed-container">
-                {/* {posts} */}
+                {/* posts */}
                 {columns}
             </div>
             

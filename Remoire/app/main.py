@@ -173,7 +173,6 @@ def get_all_images(item_type):
         {"id": idx, "url": f"/api/images/{item_type}?id={idx}"}
         for idx in ids
     ]
-    print(image_metadata)
     return jsonify(image_metadata)
 
 @main.route("/api/delete-item/<item_type>", methods=["DELETE"])
@@ -294,16 +293,21 @@ def upload_feed_post():
         
     return jsonify({"success": True, "message": "File successfully uploaded"}), 200
 
-@main.route("/api/posts", methods=["POST"])
-def get_feed_posts():
-    user_id = request.args.get("user-id")
-    if user_id:
-        user_id = int(user_id)
-        
+@main.route("/api/posts", methods=["GET"])
+def get_feed_posts():        
     if not current_user.is_authenticated:
         return jsonify({"success": False, "message": "User not logged in"}), 401
+    
+    user_id = request.args.get("user-id")
+    
+    if user_id:
+        user_id = int(user_id)
+    else:
+        user_id = current_user.id
+    print(user_id)
 
-    posts_to_display = get_posts(user_id)
+    posts = get_posts(user_id)
+    print(posts)
     #this gets the posts to be displayed, still need to add dynamics as this returns a fixed 20 posts
     #a mix of website wide top posts and followed user posts, if you call it again it will return the same
     #ones assuming the top likes and followed don't change, doesnt account for a user scrolling past 20 posts, 
@@ -311,23 +315,24 @@ def get_feed_posts():
     #but it still needs to be figured out
 
 
-    posts = current_user.posts
+    """ posts = current_user.posts """
     ids = [post.id for post in posts]
-
-    """ id = request.args.get("id")
+    images = [post.image_data for post in posts]
+    
+    id = request.args.get("id")
     if id:
         id = int(id)
         if id not in ids:
             return jsonify({"success": False, "message": "Invalid post ID"}), 404
         
         index = ids.index(id)
-        mimetypes = [item.image_mimetype for item in items]
+        mimetypes = [item.image_mimetype for item in posts]
         image_bytes = images[index]
         image_io = io.BytesIO(image_bytes)
-        return send_file(image_io, mimetype = mimetypes[index]) """
+        return send_file(image_io, mimetype = mimetypes[index])
 
     posts_metadata = [
-        {"id": idx, "url": f"/api/images?id={idx}"}
+        {"id": idx, "url": f"/api/posts?id={idx}", "caption": posts[idx].description, "timestamp" : posts[idx].timestamp, "outfit" : posts[idx].outfit_id}
         for idx in ids
     ]
     print(posts_metadata)

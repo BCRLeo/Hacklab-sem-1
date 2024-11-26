@@ -85,13 +85,14 @@ def login():
 
 @auth.route("/api/signup", methods=["POST"])
 def signup():
+    print("hi")
     # Get form data
     data = request.get_json()
     email = data.get("email")
     username = data.get("username")
     password = data.get("password")
     birthday_str = data.get("birthday")
-
+    print("hi")
     # Validate email format
     if not re.match(EMAIL_REGEX, email):
         return jsonify({"success": False, "message": "Invalid email format"})
@@ -105,12 +106,12 @@ def signup():
         birthday = datetime.strptime(birthday_str, "%Y-%m-%d").date()
     except ValueError:
         return jsonify({"success": False, "message": "Invalid date format"})
-
+    print("hiii")
     # Check if user exists
     user = User.query.filter_by(email=email).first()
     if user:
         return jsonify({"success": False, "message": "Email address already in use"})
-    
+    print("hiiiii")
     # Create new user and wardrobe
     new_user = User(
         email=email,
@@ -119,11 +120,13 @@ def signup():
         birthday = birthday,
         CreationDate = date.today()
     )
+    print("hiiiiiiiii")
     new_wardrobe = Wardrobe(user=new_user)
     db.session.add(new_user)
     db.session.add(new_wardrobe)
     db.session.commit()
     login_user(new_user)
+    print("hiiiiiiiiiiiii")
     return jsonify({
         "success": True,
         "user": {
