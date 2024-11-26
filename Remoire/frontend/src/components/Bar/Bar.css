@@ -1,6 +1,5 @@
 .bar {
     display: flex;
-
     width: fit-content;
 
     margin: auto;
@@ -14,8 +13,4 @@
 
 .bar.vertical {
     flex-direction: column;
-}
-
-.bar * {
-    margin: auto 0;
 }
