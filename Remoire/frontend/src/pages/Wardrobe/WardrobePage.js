@@ -1,10 +1,13 @@
 import "./WardrobePage.css"
 
+import Bar from "../../components/Bar/Bar";
 import Carousel from "../../components/Carousel/Carousel";
 import Field from "../../components/Field/Field";
 import Header from "../../components/Header/Header";
+import Icon from "../../components/Icon/Icon";
 import Loading from "../../components/Loading/Loading";
 import Popover from "../../components/Popover/Popover";
+import ToggleButton from "../../components/ToggleButton/ToggleButton";
 
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -153,6 +156,35 @@ export default function WardrobePage() {
         <>
             <Header />
             {user ? <h1>{user.username}'s wardobe</h1> : <h1>Wardrobe</h1>}
+
+            <Bar orientation="horizontal">
+                <Popover label="Upload item">
+                    <form onSubmit={handleSubmit} method="post" className="upload">
+                        <Field label="Upload item" onChange={handleFileChange} type="file" name="item" />
+                        <Field label="Clothing category">
+                            <select name="category" onChange={handleCategoryChange}>
+                                <option value="">Select a clothing category</option>
+                                <option value="jacket">Jacket</option>
+                                <option value="shirt">Shirt</option>
+                                <option value="trouser">Trousers</option>
+                                <option value="shoe">Shoes</option>
+                            </select>
+                        </Field>
+                        {!isUploading ?
+                            <button type="submit" className="button-upload">
+                                <span>Upload</span>
+                            </button>
+                        :
+                            <button type="button" className="button-uploading">
+                                <span>Uploading...</span>
+                            </button>
+                        }
+                    </form>
+                    <p id="upload-status">{uploadStatus}</p>
+                </Popover>
+                <ToggleButton labels={{"before": "Edit", "after": "Done"}} content={{"before": <Icon name="editIcon" />, "after": <Icon name="checkIcon" />}} />
+            </Bar>
+
             <div className="wardrobe-carousel-container" onClick={handleClothingClick}>
                 {jackets.length === 0 ? (
                     <p>No jackets available.</p>
@@ -178,33 +210,6 @@ export default function WardrobePage() {
                     <Carousel id="carousel-shoes" images={shoes.map((image) => image.url)} />
                 )}
             </div>
-
-            <Popover label="Upload item">
-                <form onSubmit={handleSubmit} method="post" className="upload">
-                    <Field label="Upload item" onChange={handleFileChange} type="file" name="item" />
-                    <Field label="Clothing category">
-                        <select name="category" onChange={handleCategoryChange}>
-                            <option value="">Select a clothing category</option>
-                            <option value="jacket">Jacket</option>
-                            <option value="shirt">Shirt</option>
-                            <option value="trouser">Trousers</option>
-                            <option value="shoe">Shoes</option>
-                        </select>
-                    </Field>
-                    {!isUploading ?
-                        <button type="submit" className="button-upload">
-                            <span>Upload</span>
-                        </button>
-                    :
-                        <button type="button" className="button-uploading">
-                            <span>Uploading...</span>
-                        </button>
-                    }
-                </form>
-                <p id="upload-status">{uploadStatus}</p>
-            </Popover>
-
-            <button><span>Edit wardrobe</span></button>
         </>
     );
 }
