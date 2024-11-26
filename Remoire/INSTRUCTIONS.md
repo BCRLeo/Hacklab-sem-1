@@ -71,7 +71,7 @@ Click the resulting link to open the web app.
 Make sure the `package.json` file has `"proxy": "http://localhost:5000"` (or whatever port the Python runs from)
 
 
-for db migrations these are the commands you need to run:
+# for db migrations these are the commands you need to run:
 
 for mac/linux (non of use linux but whatever):
 ```
@@ -82,8 +82,6 @@ for windows :
 ```
 set FLASK_APP=run.py
 ```
-
-
 
 once that's done, run these two commands:
 ```
