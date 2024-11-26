@@ -6,7 +6,7 @@ from sqlalchemy import text
 # Followers association table
 followers = db.Table('followers',
     db.Column('follower_id', db.Integer, db.ForeignKey('user.id')),
-    db.Column('followed_id', db.Integer, db.ForeignKey('user.id'))
+    db.Column('following_id', db.Integer, db.ForeignKey('user.id'))
 )
 
 # Association table for tags
@@ -199,18 +199,18 @@ class User(db.Model, UserMixin):
         return [outfit for outfit in self.outfits if outfit.favorite]
 
     # Self-referential followers relationship
-    followed = db.relationship(
+    following = db.relationship(
         'User', secondary=followers,
         primaryjoin=(followers.c.follower_id == id),
-        secondaryjoin=(followers.c.followed_id == id),
+        secondaryjoin=(followers.c.following_id == id),
         back_populates='followers',
         lazy='dynamic'
     )
     followers = db.relationship(
         'User', secondary=followers,
-        primaryjoin=(followers.c.followed_id == id),
+        primaryjoin=(followers.c.following_id == id),
         secondaryjoin=(followers.c.follower_id == id),
-        back_populates='followed',
+        back_populates='following',
         lazy='dynamic'
     )
     # Method to check if the user has premium status
@@ -224,18 +224,18 @@ class User(db.Model, UserMixin):
 
     def follow(self, user):
         if not self.is_following(user):
-            self.followed.append(user)
+            self.following.append(user)
             db.session.commit()
 
     def unfollow(self, user):
         if self.is_following(user):
-            self.followed.remove(user)
+            self.following.remove(user)
             db.session.commit()
 
     def is_following(self, user):
-        return self.followed.filter(followers.c.followed_id == user.id).first() is not None
+        return self.following.filter(followers.c.following_id == user.id).first() is not None
 
-    def is_followed(self, user):
+    def is_following(self, user):
         return self.followers.filter(followers.c.follower_id == user.id).first() is not None
 
     def like_post(self, post):

@@ -39,6 +39,7 @@ def remove_background_file(img):
         processed_bytes = img_io.getvalue()
         return processed_bytes
         
+
     except Exception as e:
         print(f"Error during background removal: {e}")
 
