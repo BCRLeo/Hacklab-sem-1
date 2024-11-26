@@ -2,6 +2,7 @@
 	--hex__brand-main: #660C42;
 	--hex__brand-alt: #A01367;
 	--hex__brand-light: #C286B7;
+	--hex__brand-medium: #916288;
 	--hex__brand-dark: #3F1B64;
 	--hex__brand-accent: #992C3B;
 	--hex__brand-black: #292727;
@@ -14,6 +15,7 @@
 	--hex__text: var(--hex__brand-black);
 	--hex__text-contrast: var(--hex__brand-white);
 	--hex__button: var(--hex__brand-light);
+	--hex__button-hover: var(--hex__brand-medium);
 	--hex__drop-shadow: var(--hex__brand-grey);
 	--hex__icon: var(--hex__brand-white);
 

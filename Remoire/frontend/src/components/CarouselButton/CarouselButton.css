@@ -17,6 +17,17 @@
     border-radius: 50% 50% 50% 50%;
 
     cursor: pointer;
+
+    transition-duration: 0.15s;
+}
+
+.carouselbutton:hover {
+    background-color: var(--hex__button-hover);
+}
+
+.carouselbutton:active {
+    transform-origin: top;
+    transform: scale(0.9);
 }
 
 .carouselbutton.left {
