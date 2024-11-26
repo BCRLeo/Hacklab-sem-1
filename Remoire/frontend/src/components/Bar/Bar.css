@@ -1,0 +1,21 @@
+.bar {
+    display: flex;
+
+    width: fit-content;
+
+    margin: auto;
+    gap: 2rem;
+    justify-content: space-around;
+}
+
+.bar.horizontal {
+    flex-direction: row;
+}
+
+.bar.vertical {
+    flex-direction: column;
+}
+
+.bar * {
+    margin: auto 0;
+}

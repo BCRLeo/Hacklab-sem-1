@@ -1,0 +1,5 @@
+.togglebutton-text {
+    display: block;
+    color: var(--hex__text-contrast);
+    text-align: center;
+}
