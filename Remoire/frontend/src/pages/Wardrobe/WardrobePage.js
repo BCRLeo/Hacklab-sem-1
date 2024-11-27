@@ -17,7 +17,8 @@ import { UserContext } from "../../UserContext";
 export default function WardrobePage() {
     const navigate = useNavigate();
     const { user, setUser } = useContext(UserContext);
-    const [file, setFile] = useState(null);
+    /* const [file, setFile] = useState(null); */
+    const [files, setFiles] = useState([]);
     const [category, setCategory] = useState("");
     const [uploadStatus, setUploadStatus] = useState("");
 
@@ -115,7 +116,8 @@ export default function WardrobePage() {
     };
 
     const handleFileChange = (event) => {
-        setFile(event.target.files[0]);
+        setFiles(Array.prototype.slice.call(event.target.files))
+        /* setFile(event.target.files[0]); */
     };
 
     const handleCategoryChange = (event) => {
@@ -125,33 +127,76 @@ export default function WardrobePage() {
     const handleSubmit = async (event) => {
         setIsUploading(true);
         event.preventDefault();
-        if (!file) {
-            setUploadStatus("Please select a file");
+        if (!files || files.length === 0) {
+            setUploadStatus("Please select at least one file");
             return;
         }
 
-        const formData = new FormData();
-        formData.append("file", file);
-        formData.append("category", category);
+        const uploadFile = async (file) => {
+            const formData = new FormData();
+            formData.append("file", file);
+            formData.append("category", category);
 
-        try {
-            setUploadStatus("Uploading file");
-            const response = await fetch("/api/wardrobe/items", {
-                method: "POST",
-                body: formData
-            });
-
-            if (response.ok) {
-                setUploadStatus("File uploaded successfully");
-                event.target.reset();
-            } else {
-                setUploadStatus("Failed to upload file");
+            try {
+                const response = await fetch("/api/wardrobe/items", {
+                    method: "POST",
+                    body: formData
+                });
+    
+                if (response.ok) {
+                    return { success: true, file: file.name };
+                } else {
+                    return { success: false, file: file.name };
+                }
+            } catch (error) {
+                console.error("Error uploading file: ", file.name, error);
+                return { success: false, file: file.name, error };
             }
-        } catch (error) {
-            console.error("Error: ", error);
-            setUploadStatus("An error occurred while uploading the file");
+        };
+
+        if (files.length > 1) {
+            setUploadStatus(`Uploading ${files.length} files...`);
+        } else {
+            setUploadStatus("Uploading file...");
+            const result = await uploadFile(files[0]);
+            if (result.success) {
+                setUploadStatus("File uploaded successfully.");
+            } else {
+                setUploadStatus("Failed to upload file.");
+            }
+            setIsUploading(false);
+            event.target.reset();
+            return;
         }
+
+        let successfulUploads = 0;
+        let failedUploads = 0;
+        for (let i = 0; i < files.length; i++) {
+            const result = await uploadFile(files[i]);
+
+            if (result.success) {
+                successfulUploads++;
+                console.log(`Successfully uploaded: ${result.file}`);
+            } else {
+                failedUploads++;
+                console.log(`Failed to upload: ${result.file}`);
+            }
+
+            if (failedUploads > 0) {
+                setUploadStatus(`Uploaded ${successfulUploads + 1} of ${files.length} files. Failed to upload ${failedUploads} files.`);
+            } else {
+                setUploadStatus(`Uploaded ${successfulUploads + 1} of ${files.length} files.`);
+            }
+        }
+
+        if (failedUploads > 0) {
+            setUploadStatus(`${successfulUploads} of ${files.length} files uploaded successfully.`);
+        } else {
+            setUploadStatus("All files uploaded successfully.");
+        }
+
         setIsUploading(false);
+        event.target.reset();
     };
 
     return (
@@ -162,7 +207,7 @@ export default function WardrobePage() {
             <Bar orientation="horizontal">
                 <Popover renderToggle={(dropdownProps) => <Button {...dropdownProps}>Upload item</Button>}>
                     <form onSubmit={handleSubmit} method="post" className="upload">
-                        <Field label="Upload item" onChange={handleFileChange} type="file" name="item" />
+                        <Field label="Upload item" onChange={handleFileChange} type="file" name="item" accept="image/png, image/jpeg, image/webp" multiple />
                         <Field label="Clothing category">
                             <select name="category" onChange={handleCategoryChange}>
                                 <option value="">Select a clothing category</option>

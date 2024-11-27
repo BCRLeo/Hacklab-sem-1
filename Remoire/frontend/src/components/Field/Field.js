@@ -1,6 +1,8 @@
 import "./Field.css"
 
-export default function Field({ label, type, name, placeholder, onChange, children }) {
+export default function Field(props) {
+    const { label, children, ...rest } = props;
+
     if (children) {
         return (
             <div className="field">
@@ -13,7 +15,7 @@ export default function Field({ label, type, name, placeholder, onChange, childr
     return (
         <div className="field">
             {label && <h4 className="field-label">{label}</h4>}
-            <input className="field-input" onChange={onChange} type={type} name={name} placeholder={placeholder} />
+            <input className="field-input" {...rest} />
         </div>
     );
 }

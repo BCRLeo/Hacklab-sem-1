@@ -120,11 +120,11 @@ export default function FeedPage() {
         for (let i = 0; i < posts.length; i++) {
             columnDivs[i % columnCount].push(posts[i]);
         }
-        console.log(columnDivs);
+        
         setColumns(columnDivs.map((column, i) => {
             return (<div id={`column-${i}`} className="column">{column}</div>)
         }));
-    }, [screenSize]);
+    }, [screenSize, posts]);
 
     useEffect(() => {
         fetchPosts();

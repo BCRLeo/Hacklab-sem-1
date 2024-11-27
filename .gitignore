@@ -51,3 +51,4 @@ Remoire/app/__pycache__/models.cpython-312.pyc
 Remoire/instance/database.db
 .DS_Store
 Remoire/.DS_Store
+Remoire/migrations/
