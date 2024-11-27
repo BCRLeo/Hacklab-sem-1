@@ -37,7 +37,6 @@ export default function FeedPage() {
             if (response.ok) {
                 const postsMetadata = await response.json();
                 
-                // Fetch each post's image separately
                 const postComponents = await Promise.all(postsMetadata.map(async (postMetadata) => {
                     try {
                         const imageResponse = await fetch(postMetadata.url);
@@ -49,6 +48,7 @@ export default function FeedPage() {
                                 key={postMetadata.id}
                                 postId={postMetadata.id}
                                 image={imageUrl}
+                                username={postMetadata.username}
                             />
                         );
                     } catch (imageError) {
@@ -57,7 +57,6 @@ export default function FeedPage() {
                     }
                 }));
     
-                // Filter out any null posts (failed image fetches)
                 setPosts(postComponents.filter(Boolean));
             } else {
                 console.error("Failed to fetch posts");
