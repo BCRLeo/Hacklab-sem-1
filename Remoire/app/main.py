@@ -68,8 +68,8 @@ def search_page():
     return render_template("index.html")
 
 
-@main.route("/api/upload", methods=["POST"])
-def upload():
+@main.route("/api/wardrobe/items", methods=["POST"])
+def upload_wardrobe_item():
     if not current_user.is_authenticated:
         return jsonify({"success": False, "message": "User not logged in"}), 401
 
@@ -130,8 +130,8 @@ def upload():
         
     return jsonify({"success": True, "message": "File successfully uploaded"}), 200
 
-@main.route('/api/images/<item_type>', methods=['GET'])
-def get_all_images(item_type):
+@main.route('/api/wardrobe/items/<item_type>', methods=['GET'])
+def get_wardrobe_images(item_type):
     user_id = request.args.get("user-id")
     if user_id:
         user_id = int(user_id)
@@ -170,13 +170,13 @@ def get_all_images(item_type):
         return send_file(image_io, mimetype = mimetypes[index])
 
     image_metadata = [
-        {"id": idx, "url": f"/api/images/{item_type}?id={idx}"}
+        {"id": idx, "url": f"/api/wardrobe/items/{item_type}?id={idx}"}
         for idx in ids
     ]
     return jsonify(image_metadata)
 
-@main.route("/api/delete-item/<item_type>", methods=["DELETE"])
-def delete_item(item_type):
+@main.route("/api/wardrobe/items/<item_type>", methods=["DELETE"])
+def delete_wardrobe_item(item_type):
     if not current_user.is_authenticated:
         return jsonify({"success": False, "message": "User not logged in"}), 401
     
@@ -215,45 +215,7 @@ def delete_item(item_type):
     return jsonify({"success": False, "message": "You do not have permission to delete this item"}), 403
 
 
-@main.route('/delete_item/<item_type>/<int:item_id>', methods=['POST'])
-@login_required
-def delete_itemm(item_type, item_id):
-    # Map item types to their corresponding models
-    items = None
-    match item_type:
-        case "jacket":
-            items = current_user.wardrobe.jackets
-        case "shirt":
-            items = current_user.wardrobe.shirts
-        case "trousers":
-            items = current_user.wardrobe.trousers
-        case "shoes":
-            items = current_user.wardrobe.shoes
-        case _:
-            print("bad type")
-            return jsonify({"success": False, "message": "Invalid item type"})
-
-    # Get the item class based on the item_type
-    
-
-    if not items:
-        print('Invalid item type.')
-        return redirect(url_for('views.wardrobe'))
-
-    # Query the item by ID
-    item = items.query.get(item_id)
-
-    # Check if the item exists and belongs to the current user's wardrobe
-    if item and item.wardrobe.user_id == current_user.id:
-        db.session.delete(item)
-        db.session.commit()
-        print(f'{item_type.capitalize()} deleted successfully.')
-    else:
-        print('Item not found or you do not have permission to delete it.')
-
-    return redirect(url_for('views.wardrobe'))
-
-@main.route("/api/upload/feed-post", methods=["POST"])
+@main.route("/api/posts", methods=["POST"])
 def upload_feed_post():
     if not current_user.is_authenticated:
         return jsonify({"success": False, "message": "User not logged in"}), 401
@@ -272,7 +234,6 @@ def upload_feed_post():
     filename = secure_filename(file.filename)
     
     posts = current_user.posts
-
     new_post = models.Post()
         
     # Read the image data and get the MIME type
@@ -294,20 +255,12 @@ def upload_feed_post():
     return jsonify({"success": True, "message": "File successfully uploaded"}), 200
 
 @main.route("/api/posts", methods=["GET"])
-def get_feed_posts():        
+def get_feed_posts():
     if not current_user.is_authenticated:
         return jsonify({"success": False, "message": "User not logged in"}), 401
-    
-    user_id = request.args.get("user-id")
-    
-    if user_id:
-        user_id = int(user_id)
-    else:
-        user_id = current_user.id
-    print(user_id)
+    user_id = current_user.id
 
     posts = get_posts(user_id)
-    print(posts)
     #this gets the posts to be displayed, still need to add dynamics as this returns a fixed 20 posts
     #a mix of website wide top posts and followed user posts, if you call it again it will return the same
     #ones assuming the top likes and followed don't change, doesnt account for a user scrolling past 20 posts, 

@@ -35,7 +35,7 @@ export default function WardrobePage() {
 
     const getImages = async (itemType, setImagesCallback) => {
         try {
-            const response = await fetch(`/api/images/${itemType}`, {
+            const response = await fetch(`/api/wardrobe/items/${itemType}`, {
                 method: "GET"
             });
 
@@ -95,19 +95,15 @@ export default function WardrobePage() {
         }
 
         const url = new URL(event.target.src);
-        const path = url.pathname;
-        const query = url.search;
-        const newPath = path.replace("/api/images/", "/api/delete-item/") + query;
-        console.log(newPath);
 
         try {
-            const response = await fetch(newPath, {
+            const response = await fetch(url, {
                 method: "DELETE"
             });
 
             const data = await response.json();
             if (response.ok && data.success) {
-                console.log(`${newPath} successfully deleted`);
+                console.log(`Item ${url.search} successfully deleted`);
                 setIsPendingUpdate(true);
                 return;
             }
@@ -139,7 +135,7 @@ export default function WardrobePage() {
 
         try {
             setUploadStatus("Uploading file");
-            const response = await fetch("/api/upload", {
+            const response = await fetch("/api/wardrobe/items", {
                 method: "POST",
                 body: formData
             });

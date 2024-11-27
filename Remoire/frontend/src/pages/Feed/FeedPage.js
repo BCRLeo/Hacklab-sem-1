@@ -61,7 +61,7 @@ export default function FeedPage() {
         formData.append("file", postFile);
 
         try {
-            const response = await fetch("/api/upload/feed-post", {
+            const response = await fetch("/api/posts", {
                 method: "POST",
                 body: formData
             });
