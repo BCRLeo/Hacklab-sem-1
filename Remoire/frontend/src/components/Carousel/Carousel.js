@@ -48,7 +48,6 @@ export default function Carousel({ images, children }) {
 			let index = (currentIndex + i + images.length) % images.length;
 			newVisibleImages.push(<img className="carousel-image" key={i} src={images[index]} alt={`slide ${index + 1}`} />);
 		}
-		newVisibleImages.forEach((element) => console.log(element.key));
 		setVisibleImages(newVisibleImages);
 	}, [currentIndex, visibleImageCount, images]);
 

@@ -26,11 +26,9 @@ export default function SearchPage() {
         
 
         if (response.ok && data.success){
-            console.log(data);
             const userNames = await data.userNames;
             if (userNames) {
                 setText(userNames);
-                console.log(userNames);
             }
         }
         else{

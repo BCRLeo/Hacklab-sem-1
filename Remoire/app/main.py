@@ -83,7 +83,7 @@ def upload_wardrobe_item():
     
     if file.filename == "":
         return jsonify({"success": False, "message": "No selected file"}), 400
-    print(request.form)
+    
     if "category" not in request.form:
         return jsonify({"success": False, "message": "No category part"}), 400
     
@@ -151,7 +151,6 @@ def get_wardrobe_images(item_type):
         case "shoes":
             items = current_user.wardrobe.shoes
         case _:
-            print("bad type")
             return jsonify({"success": False, "message": "Invalid item type"}), 400
 
     images = [item.image_data for item in items]
@@ -204,7 +203,6 @@ def delete_wardrobe_item(item_type):
             return jsonify({"success": False, "message": "Invalid item ID"}), 404
     
     for element in items:
-        print(element.id, id)
         if element.id != id:
             continue
         if element.wardrobe.user_id == current_user.id:
@@ -288,7 +286,7 @@ def get_feed_posts():
         {"id": idx, "url": f"/api/posts?id={idx}", "caption": posts[idx].description, "timestamp" : posts[idx].timestamp, "outfit" : posts[idx].outfit_id}
         for idx in ids
     ]
-    print(posts_metadata)
+    
     return jsonify(posts_metadata)
 
 @main.route("/api/search", methods=["POST"])
