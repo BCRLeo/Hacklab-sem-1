@@ -26,8 +26,7 @@
 }
 
 .carouselbutton:active {
-    transform-origin: top;
-    transform: scale(0.9);
+    transform: translateY(-50%) scale(0.9);
 }
 
 .carouselbutton.left {
