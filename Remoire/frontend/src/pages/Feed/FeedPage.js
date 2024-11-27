@@ -8,6 +8,7 @@ import Novo from "../../assets/images/novoamor.jpeg";
 import Swing from "../../assets/images/swing.jpeg";
 import Gracie from "../../assets/images/gracie.jpeg";
 
+import Button from "../../components/Button/Button";
 import Field from "../../components/Field/Field";
 import Header from "../../components/Header/Header";
 import Popover from "../../components/Popover/Popover";
@@ -114,7 +115,7 @@ export default function FeedPage() {
                 {columns}
             </div>
             
-            <Popover label="Create post">
+            <Popover renderToggle={(dropdownProps) => <Button {...dropdownProps}>Create post</Button>}>
                 <form onSubmit={handleSubmit} method="post" className="upload">
                     <Field label="Upload item" onChange={handleFileChange} type="file" name="item" />
                     {!isUploading ?
