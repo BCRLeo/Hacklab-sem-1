@@ -2,31 +2,26 @@ import "./Dropdown.css"
 
 import React, { useState } from 'react';
 
-
-export default function Dropdown({ renderItem, children }) {
-    const [isOpen, setIsOpen] = useState(false);
-
-    const toggleDropdown = () => {
-        setIsOpen(!isOpen);
-    };
-
+/**
+ * Dropdown component that displays a toggleable dropdown menu upon hover.
+ *
+ * @component
+ * @param {Function} renderToggle - A function that renders the toggle area for the dropdown. This function receives an object containing the className.
+ * @param {React.ReactNode} children - The content to display inside the dropdown when it is open.
+ * @returns {JSX.Element} The rendered dropdown component.
+ *
+ * @example
+ * <Dropdown renderToggle={(dropdownProps) => <Icon name="accountIcon" {...dropdownProps} />}>
+ *     <div>Dropdown Content</div>
+ * </Dropdown>
+ */
+export default function Dropdown({ renderToggle, children }) {
     return (
         <div className="dropdown">
-            {renderItem({className: "dropdown-toggle"})}
+            {renderToggle({className: "dropdown-toggle"})}
             <ul className="dropdown-menu">
                 {children}
             </ul>
-        </div>
-    );
-
-    return (
-        <div className="dropdown">
-            {renderItem({className: "dropdown-toggle", onClick: toggleDropdown})}
-            {isOpen && (
-                <ul className="dropdown-menu">
-                    {children}
-                </ul>
-            )}
         </div>
     );
 }

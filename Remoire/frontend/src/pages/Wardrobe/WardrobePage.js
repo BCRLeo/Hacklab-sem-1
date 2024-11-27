@@ -1,6 +1,7 @@
 import "./WardrobePage.css"
 
 import Bar from "../../components/Bar/Bar";
+import Button from "../../components/Button/Button";
 import Carousel from "../../components/Carousel/Carousel";
 import Field from "../../components/Field/Field";
 import Header from "../../components/Header/Header";
@@ -159,7 +160,7 @@ export default function WardrobePage() {
             {user ? <h1>{user.username}'s wardobe</h1> : <h1>Wardrobe</h1>}
 
             <Bar orientation="horizontal">
-                <Popover label="Upload item">
+                <Popover renderToggle={(dropdownProps) => <Button {...dropdownProps}>Upload item</Button>}>
                     <form onSubmit={handleSubmit} method="post" className="upload">
                         <Field label="Upload item" onChange={handleFileChange} type="file" name="item" />
                         <Field label="Clothing category">
@@ -172,13 +173,13 @@ export default function WardrobePage() {
                             </select>
                         </Field>
                         {!isUploading ?
-                            <button type="submit" className="button-upload">
+                            <Button type="submit" className="button-upload">
                                 <span>Upload</span>
-                            </button>
+                            </Button>
                         :
-                            <button type="button" className="button-uploading">
+                            <Button type="button" className="button-uploading">
                                 <span>Uploading...</span>
-                            </button>
+                            </Button>
                         }
                     </form>
                     <p id="upload-status">{uploadStatus}</p>

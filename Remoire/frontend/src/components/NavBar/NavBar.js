@@ -51,7 +51,7 @@ export default function Navbar() {
 					</>
 				}
 				<NavItem>
-					<Dropdown renderItem={(dropdownProps) => <Icon name="accountIcon" {...dropdownProps} />}>
+					<Dropdown renderToggle={(dropdownProps) => <Icon name="accountIcon" {...dropdownProps} />}>
 					{user && user !== -1 ? 
 					<>
 						<NavItem text="Log out" onClick={handleLogout} />
