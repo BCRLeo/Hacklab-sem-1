@@ -162,7 +162,7 @@ export default function WardrobePage() {
             <Bar orientation="horizontal">
                 <Popover renderToggle={(dropdownProps) => <Button {...dropdownProps}>Upload item</Button>}>
                     <form onSubmit={handleSubmit} method="post" className="upload">
-                        <Field label="Upload item" onChange={handleFileChange} type="file" name="item" />
+                        <Field label="Upload item" onChange={handleFileChange} type="file" name="item" accept="image/png, image/jpeg, image/webp" />
                         <Field label="Clothing category">
                             <select name="category" onChange={handleCategoryChange}>
                                 <option value="">Select a clothing category</option>
