@@ -33,15 +33,39 @@ export default function FeedPage() {
             const response = await fetch("/api/posts", {
                 method: "GET"
             });
-
+    
             if (response.ok) {
-                const data = await response.json();
-                setPosts(data.map((source) => {<img src={source}/>})); // Save posts to state
+                const postsMetadata = await response.json();
+                
+                // Fetch each post's image separately
+                const postComponents = await Promise.all(postsMetadata.map(async (postMetadata) => {
+                    try {
+                        const imageResponse = await fetch(postMetadata.url);
+                        const imageBlob = await imageResponse.blob();
+                        const imageUrl = URL.createObjectURL(imageBlob);
+    
+                        return (
+                            <Post
+                                key={postMetadata.id}
+                                postId={postMetadata.id}
+                                image={imageUrl}
+                            />
+                        );
+                    } catch (imageError) {
+                        console.error(`Error fetching image for post ${postMetadata.id}:`, imageError);
+                        return null;
+                    }
+                }));
+    
+                // Filter out any null posts (failed image fetches)
+                setPosts(postComponents.filter(Boolean));
             } else {
                 console.error("Failed to fetch posts");
+                setUploadStatus("Could not load posts");
             }
         } catch (error) {
             console.error("Error fetching posts:", error);
+            setUploadStatus("Network error loading posts");
         }
     };
 
@@ -111,7 +135,6 @@ export default function FeedPage() {
             <Header />
             <h1>Feed</h1>
             <div className="feed-container">
-                {/* posts */}
                 {columns}
             </div>
             

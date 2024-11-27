@@ -5,7 +5,11 @@ from .models import Post, User, Like
 import random
 
 def get_posts(user_id):
-    one_month_ago = datetime.utcnow() - timedelta(days=30)
+
+    random_posts = db.session.query(Post).order_by(func.random())
+    return random_posts
+
+    """ one_month_ago = datetime.utcnow() - timedelta(days=30)
     
     # Top 10 most liked posts in the past month
     top_posts = db.session.query(
@@ -33,7 +37,7 @@ def get_posts(user_id):
     ).group_by(Post.id).order_by(func.count(Like.id).desc()).limit(10).all()
     
     posts = top_posts + top_following_posts
-    random.shuffle(posts)
+    random.shuffle(posts) 
 
-    return posts
+    return posts """
 

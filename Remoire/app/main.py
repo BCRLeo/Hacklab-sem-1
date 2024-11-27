@@ -271,7 +271,8 @@ def get_feed_posts():
     """ posts = current_user.posts """
     ids = [post.id for post in posts]
     images = [post.image_data for post in posts]
-    
+    print(ids)
+
     id = request.args.get("id")
     if id:
         id = int(id)
@@ -285,8 +286,8 @@ def get_feed_posts():
         return send_file(image_io, mimetype = mimetypes[index])
 
     posts_metadata = [
-        {"id": idx, "url": f"/api/posts?id={idx}", "caption": posts[idx].description, "timestamp" : posts[idx].timestamp, "outfit" : posts[idx].outfit_id}
-        for idx in ids
+        {"id": post.id, "url": f"/api/posts?id={post.id}", "caption": post.description, "timestamp" : post.timestamp, "outfit" : post.outfit_id}
+        for post in posts
     ]
     print(posts_metadata)
     return jsonify(posts_metadata)
