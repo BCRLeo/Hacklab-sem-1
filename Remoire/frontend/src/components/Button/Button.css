@@ -1,0 +1,19 @@
+.button {
+    display: block;
+    margin: 2rem auto;
+    padding: 0.5rem 1rem;
+    background-color: var(--hex__button);
+    border: none;
+    border-radius: 1rem;
+    cursor: pointer;
+
+    transition-duration: 0.15s;
+}
+
+.button:hover {
+    background-color: var(--hex__button-hover);
+}
+
+.button:active {
+    transform: scale(0.9);
+}
