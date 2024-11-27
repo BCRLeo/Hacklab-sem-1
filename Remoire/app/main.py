@@ -83,7 +83,7 @@ def upload_wardrobe_item():
     
     if file.filename == "":
         return jsonify({"success": False, "message": "No selected file"}), 400
-    
+
     if "category" not in request.form:
         return jsonify({"success": False, "message": "No category part"}), 400
     
