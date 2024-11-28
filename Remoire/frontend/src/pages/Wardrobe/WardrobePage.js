@@ -171,23 +171,26 @@ export default function WardrobePage() {
 
         let successfulUploads = 0;
         let failedUploads = 0;
-        for (let i = 0; i < files.length; i++) {
-            const result = await uploadFile(files[i]);
 
-            if (result.success) {
-                successfulUploads++;
-                console.log(`Successfully uploaded: ${result.file}`);
-            } else {
-                failedUploads++;
-                console.log(`Failed to upload: ${result.file}`);
-            }
+        const uploadPromises = files.map(file =>
+            uploadFile(file).then((result) => {
+                if (result.success) {
+                    successfulUploads++;
+                    console.log(`Successfully uploaded: ${result.file}`);
+                } else {
+                    failedUploads++;
+                    console.log(`Failed to upload: ${result.file}`);
+                }
 
-            if (failedUploads > 0) {
-                setUploadStatus(`Uploaded ${successfulUploads + 1} of ${files.length} files. Failed to upload ${failedUploads} files.`);
-            } else {
-                setUploadStatus(`Uploaded ${successfulUploads + 1} of ${files.length} files.`);
-            }
-        }
+                if (failedUploads > 0) {
+                    setUploadStatus(`Uploaded ${successfulUploads} of ${files.length} files. Failed to upload ${failedUploads} files.`);
+                } else {
+                    setUploadStatus(`Uploaded ${successfulUploads} of ${files.length} files.`);
+                }
+                return result;
+            })
+        );
+        await Promise.all(uploadPromises);
 
         if (failedUploads > 0) {
             setUploadStatus(`${successfulUploads} of ${files.length} files uploaded successfully.`);
