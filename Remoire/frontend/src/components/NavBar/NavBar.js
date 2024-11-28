@@ -6,6 +6,7 @@ import Icon from '../Icon/Icon';
 import NavItem from '../NavItem/NavItem';
 import SearchBar from '../SearchBar/SearchBar';
 
+import { Link } from 'react-router-dom';
 import { useContext } from "react";
 import { useLocation, useNavigate } from 'react-router-dom';
 import { UserContext } from '../../UserContext';
@@ -37,7 +38,8 @@ export default function Navbar() {
 	return (
 		<nav className="navbar">
 			<ul className="navbar-nav">
-				<NavItem href="/" text="Home" className={location.pathname === "/" ? "active" : ""} />
+				<NavItem><Icon name="logoIcon" /></NavItem>
+				<NavItem href="/" text="Home" className={location.pathname === "/" || location.pathname === "/home" ? "active" : ""} />
 				<NavItem href="/feed" text="Feed" className={location.pathname === "/feed" ? "active" : ""} />
 				<NavItem className="search">
 					<SearchBar></SearchBar>
@@ -51,7 +53,7 @@ export default function Navbar() {
 					</>
 				}
 				<NavItem>
-					<Dropdown renderToggle={(dropdownProps) => <Icon name="accountIcon" {...dropdownProps} />}>
+					<Dropdown renderToggle={(dropdownProps) => <Link to="/profile"><Icon name="accountIcon" {...dropdownProps} /></Link>}>
 					{user && user !== -1 ? 
 					<>
 						<NavItem text="Log out" onClick={handleLogout} />
