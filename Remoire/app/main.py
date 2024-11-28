@@ -317,6 +317,19 @@ def search_users():
 def view_wardrobe(item_type):
 
     pass
+@main.route("/api/create_outfit", methods = ["GET"])
+def create_outfit():
+    data = request.get_json()
+    jacket = models.Jacket.query.get(data.get('jacket', [])) if data.get('jacket', []) else None
+    shirt = models.Shirt.query.get(data.get('shirt', [])) if data.get('shirt', []) else None
+    trouser = models.Trouser.query.get(data.get('trousers', [])) if data.get('trousers', []) else None
+    shoe = models.Shoe.query.get(data.get('shoes', []) ) if data.get('shoes', [])  else None  
+    flag = models.Outfit.create_outfit(current_user,jacket, shirt, trouser, shoe )
+
+    if flag:
+        return jsonify({"success":True }), 200
+    else:
+        return jsonify({"succes": False}), 400
 
 ##this is just a quick function to return the favorited items, chnage it as you need
 # @app.route('/wardrobe/favorites')
