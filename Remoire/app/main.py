@@ -317,7 +317,7 @@ def search_users():
 def view_wardrobe(item_type):
 
     pass
-@main.route("/api/create_outfit", methods = ["GET"])
+@main.route("/api/create_outfit", methods = ["POST"])
 def create_outfit():
     data = request.get_json()
     jacket = models.Jacket.query.get(data.get('jacket', [])) if data.get('jacket', []) else None
