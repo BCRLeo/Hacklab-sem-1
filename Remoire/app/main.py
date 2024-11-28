@@ -43,9 +43,8 @@ def index_page():
     return render_template('index.html')
 
 @main.route('/home')
-@login_required
 def home_page():
-    return render_template('home.html', name=current_user.UserName)
+    return render_template('index.html')
 
 @main.route("/wardrobe")
 def wardrobe_page():

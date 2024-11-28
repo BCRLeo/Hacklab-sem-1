@@ -5,6 +5,7 @@ import MediaQueryProvider from './MediaQueryContext';
 import FeedPage from './pages/Feed/FeedPage';
 import HomePage from "./pages/Home/HomePage"
 import LogInPage from './pages/LogIn/LogInPage';
+import ProfilePage from './pages/Profile/ProfilePage';
 import SearchPage from './pages/Search/SearchPage';
 import SignUpPage from "./pages/SignUp/SignUpPage"
 import WardrobePage from './pages/Wardrobe/WardrobePage';
@@ -42,6 +43,7 @@ export default function App() {
 						<Route path="/" element={<HomePage />} />
 						<Route path="/home" element={<HomePage />} />
 						<Route path="/login" element={<LogInPage />} />
+						<Route path="/profile" element={<ProfilePage />} />
 						<Route path="/signup" element={<SignUpPage />} />
 						<Route path="/wardrobe" element={<WardrobePage />} />
 						<Route path="/search" element={<SearchPage />} />
