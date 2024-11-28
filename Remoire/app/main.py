@@ -54,6 +54,10 @@ def wardrobe_page():
 def login_page():
     return render_template("index.html")
 
+@main.route("/profile")
+def profile_page():
+    return render_template("index.html")
+
 @main.route("/signup")
 def signup_page():
     return render_template("index.html")
@@ -308,10 +312,6 @@ def search_users():
     userNames = [user.UserName for user in results]
 
     return jsonify({"success" : True, "message" : "Bravo!", "userNames" : userNames})
-
-@main.route("/api/profile/:userName", methods=["POST"])
-def profile_page():
-    return jsonify({"success" : True, "message" : "Bravo!"})
 
 @main.route('/view_wardrobe/<item_type>', methods=['GET'])
 def view_wardrobe(item_type):

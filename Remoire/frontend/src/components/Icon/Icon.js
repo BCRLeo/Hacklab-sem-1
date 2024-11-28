@@ -16,6 +16,7 @@ import { ReactComponent as SearchIcon } from "../../assets/icons/icon__search.sv
  *
  * @param {Object} props - The props object for the MyIcon component.
  * @param {'accountIcon' | 'arrowLeftIcon' | 'arrowRightIcon' | "checkIcon" | "editIcon" | 'searchIcon'} props.name - The name of the icon to render. It must be one of 'arrowIcon', 'avatarIcon', or 'dashboardIcon'.
+ * @param {"xs" | "sm" | "md" | "lg" | "xl" | "xll"} props.size - The size of the icon to render. 
  * @param {Object} [props.svgProps] - Any additional props to be spread to the SVG component (e.g., width, height, className, etc.).
  * @returns {JSX.Element|null} - Returns the corresponding SVG component for the specified icon name, or `null` if the name is invalid.
  *
@@ -28,15 +29,15 @@ import { ReactComponent as SearchIcon } from "../../assets/icons/icon__search.sv
  * <Icon name="avatarIcon" />
  */
 export default function Icon(props) {
-    const { name, className, ...svgProps } = props;
+    const { name, size = "sm", className, ...svgProps } = props;
 
     const Icons = {
-        accountIcon: <AccountIcon className={`icon ${className ? className : ""}`} {...svgProps} />,
-        arrowLeftIcon: <ArrowLeftIcon className={`icon ${className ? className : ""}`} {...svgProps} />,
-        arrowRightIcon: <ArrowRightIcon className={`icon ${className ? className : ""}`} {...svgProps} />,
-        checkIcon: <CheckIcon className={`icon ${className ? className : ""}`} {...svgProps} />,
-        editIcon: <EditIcon className={`icon ${className ? className : ""}`} {...svgProps} />,
-        searchIcon: <SearchIcon className={`icon ${className ? className : ""}`} {...svgProps} />,
+        accountIcon: <AccountIcon className={`icon ${size} ${className ? className : ""}`} {...svgProps} />,
+        arrowLeftIcon: <ArrowLeftIcon className={`icon ${size} ${className ? className : ""}`} {...svgProps} />,
+        arrowRightIcon: <ArrowRightIcon className={`icon ${size} ${className ? className : ""}`} {...svgProps} />,
+        checkIcon: <CheckIcon className={`icon ${size} ${className ? className : ""}`} {...svgProps} />,
+        editIcon: <EditIcon className={`icon ${size} ${className ? className : ""}`} {...svgProps} />,
+        searchIcon: <SearchIcon className={`icon ${size} ${className ? className : ""}`} {...svgProps} />,
     };
 
     return Icons[name] || null;
