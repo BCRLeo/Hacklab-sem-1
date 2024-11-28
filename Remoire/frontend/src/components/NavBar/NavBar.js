@@ -38,6 +38,7 @@ export default function Navbar() {
 	return (
 		<nav className="navbar">
 			<ul className="navbar-nav">
+				<NavItem><Icon name="logoIcon" /></NavItem>
 				<NavItem href="/" text="Home" className={location.pathname === "/" || location.pathname === "/home" ? "active" : ""} />
 				<NavItem href="/feed" text="Feed" className={location.pathname === "/feed" ? "active" : ""} />
 				<NavItem className="search">
