@@ -14,10 +14,12 @@ import Header from "../../components/Header/Header";
 import Popover from "../../components/Popover/Popover";
 import Post from "../../components/Post/Post";
 
-import { useEffect, useState } from "react";
+import { UserContext } from "../../UserContext";
+import { useContext, useEffect, useState } from "react";
 import { useMediaQueryContext } from "../../MediaQueryContext";
 
 export default function FeedPage() {
+    const { user } = useContext(UserContext);
     const screenSize = useMediaQueryContext();
 
     const [posts, setPosts] = useState([]); 
@@ -127,7 +129,7 @@ export default function FeedPage() {
 
     useEffect(() => {
         fetchPosts();
-    }, []);
+    }, [user, isUploading]);
 
     return (
         <>
