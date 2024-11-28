@@ -53,3 +53,39 @@ img.profile-picture {
     border: none;
     box-shadow: none;
 }
+
+.post-likes-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.like-button {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    margin-right: 10px;
+    transition: transform 0.2s;
+}
+
+.like-button:hover {
+    transform: scale(1.1);
+}
+
+.like-button.liked {
+    animation: pulse 0.5s;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
+
+.post-likes {
+    font-weight: bold;
+}
+

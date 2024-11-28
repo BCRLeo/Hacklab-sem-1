@@ -3,7 +3,7 @@ from flask_login import LoginManager, login_required, current_user
 import io
 import os
 import app
-from .models import User
+from .models import User, Like, Post
 from . import ImageBackgroundRemoverV1
 from . import db
 from . import models
@@ -262,7 +262,6 @@ def get_feed_posts():
 
     ids = [post.id for post in posts]
     images = [post.image_data for post in posts]
-    print(ids)
 
     id = request.args.get("id")
     if id:
@@ -278,16 +277,17 @@ def get_feed_posts():
 
     posts_metadata = [
     {
-        "id": post.id, 
-        "url": f"/api/posts?id={post.id}", 
-        "caption": post.description, 
-        "timestamp": post.timestamp, 
+        "id": post.id,
+        "url": f"/api/posts?id={post.id}",
+        "caption": post.description,
+        "timestamp": post.timestamp,
         "outfit": post.outfit_id,
-        "username": post.author.UserName  # Assuming you have a relationship between Post and User models
+        "username": post.author.UserName,
+        "likes": post.like_count(),
+        "is_liked": Like.query.filter_by(user_id=current_user.id, post_id=post.id).first() is not None
     }
     for post in posts
 ]
-    
     return jsonify(posts_metadata)
 
 @main.route("/api/search", methods=["POST"])
@@ -314,10 +314,32 @@ def search_users():
 def profile_page():
     return jsonify({"success" : True, "message" : "Bravo!"})
 
-@main.route('/view_wardrobe/<item_type>', methods=['GET'])
-def view_wardrobe(item_type):
 
-    pass
+@main.route("/api/posts/<int:post_id>/like", methods=["POST"])
+@login_required
+def like_post(post_id):
+    post = Post.query.get_or_404(post_id)
+    existing_like = Like.query.filter_by(user_id=current_user.id, post_id=post_id).first()
+    
+    if existing_like:
+        # Unlike the post
+        db.session.delete(existing_like)
+        db.session.commit()
+        return jsonify({
+            "success": True, 
+            "action": "unliked", 
+            "like_count": post.like_count()  # Get current like count after unlike
+        })
+    else:
+        # Like the post
+        like = Like(user_id=current_user.id, post_id=post_id)
+        db.session.add(like)
+        db.session.commit()
+        return jsonify({
+            "success": True, 
+            "action": "liked", 
+            "like_count": post.like_count()  # Get current like count after like
+        })
 
 ##this is just a quick function to return the favorited items, chnage it as you need
 # @app.route('/wardrobe/favorites')
