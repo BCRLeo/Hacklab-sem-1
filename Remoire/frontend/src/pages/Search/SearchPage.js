@@ -13,32 +13,31 @@ export default function SearchPage() {
         event.preventDefault();
         try {
             const response = await fetch("/api/search", 
-        {
-            method: "POST",
-            body: JSON.stringify({
-                query : query
-            }),
-            headers : {
-                "Content-Type" : "application/json"
+            {
+                method: "POST",
+                body: JSON.stringify({
+                    query: query
+                }),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+            const data = await response.json();
+    
+            if (response.ok && data.success) {
+                console.log(data);
+                const userNames = data.userNames; // Assuming this is an array
+                if (userNames && Array.isArray(userNames)) {
+                    setText(userNames.join("\n")); // Join usernames with newline character
+                    console.log(userNames.join("\n"));
+                }
+            } else {
+                setText(data.message || "No results found.");
             }
-        });
-        const data = await response.json();
-        
-
-        if (response.ok && data.success){
-            const userNames = await data.userNames;
-            if (userNames) {
-                setText(userNames);
-            }
+        } catch (error) {
+            console.error("Error during search: ", error);
+            setText("An error occurred during the search.");
         }
-        else{
-            setText(data.message);
-        }
-        }
-        catch(error){
-            console.error("error during search: ", error);
-        }
-        
     };
 
     return (
@@ -46,7 +45,7 @@ export default function SearchPage() {
             <form onSubmit={handleSubmit} method="POST"> 
                 <Field label="Search bar" onChange={handleSearch} type="text" name="search" placeholder="Username" />
                 <button type="submit">Search</button>
-                <p>{text}</p>
+                <pre>{text}</pre>
             </form>
 
         

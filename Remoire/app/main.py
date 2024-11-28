@@ -258,17 +258,11 @@ def get_feed_posts():
     user_id = current_user.id
 
     posts = get_posts(user_id)
-    #this gets the posts to be displayed, still need to add dynamics as this returns a fixed 20 posts
-    #a mix of website wide top posts and followed user posts, if you call it again it will return the same
-    #ones assuming the top likes and followed don't change, doesnt account for a user scrolling past 20 posts, 
-    #should be relativly easy to implement, just pass in up to how many posts you need (e.g. 35, or even (20,40) if you want the next top 20)
-    #but it still needs to be figured out
 
-
-    """ posts = current_user.posts """
     ids = [post.id for post in posts]
     images = [post.image_data for post in posts]
-    
+    print(ids)
+
     id = request.args.get("id")
     if id:
         id = int(id)
@@ -282,9 +276,16 @@ def get_feed_posts():
         return send_file(image_io, mimetype = mimetypes[index])
 
     posts_metadata = [
-        {"id": idx, "url": f"/api/posts?id={idx}", "caption": posts[idx].description, "timestamp" : posts[idx].timestamp, "outfit" : posts[idx].outfit_id}
-        for idx in ids
-    ]
+    {
+        "id": post.id, 
+        "url": f"/api/posts?id={post.id}", 
+        "caption": post.description, 
+        "timestamp": post.timestamp, 
+        "outfit": post.outfit_id,
+        "username": post.author.UserName  # Assuming you have a relationship between Post and User models
+    }
+    for post in posts
+]
     
     return jsonify(posts_metadata)
 
