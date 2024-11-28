@@ -313,10 +313,17 @@ def search_users():
 
     return jsonify({"success" : True, "message" : "Bravo!", "userNames" : userNames})
 
-@main.route("/api/profile/:userName", methods=["POST"])
-def profile_page():
-    return jsonify({"success" : True, "message" : "Bravo!"})
-
+@main.route('/api/posts/<int:post_id>/like', methods=['GET'])
+def get_likes(post_id):
+    # Query the post by ID
+    post = Post.query.get(post_id)
+    if post is not None:
+        # Use the like_count method defined in your Post model
+        like_count = post.like_count()
+        print(like_count)
+        return jsonify({'success': True, 'like_count': like_count}), 200
+    else:
+        return jsonify({'success': False, 'message': 'Post not found'}), 404
 
 @main.route("/api/posts/<int:post_id>/like", methods=["POST"])
 @login_required

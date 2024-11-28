@@ -12,6 +12,27 @@ export default function Post({
   const [likes, setLikes] = useState(likeCount);  
   const [isLiked, setIsLiked] = useState(initialIsLiked);
 
+  useEffect(() => {
+    const fetchLikes = async () => {
+      try {
+        const response = await fetch(`/api/posts/${postId}/like`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch likes');
+        }
+        const data = await response.json();
+        if (data.success) {
+          setLikes(data.like_count); // Set likes from server response
+        }
+      } catch (error) {
+        console.error('Error fetching likes:', error);
+      }
+    };
+
+    fetchLikes();
+  }, [postId]);
+
+
+
   const handleLike = async () => {
       try {
           const response = await fetch(`/api/posts/${postId}/like`, {
