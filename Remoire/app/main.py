@@ -3,7 +3,7 @@ from flask_login import LoginManager, login_required, current_user
 import io
 import os
 import app
-from .models import User
+from .models import User, Like, Post
 from . import ImageBackgroundRemoverV1
 from . import db
 from . import models
@@ -265,7 +265,6 @@ def get_feed_posts():
 
     ids = [post.id for post in posts]
     images = [post.image_data for post in posts]
-    print(ids)
 
     id = request.args.get("id")
     if id:
@@ -281,16 +280,17 @@ def get_feed_posts():
 
     posts_metadata = [
     {
-        "id": post.id, 
-        "url": f"/api/posts?id={post.id}", 
-        "caption": post.description, 
-        "timestamp": post.timestamp, 
+        "id": post.id,
+        "url": f"/api/posts?id={post.id}",
+        "caption": post.description,
+        "timestamp": post.timestamp,
         "outfit": post.outfit_id,
-        "username": post.author.UserName  # Assuming you have a relationship between Post and User models
+        "username": post.author.UserName,
+        "likes": post.like_count(),
+        "is_liked": Like.query.filter_by(user_id=current_user.id, post_id=post.id).first() is not None
     }
     for post in posts
 ]
-    
     return jsonify(posts_metadata)
 
 @main.route("/api/search", methods=["POST"])
@@ -317,24 +317,6 @@ def search_users():
 def view_wardrobe(item_type):
 
     pass
-@main.route("/api/create_outfit", methods = ["GET"])
-def create_outfit():
-    data = request.get_json()
-    jacket = models.Jacket.query.get(data.get('jacket', [])) if data.get('jacket', []) else None
-    shirt = models.Shirt.query.get(data.get('shirt', [])) if data.get('shirt', []) else None
-    trouser = models.Trouser.query.get(data.get('trousers', [])) if data.get('trousers', []) else None
-    shoe = models.Shoe.query.get(data.get('shoes', []) ) if data.get('shoes', [])  else None  
-    flag = models.Outfit.create_outfit(current_user,jacket, shirt, trouser, shoe )
-
-    if flag:
-        return jsonify({"success":True }), 200
-    else:
-        return jsonify({"succes": False}), 400
-    
-
-
-
-
 
 ##this is just a quick function to return the favorited items, chnage it as you need
 # @app.route('/wardrobe/favorites')

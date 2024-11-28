@@ -51,6 +51,8 @@ export default function FeedPage() {
                                 postId={postMetadata.id}
                                 image={imageUrl}
                                 username={postMetadata.username}
+                                likeCount={postMetadata.like_count}
+                                initialIsLiked={postMetadata.is_liked}  // New prop
                             />
                         );
                     } catch (imageError) {
@@ -70,6 +72,7 @@ export default function FeedPage() {
         }
     };
 
+    
 
     const handleFileChange = (event) => {
         setPostFile(event.target.files[0]);
