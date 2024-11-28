@@ -356,8 +356,15 @@ def like_post(post_id):
             "like_count": post.like_count()  # Get current like count after unlike
         })
     else:
-        return jsonify({"succes": False}), 400
-
+        # Like the post
+        like = Like(user_id=current_user.id, post_id=post_id)
+        db.session.add(like)
+        db.session.commit()
+        return jsonify({
+            "success": True, 
+            "action": "liked", 
+            "like_count": post.like_count()  # Get current like count after like
+        })
 ##this is just a quick function to return the favorited items, chnage it as you need
 # @app.route('/wardrobe/favorites')
 # def favorite_items():
