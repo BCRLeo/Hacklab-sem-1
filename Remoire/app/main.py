@@ -313,6 +313,21 @@ def search_users():
 
     return jsonify({"success" : True, "message" : "Bravo!", "userNames" : userNames})
 
+@main.route('/view_wardrobe/<item_type>', methods=['GET'])
+def view_wardrobe(item_type):
+
+    pass
+@main.route("/api/create_outfit", methods = ["POST"])
+def create_outfit():
+    data = request.get_json()
+    jacket = models.Jacket.query.get(data.get('jacket', [])) if data.get('jacket', []) else None
+    shirt = models.Shirt.query.get(data.get('shirt', [])) if data.get('shirt', []) else None
+    trouser = models.Trouser.query.get(data.get('trousers', [])) if data.get('trousers', []) else None
+    shoe = models.Shoe.query.get(data.get('shoes', []) ) if data.get('shoes', [])  else None  
+    flag = models.Outfit.create_outfit(current_user,jacket, shirt, trouser, shoe )
+
+    if flag:
+        return jsonify({"success":True }), 200
 @main.route('/api/posts/<int:post_id>/like', methods=['GET'])
 def get_likes(post_id):
     # Query the post by ID
@@ -341,15 +356,7 @@ def like_post(post_id):
             "like_count": post.like_count()  # Get current like count after unlike
         })
     else:
-        # Like the post
-        like = Like(user_id=current_user.id, post_id=post_id)
-        db.session.add(like)
-        db.session.commit()
-        return jsonify({
-            "success": True, 
-            "action": "liked", 
-            "like_count": post.like_count()  # Get current like count after like
-        })
+        return jsonify({"succes": False}), 400
 
 ##this is just a quick function to return the favorited items, chnage it as you need
 # @app.route('/wardrobe/favorites')
