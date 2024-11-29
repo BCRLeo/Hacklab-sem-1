@@ -30,44 +30,15 @@ def get_js_and_css():
         'css': css_file if css_file else 'main.css',  # Default fallback
     }
 
-
-
 # Register the function globally in all templates
 @main.context_processor
 def inject_js_and_css():
     return dict(get_js_and_css=get_js_and_css)
 
-
-@main.route('/')
-def index_page():
-    return render_template('index.html')
-
-@main.route('/home')
-def home_page():
-    return render_template('index.html')
-
-@main.route("/wardrobe")
-def wardrobe_page():
-    return render_template("index.html")
-
-@main.route("/login")
-def login_page():
-    return render_template("index.html")
-
-@main.route("/profile")
-def profile_page():
-    return render_template("index.html")
-
-@main.route("/signup")
-def signup_page():
-    return render_template("index.html")
-
-@main.route("/feed")
-def feed_page():
-    return render_template("index.html")
-
-@main.route("/search")
-def search_page():
+# Catch-all route to serve index.html for any other route
+@main.route('/', defaults={'path': ''})
+@main.route('/<path:path>')
+def serve_react_app(path):
     return render_template("index.html")
 
 
