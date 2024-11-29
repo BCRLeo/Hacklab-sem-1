@@ -136,7 +136,6 @@ export default function FeedPage() {
 
     return (
         <>
-            <Header />
             <h1>Feed</h1>
             <div className="feed-container">
                 {columns}

@@ -204,7 +204,6 @@ export default function WardrobePage() {
 
     return (
         <>
-            <Header />
             {user ? <h1>{user.username}'s wardobe</h1> : <h1>Wardrobe</h1>}
 
             <Bar orientation="horizontal">

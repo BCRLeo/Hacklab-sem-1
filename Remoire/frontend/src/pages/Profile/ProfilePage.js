@@ -62,7 +62,6 @@ export default function ProfilePage() {
     if (user && user !== -1) {
         return (
             <>
-                <Header />
                 <Icon className="profile-icon" name="accountIcon" size="xl" />
                 <h1>{user.username}</h1>
                 <p>bio test test i'm so cool test test fashion whatever</p>

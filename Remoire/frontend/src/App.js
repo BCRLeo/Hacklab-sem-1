@@ -1,6 +1,7 @@
 import './App.css';
 import React, { useState, useEffect } from "react";
 import MediaQueryProvider from './MediaQueryContext';
+import Header from './components/Header/Header';
 
 import FeedPage from './pages/Feed/FeedPage';
 import HomePage from "./pages/Home/HomePage"
@@ -38,6 +39,7 @@ export default function App() {
 		<MediaQueryProvider>
 			<UserProvider>
 				<Router>
+					<Header />
 					<Routes>
 						<Route path="/feed" element={<FeedPage />} />
 						<Route path="/" element={<HomePage />} />
@@ -47,7 +49,7 @@ export default function App() {
 						<Route path="/signup" element={<SignUpPage />} />
 						<Route path="/wardrobe" element={<WardrobePage />} />
 						<Route path="/search" element={<SearchPage />} />
-				</Routes>
+					</Routes>
 				</Router>
 			</UserProvider>
 		</MediaQueryProvider>

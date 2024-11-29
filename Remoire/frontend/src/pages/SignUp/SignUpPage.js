@@ -64,7 +64,6 @@ export default function SignUpPage() {
 
     return (
         <>
-            <Header />
             <h1>Create your Remoire account</h1>
             <Card id="card-registration">
                 <h3>Card!</h3>

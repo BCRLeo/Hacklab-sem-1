@@ -9,7 +9,6 @@ export default function HomePage() {
     const { user, setUser } = useContext(UserContext);
     return (
         <>
-            <Header />
             {user && user.isLoggedIn ? <h1>Hi, {user.username}</h1> : <h1>Home</h1>}
             <Button>helo</Button>
         </>

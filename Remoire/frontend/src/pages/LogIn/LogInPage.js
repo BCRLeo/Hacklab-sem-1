@@ -50,7 +50,6 @@ export default function LogInPage() {
 
     return (
         <>
-            <Header />
             <h1>Welcome to Remoire</h1>
             <Card id="card-login">
                 <h3>Card!</h3>
