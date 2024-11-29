@@ -3,8 +3,11 @@
     width: fit-content;
 
     margin: auto;
+    padding: 2rem 0;
     gap: 2rem;
     justify-content: space-around;
+
+    list-style: none;
 }
 
 .bar.horizontal {
@@ -13,4 +16,8 @@
 
 .bar.vertical {
     flex-direction: column;
+}
+
+.bar-item {
+    margin: auto;
 }
