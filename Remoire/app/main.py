@@ -313,7 +313,6 @@ def search_users():
 
     return jsonify({"success" : True, "message" : "Bravo!", "userNames" : userNames})
 
-<<<<<<< Updated upstream
 @main.route('/view_wardrobe/<item_type>', methods=['GET'])
 def view_wardrobe(item_type):
 
@@ -340,8 +339,6 @@ def get_likes(post_id):
         return jsonify({'success': True, 'like_count': like_count}), 200
     else:
         return jsonify({'success': False, 'message': 'Post not found'}), 404
-=======
->>>>>>> Stashed changes
 
 @main.route("/api/posts/<int:post_id>/like", methods=["POST"])
 @login_required

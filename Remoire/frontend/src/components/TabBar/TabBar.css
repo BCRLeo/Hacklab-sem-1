@@ -1,0 +1,26 @@
+.tabbar-link {
+    position: relative;
+    color: var(--hex__text);
+    text-decoration: none;
+}
+
+.tabbar-link::after {
+    opacity: 0;
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    border-bottom: 0.2rem solid var(--hex__overlay);
+    transition: opacity 0.25s;
+}
+
+.tabbar-link:hover::after {
+    opacity: 1;
+}
+
+.tabbar-link.active::after {
+    opacity: 1;
+}

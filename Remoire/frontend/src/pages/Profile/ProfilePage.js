@@ -5,6 +5,7 @@ import Header from "../../components/Header/Header";
 import Icon from "../../components/Icon/Icon";
 import NavItem from "../../components/NavItem/NavItem";
 import Post from "../../components/Post/Post";
+import TabBar from "../../components/TabBar/TabBar";
 
 import { UserContext } from "../../UserContext";
 import { useContext, useEffect, useState } from "react";
@@ -65,11 +66,25 @@ export default function ProfilePage() {
                 <Icon className="profile-icon" name="accountIcon" size="xl" />
                 <h1>{user.username}</h1>
                 <p>bio test test i'm so cool test test fashion whatever</p>
-                <Bar orientation="horizontal" className="profile">
+                <TabBar orientation="horizontal" links={[
+                    {
+                        "href": "/profile/posts",
+                        "label": "Posts"
+                    },
+                    {
+                        "href": "/profile/wardrobe",
+                        "label": "Wardrobe"
+                    },
+                    {
+                        "href": "/profile/outfits",
+                        "label": "Outfits"
+                    }
+                    ]} />
+                {/* <Bar orientation="horizontal" className="profile">
                     <Link to="/profile/posts" className={location.pathname === "/profile/posts" ? "active" : ""}>Posts</Link>
                     <Link to="/profile/wardrobe" className={location.pathname === "/profile/wardrobe" ? "active" : ""}>Wardrobe</Link>
                     <Link to="/profile/outfites" className={location.pathname === "/profile/outfits" ? "active" : ""}>Outfits</Link>
-                </Bar>
+                </Bar> */}
                 {posts}
             </>
         );

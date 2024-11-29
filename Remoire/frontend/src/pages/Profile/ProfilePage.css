@@ -1,7 +1,3 @@
 .profile-icon {
     fill: var(--hex__overlay);
 }
-
-.profile.bar-item * {
-    color: var(--hex__text);
-}
