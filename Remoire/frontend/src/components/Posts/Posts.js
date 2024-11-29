@@ -1,19 +1,9 @@
-import "./ProfilePage.css";
-
-import Bar from "../../components/Bar/Bar";
-import Header from "../../components/Header/Header";
-import Icon from "../../components/Icon/Icon";
-import NavItem from "../../components/NavItem/NavItem";
-import Post from "../../components/Post/Post";
-import TabBar from "../../components/TabBar/TabBar";
-
 import { UserContext } from "../../UserContext";
 import { useContext, useEffect, useState } from "react";
-import { Link, Outlet, useLocation } from "react-router-dom";
 
-export default function ProfilePage() {
-    const location = useLocation();
+import Post from "../Post/Post";
 
+export default function Posts() {
     const { user, setUser } = useContext(UserContext);
     const [posts, setPosts] = useState([]);
 
@@ -59,35 +49,9 @@ export default function ProfilePage() {
         fetchPosts();
     }, [user]);
 
-    if (user && user !== -1) {
-        return (
-            <>
-                <Icon className="profile-icon" name="accountIcon" size="xl" />
-                <h1>{user.username}</h1>
-                <p>bio test test i'm so cool test test fashion whatever</p>
-                <TabBar orientation="horizontal" links={[
-                    {
-                        "href": "/profile/posts",
-                        "label": "Posts"
-                    },
-                    {
-                        "href": "/profile/wardrobe",
-                        "label": "Wardrobe"
-                    },
-                    {
-                        "href": "/profile/outfits",
-                        "label": "Outfits"
-                    }
-                    ]} />
-                <Outlet />
-            </>
-        );
-    }
-
     return (
-        <>
-            <Header />
-            {user && user !== -1 ? <h1>{user.username}</h1> : <h1>Profile</h1>}
-        </>
+        <div className="posts-container">
+            {posts}
+        </div>
     );
 }

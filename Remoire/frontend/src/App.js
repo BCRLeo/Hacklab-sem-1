@@ -2,6 +2,7 @@ import './App.css';
 import React, { useState, useEffect } from "react";
 import MediaQueryProvider from './MediaQueryContext';
 import Header from './components/Header/Header';
+import Posts from './components/Posts/Posts';
 
 import FeedPage from './pages/Feed/FeedPage';
 import HomePage from "./pages/Home/HomePage"
@@ -46,7 +47,7 @@ export default function App() {
 						<Route path="home" element={<HomePage />} />
 						<Route path="login" element={<LogInPage />} />
 						<Route path="profile" element={<ProfilePage />}>
-							<Route path="posts" element={<p>posts!</p>} />
+							<Route path="posts" element={<Posts />} />
 							<Route path="wardrobe" element={<p>wardrobe!</p>} />
 							<Route path="outfits" element={<p>outfits!</p>} />
 						</Route>
