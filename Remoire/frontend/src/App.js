@@ -41,14 +41,18 @@ export default function App() {
 				<Router>
 					<Header />
 					<Routes>
-						<Route path="/feed" element={<FeedPage />} />
-						<Route path="/" element={<HomePage />} />
-						<Route path="/home" element={<HomePage />} />
-						<Route path="/login" element={<LogInPage />} />
-						<Route path="/profile" element={<ProfilePage />} />
-						<Route path="/signup" element={<SignUpPage />} />
-						<Route path="/wardrobe" element={<WardrobePage />} />
-						<Route path="/search" element={<SearchPage />} />
+						<Route path="feed" element={<FeedPage />} />
+						<Route index element={<HomePage />} />
+						<Route path="home" element={<HomePage />} />
+						<Route path="login" element={<LogInPage />} />
+						<Route path="profile" element={<ProfilePage />}>
+							<Route path="posts" element={<p>posts!</p>} />
+							<Route path="wardrobe" element={<p>wardrobe!</p>} />
+							<Route path="outfits" element={<p>outfits!</p>} />
+						</Route>
+						<Route path="signup" element={<SignUpPage />} />
+						<Route path="wardrobe" element={<WardrobePage />} />
+						<Route path="search" element={<SearchPage />} />
 					</Routes>
 				</Router>
 			</UserProvider>

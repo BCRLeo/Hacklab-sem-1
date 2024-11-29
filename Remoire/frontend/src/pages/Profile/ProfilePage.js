@@ -9,7 +9,7 @@ import TabBar from "../../components/TabBar/TabBar";
 
 import { UserContext } from "../../UserContext";
 import { useContext, useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, Outlet, useLocation } from "react-router-dom";
 
 export default function ProfilePage() {
     const location = useLocation();
@@ -79,6 +79,7 @@ export default function ProfilePage() {
                         "label": "Outfits"
                     }
                     ]} />
+                <Outlet />
                 {/* <Bar orientation="horizontal" className="profile">
                     <Link to="/profile/posts" className={location.pathname === "/profile/posts" ? "active" : ""}>Posts</Link>
                     <Link to="/profile/wardrobe" className={location.pathname === "/profile/wardrobe" ? "active" : ""}>Wardrobe</Link>
