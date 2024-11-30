@@ -48,7 +48,7 @@ export default function Navbar() {
 					<>
 						<NavItem href="/wardrobe" text="Wardrobe" className={location.pathname === "/wardrobe" ? "active" : ""} />
 						<NavItem>
-							<Dropdown renderToggle={(dropdownProps) => <Link to="/profile"><Icon name="accountIcon" {...dropdownProps} /></Link>}>
+							<Dropdown renderToggle={(dropdownProps) => <Link to={`/${user.username}`}><Icon name="accountIcon" {...dropdownProps} /></Link>}>
 								<NavItem text="Log out" onClick={handleLogout} />
 							</Dropdown>
 						</NavItem>

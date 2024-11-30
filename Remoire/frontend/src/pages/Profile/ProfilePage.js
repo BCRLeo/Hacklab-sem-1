@@ -38,15 +38,15 @@ export default function ProfilePage() {
                 <p>bio test test i'm so cool test test fashion whatever</p>
                 <TabBar orientation="horizontal" links={[
                     {
-                        "href": "/profile/posts",
+                        "href": `/${profile.username}/posts`,
                         "label": "Posts"
                     },
                     {
-                        "href": "/profile/wardrobe",
+                        "href": `/${profile.username}/wardrobe`,
                         "label": "Wardrobe"
                     },
                     {
-                        "href": "/profile/outfits",
+                        "href": `/${profile.username}/outfits`,
                         "label": "Outfits"
                     }
                     ]} />
