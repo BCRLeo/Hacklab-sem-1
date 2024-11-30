@@ -46,7 +46,7 @@ export default function App() {
 						<Route index element={<HomePage />} />
 						<Route path="home" element={<HomePage />} />
 						<Route path="login" element={<LogInPage />} />
-						<Route path="profile" element={<ProfilePage />}>
+						<Route path=":username" element={<ProfilePage />}>
 							<Route path="posts" element={<Posts />} />
 							<Route path="wardrobe" element={<p>wardrobe!</p>} />
 							<Route path="outfits" element={<p>outfits!</p>} />

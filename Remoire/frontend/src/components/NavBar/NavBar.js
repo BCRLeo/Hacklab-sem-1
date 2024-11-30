@@ -44,28 +44,21 @@ export default function Navbar() {
 				<NavItem className="search">
 					<SearchBar></SearchBar>
 				</NavItem>
-				{user && user !== -1 ? 
+				{user && user !== -1 ? (
 					<>
 						<NavItem href="/wardrobe" text="Wardrobe" className={location.pathname === "/wardrobe" ? "active" : ""} />
+						<NavItem>
+							<Dropdown renderToggle={(dropdownProps) => <Link to="/profile"><Icon name="accountIcon" {...dropdownProps} /></Link>}>
+								<NavItem text="Log out" onClick={handleLogout} />
+							</Dropdown>
+						</NavItem>
 					</>
-					: 
-					<>
-					</>
-				}
-				<NavItem>
-					<Dropdown renderToggle={(dropdownProps) => <Link to="/profile"><Icon name="accountIcon" {...dropdownProps} /></Link>}>
-					{user && user !== -1 ? 
-					<>
-						<NavItem text="Log out" onClick={handleLogout} />
-					</>
-					: 
-					<>
+				) : (
+					<Dropdown renderToggle={(dropdownProps) => <Link to="/login"><Icon name="accountIcon" {...dropdownProps} /></Link>}>
 						<NavItem href="/login" text="Log in" className={location.pathname === "/login" ? "active" : ""} />
 						<NavItem href="/signup" text="Sign up" className={location.pathname === "/signup" ? "active" : ""} />
-					</>
-				}
 					</Dropdown>
-				</NavItem>
+				)}
 			</ul>
 		</nav>
 	);
