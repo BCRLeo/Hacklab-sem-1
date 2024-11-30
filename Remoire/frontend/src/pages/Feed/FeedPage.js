@@ -1,6 +1,6 @@
 import "./FeedPage.css"
 
-import { getUserPosts } from "../../api/feed";
+import { getUserPosts, getUserFeedPosts } from "../../api/feed";
 
 import Sab from "../../assets/images/sab.jpeg";
 import Liv from "../../assets/images/liv.jpeg";
@@ -34,7 +34,7 @@ export default function FeedPage() {
 
     const fetchPosts = async () => {
         (async () => {
-            const data = await getUserPosts("joshuadtan");
+            const data = await getUserFeedPosts(user.username);
             if (data) {
                 setPosts(data);
             }
@@ -100,7 +100,9 @@ export default function FeedPage() {
     }, [screenSize, posts]);
 
     useEffect(() => {
-        fetchPosts();
+        if (user && user !== -1) {
+            fetchPosts();
+        }
     }, [user, isUploading]);
 
     return (

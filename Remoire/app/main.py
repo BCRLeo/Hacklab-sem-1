@@ -226,44 +226,6 @@ def upload_feed_post():
         
     return jsonify({"success": True, "message": "File successfully uploaded"}), 200
 
-""" @main.route("/api/posts", methods=["GET"])
-def get_feed_posts():
-    if not current_user.is_authenticated:
-        return jsonify({"success": False, "message": "User not logged in"}), 401
-    user_id = current_user.id
-
-    posts = get_posts(user_id)
-
-    ids = [post.id for post in posts]
-    images = [post.image_data for post in posts]
-
-    id = request.args.get("id")
-    if id:
-        id = int(id)
-        if id not in ids:
-            return jsonify({"success": False, "message": "Invalid post ID"}), 404
-        
-        index = ids.index(id)
-        mimetypes = [item.image_mimetype for item in posts]
-        image_bytes = images[index]
-        image_io = io.BytesIO(image_bytes)
-        return send_file(image_io, mimetype = mimetypes[index])
-
-    posts_metadata = [
-    {
-        "id": post.id,
-        "url": f"/api/posts?id={post.id}",
-        "caption": post.description,
-        "timestamp": post.timestamp,
-        "outfit": post.outfit_id,
-        "username": post.author.UserName,
-        "likes": post.like_count(),
-        "is_liked": Like.query.filter_by(user_id=current_user.id, post_id=post.id).first() is not None
-    }
-    for post in posts
-]
-    return jsonify(posts_metadata) """
-
 @main.route("/api/search", methods=["POST"])
 def search_users():
 
