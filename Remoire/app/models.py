@@ -4,22 +4,24 @@ from datetime import datetime
 from sqlalchemy import text
 
 # Followers association table
-followers = db.Table('followers',
-    db.Column('follower_id', db.Integer, db.ForeignKey('user.id')),
-    db.Column('following_id', db.Integer, db.ForeignKey('user.id'))
+followers = db.Table(
+    'followers',
+    db.Column('follower_id', db.Integer, db.ForeignKey('users.id'), primary_key=True),
+    db.Column('following_id', db.Integer, db.ForeignKey('users.id'), primary_key=True)
 )
 
 # Association table for tags
-post_tags = db.Table('post_tags',
-    db.Column('post_id', db.Integer, db.ForeignKey('post.id'), primary_key=True),
-    db.Column('tag_id', db.Integer, db.ForeignKey('tag.id'), primary_key=True)
+post_tags = db.Table(
+    'post_tags',
+    db.Column('post_id', db.Integer, db.ForeignKey('posts.id'), primary_key=True),
+    db.Column('tag_id', db.Integer, db.ForeignKey('tags.id'), primary_key=True)
 )
 
 class OutfitUsage(db.Model):
     __tablename__ = 'outfit_usage'
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    outfit_id = db.Column(db.Integer, db.ForeignKey('outfit.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    outfit_id = db.Column(db.Integer, db.ForeignKey('outfits.id'), nullable=False)
     timestamp = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
     # Relationships
@@ -28,7 +30,6 @@ class OutfitUsage(db.Model):
 
     @classmethod
     def get_outfits_on_day(cls, user_id, date):
-        
         start_datetime = datetime.combine(date, datetime.min.time())
         end_datetime = datetime.combine(date, datetime.max.time())
 
@@ -39,13 +40,14 @@ class OutfitUsage(db.Model):
         ).all()
 
         return [usage.outfit_id for usage in usages]
+
 class Post(db.Model):
-    __tablename__ = 'post'
+    __tablename__ = 'posts'
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     description = db.Column(db.Text, nullable=True)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
-    outfit_id = db.Column(db.Integer, db.ForeignKey('outfit.id'), nullable=True)
+    outfit_id = db.Column(db.Integer, db.ForeignKey('outfits.id'), nullable=True)
     image_data = db.Column(db.LargeBinary, nullable=True)
     image_mimetype = db.Column(db.String(255), nullable=True)
 
@@ -60,9 +62,9 @@ class Post(db.Model):
         return self.likes.count()
 
 class Outfit(db.Model):
-    __tablename__ = 'outfit'
+    __tablename__ = 'outfits'
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     favorite = db.Column(
         db.Boolean,
         nullable=False,
@@ -75,12 +77,11 @@ class Outfit(db.Model):
     posts = db.relationship('Post', back_populates='outfit')
     outfit_usages = db.relationship('OutfitUsage', back_populates='outfit', lazy='dynamic')
 
-
     # Clothing item relationships
-    jacket_id = db.Column(db.Integer, db.ForeignKey('jacket.id'), nullable=True)
-    shirt_id = db.Column(db.Integer, db.ForeignKey('shirt.id'), nullable=True)
-    trouser_id = db.Column(db.Integer, db.ForeignKey('trouser.id'), nullable=True)
-    shoe_id = db.Column(db.Integer, db.ForeignKey('shoe.id'), nullable=True)
+    jacket_id = db.Column(db.Integer, db.ForeignKey('jackets.id'), nullable=True)
+    shirt_id = db.Column(db.Integer, db.ForeignKey('shirts.id'), nullable=True)
+    trouser_id = db.Column(db.Integer, db.ForeignKey('trousers.id'), nullable=True)
+    shoe_id = db.Column(db.Integer, db.ForeignKey('shoes.id'), nullable=True)
 
     jacket = db.relationship('Jacket')
     shirt = db.relationship('Shirt')
@@ -99,6 +100,7 @@ class Outfit(db.Model):
         db.session.add(outfit)
         db.session.commit()
         return outfit
+
     def mark_as_favorite(self):
         self.favorite = True
         db.session.commit()
@@ -113,10 +115,10 @@ class Outfit(db.Model):
         db.session.commit()
 
 class Like(db.Model):
-    __tablename__ = 'like'
+    __tablename__ = 'likes'
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    post_id = db.Column(db.Integer, db.ForeignKey('post.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    post_id = db.Column(db.Integer, db.ForeignKey('posts.id'), nullable=False)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
 
     # Relationships
@@ -124,17 +126,17 @@ class Like(db.Model):
     post = db.relationship('Post', back_populates='likes')
 
 class Tag(db.Model):
-    __tablename__ = 'tag'
+    __tablename__ = 'tags'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), unique=True, nullable=False)
 
     # Relationships
     posts = db.relationship('Post', secondary=post_tags, back_populates='tags')
 
-# Wardrobe model
 class Wardrobe(db.Model):
+    __tablename__ = 'wardrobes'
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False, unique=True)
 
     # Relationships
     user = db.relationship('User', back_populates='wardrobe')
@@ -155,28 +157,24 @@ class Wardrobe(db.Model):
     def get_favorite_shoes(self):
         return [shoe for shoe in self.shoes if shoe.favorite]
 
-# User model
 class User(db.Model, UserMixin):
+    __tablename__ = 'users'  # Changed from 'user' to 'users' to avoid reserved keyword conflict
     id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(150), unique=True)
-    password = db.Column(db.String(150))
-    UserName = db.Column(db.String(150))
+    email = db.Column(db.String(150), unique=True, nullable=False)
+    password = db.Column(db.String(150), nullable=False)
+    UserName = db.Column(db.String(150), unique=True, nullable=False)
     birthday = db.Column(db.Date, nullable=False)
-    CreationDate = db.Column(db.Date, nullable=False)
-    PhoneNumber = db.Column(db.String(20), nullable=True, unique = True)
+    CreationDate = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    PhoneNumber = db.Column(db.String(20), nullable=True, unique=True)
     ProfilePicture = db.Column(db.LargeBinary, nullable=True)
-    Bio = db.Column(db.String(500), nullable = True)
+    Bio = db.Column(db.String(500), nullable=True)
 
     # Premium field with default value set to False
     premium = db.Column(
         db.Boolean,
         nullable=False,
         default=False,
-        server_default=text('false')  # Ensures database-level default
-    )
-    # Define unique constraints with explicit names THIS IS VERY IMPORTANT FOR FUTURE MIGRATIONS, ADD THIS WHEN ADDING VALUES WITH CONSTRAINTS
-    __table_args__ = (
-        db.UniqueConstraint('PhoneNumber', name='uq_user_phone_number'),
+        server_default=text('false')
     )
 
     # New is_public boolean field set to False by default
@@ -184,44 +182,48 @@ class User(db.Model, UserMixin):
         db.Boolean,
         nullable=False,
         default=False,
-        server_default=text('false')  # Ensures database-level default
+        server_default=text('false')
+    )
+
+    # Unique constraints
+    __table_args__ = (
+        db.UniqueConstraint('PhoneNumber', name='uq_users_phone_number'),
     )
 
     # Relationships
     wardrobe = db.relationship('Wardrobe', uselist=False, back_populates='user')
     posts = db.relationship('Post', back_populates='author', lazy='dynamic')
     likes = db.relationship('Like', back_populates='user', lazy='dynamic')
-    outfits = db.relationship('Outfit', back_populates='user')
+    outfits = db.relationship('Outfit', back_populates='user', lazy='dynamic')
     outfit_usages = db.relationship('OutfitUsage', back_populates='user', lazy='dynamic')
-
-
-    def get_favorite_outfits(self):
-        return [outfit for outfit in self.outfits if outfit.favorite]
 
     # Self-referential followers relationship
     following = db.relationship(
-        'User', secondary=followers,
+        'User',
+        secondary=followers,
         primaryjoin=(followers.c.follower_id == id),
         secondaryjoin=(followers.c.following_id == id),
         back_populates='followers',
         lazy='dynamic'
     )
     followers = db.relationship(
-        'User', secondary=followers,
+        'User',
+        secondary=followers,
         primaryjoin=(followers.c.following_id == id),
         secondaryjoin=(followers.c.follower_id == id),
         back_populates='following',
         lazy='dynamic'
     )
-    # Method to check if the user has premium status
+
+    # Methods related to premium status
     def has_premium(self):
         return self.premium
 
-    # Method to toggle premium status
     def toggle_premium(self):
         self.premium = not self.premium
         db.session.commit()
 
+    # Methods related to following
     def follow(self, user):
         if not self.is_following(user):
             self.following.append(user)
@@ -235,9 +237,10 @@ class User(db.Model, UserMixin):
     def is_following(self, user):
         return self.following.filter(followers.c.following_id == user.id).first() is not None
 
-    def is_following(self, user):
+    def is_followed_by(self, user):
         return self.followers.filter(followers.c.follower_id == user.id).first() is not None
 
+    # Methods related to liking posts
     def like_post(self, post):
         if not self.has_liked_post(post):
             like = Like(user_id=self.id, post_id=post.id)
@@ -252,22 +255,25 @@ class User(db.Model, UserMixin):
 
     def has_liked_post(self, post):
         return Like.query.filter_by(user_id=self.id, post_id=post.id).first() is not None
-    
+
+    # Methods related to public profile
     def toggle_is_public(self):
         self.IsPublic = not self.IsPublic
         db.session.commit()
-        
 
+    # Methods to set phone number
     def set_phone_number(self, phone_number):
-        self.phone_number = phone_number
+        self.PhoneNumber = phone_number  # Corrected attribute name
         db.session.commit()
-        
 
-# Jacket model
+    # Method to get favorite outfits
+    def get_favorite_outfits(self):
+        return [outfit for outfit in self.outfits if outfit.favorite]
+
 class Jacket(db.Model):
-    __tablename__ = 'jacket'
+    __tablename__ = 'jackets'  # Changed to plural
     id = db.Column(db.Integer, primary_key=True)
-    wardrobe_id = db.Column(db.Integer, db.ForeignKey('wardrobe.id'), nullable=False)
+    wardrobe_id = db.Column(db.Integer, db.ForeignKey('wardrobes.id'), nullable=False)
     image_data = db.Column(db.LargeBinary, nullable=True)
     image_mimetype = db.Column(db.String(255), nullable=True)
 
@@ -275,7 +281,7 @@ class Jacket(db.Model):
         db.Boolean,
         nullable=False,
         default=False,
-        server_default=text('false')  # Ensures database-level default
+        server_default=text('false')
     )
 
     wardrobe = db.relationship('Wardrobe', back_populates='jackets')
@@ -289,11 +295,10 @@ class Jacket(db.Model):
         self.favorite = False
         db.session.commit()
 
-# Shirt model
 class Shirt(db.Model):
-    __tablename__ = 'shirt'
+    __tablename__ = 'shirts'  # Changed to plural
     id = db.Column(db.Integer, primary_key=True)
-    wardrobe_id = db.Column(db.Integer, db.ForeignKey('wardrobe.id'), nullable=False)
+    wardrobe_id = db.Column(db.Integer, db.ForeignKey('wardrobes.id'), nullable=False)
     image_data = db.Column(db.LargeBinary, nullable=True)
     image_mimetype = db.Column(db.String(255), nullable=True)
 
@@ -301,7 +306,7 @@ class Shirt(db.Model):
         db.Boolean,
         nullable=False,
         default=False,
-        server_default=text('false')  # Ensures database-level default
+        server_default=text('false')
     )
 
     wardrobe = db.relationship('Wardrobe', back_populates='shirts')
@@ -315,11 +320,10 @@ class Shirt(db.Model):
         self.favorite = False
         db.session.commit()
 
-# Trouser model
 class Trouser(db.Model):
-    __tablename__ = 'trouser'
+    __tablename__ = 'trousers'  # Changed to plural
     id = db.Column(db.Integer, primary_key=True)
-    wardrobe_id = db.Column(db.Integer, db.ForeignKey('wardrobe.id'), nullable=False)
+    wardrobe_id = db.Column(db.Integer, db.ForeignKey('wardrobes.id'), nullable=False)
     image_data = db.Column(db.LargeBinary, nullable=True)
     image_mimetype = db.Column(db.String(255), nullable=True)
 
@@ -327,7 +331,7 @@ class Trouser(db.Model):
         db.Boolean,
         nullable=False,
         default=False,
-        server_default=text('false')  # Ensures database-level default
+        server_default=text('false')
     )
 
     wardrobe = db.relationship('Wardrobe', back_populates='trousers')
@@ -341,11 +345,10 @@ class Trouser(db.Model):
         self.favorite = False
         db.session.commit()
 
-# Shoe model
 class Shoe(db.Model):
-    __tablename__ = 'shoe'
+    __tablename__ = 'shoes'  # Changed to plural
     id = db.Column(db.Integer, primary_key=True)
-    wardrobe_id = db.Column(db.Integer, db.ForeignKey('wardrobe.id'), nullable=False)
+    wardrobe_id = db.Column(db.Integer, db.ForeignKey('wardrobes.id'), nullable=False)
     image_data = db.Column(db.LargeBinary, nullable=True)
     image_mimetype = db.Column(db.String(255), nullable=True)
 
@@ -353,7 +356,7 @@ class Shoe(db.Model):
         db.Boolean,
         nullable=False,
         default=False,
-        server_default=text('false')  # Ensures database-level default
+        server_default=text('false')
     )
 
     wardrobe = db.relationship('Wardrobe', back_populates='shoes')
