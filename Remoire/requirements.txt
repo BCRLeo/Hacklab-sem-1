@@ -1,0 +1,8 @@
+Flask==3.1.0
+Flask_Login==0.6.3
+Flask_Migrate==4.0.7
+flask_sqlalchemy==3.1.1
+Pillow==11.0.0
+rembg==2.0.60
+SQLAlchemy==2.0.35
+Werkzeug==3.1.3
