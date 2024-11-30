@@ -7,6 +7,7 @@ Remoire/app/__pycache__
 *.pyc
 *.pyo
 *.pyd
+Remoire/app.db
 .node_modules/
 .Remoire/app/run.py
 .Remoire/frontend/package.json
