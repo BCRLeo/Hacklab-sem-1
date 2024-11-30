@@ -1,5 +1,7 @@
 import "./FeedPage.css"
 
+import { getUserPosts } from "../../api/feed";
+
 import Sab from "../../assets/images/sab.jpeg";
 import Liv from "../../assets/images/liv.jpeg";
 import Niall from "../../assets/images/niall.jpeg";
@@ -31,45 +33,12 @@ export default function FeedPage() {
     const [uploadStatus, setUploadStatus] = useState("");
 
     const fetchPosts = async () => {
-        try {
-            const response = await fetch("/api/posts", {
-                method: "GET"
-            });
-    
-            if (response.ok) {
-                const postsMetadata = await response.json();
-                
-                const postComponents = await Promise.all(postsMetadata.map(async (postMetadata) => {
-                    try {
-                        const imageResponse = await fetch(postMetadata.url);
-                        const imageBlob = await imageResponse.blob();
-                        const imageUrl = URL.createObjectURL(imageBlob);
-    
-                        return (
-                            <Post
-                                key={postMetadata.id}
-                                postId={postMetadata.id}
-                                image={imageUrl}
-                                username={postMetadata.username}
-                                likeCount={postMetadata.like_count}
-                                initialIsLiked={postMetadata.is_liked}  // New prop
-                            />
-                        );
-                    } catch (imageError) {
-                        console.error(`Error fetching image for post ${postMetadata.id}:`, imageError);
-                        return null;
-                    }
-                }));
-    
-                setPosts(postComponents.filter(Boolean));
-            } else {
-                console.error("Failed to fetch posts");
-                setUploadStatus("Could not load posts");
+        (async () => {
+            const data = await getUserPosts("joshuadtan");
+            if (data) {
+                setPosts(data);
             }
-        } catch (error) {
-            console.error("Error fetching posts:", error);
-            setUploadStatus("Network error loading posts");
-        }
+        })();
     };
 
     

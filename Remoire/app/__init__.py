@@ -58,4 +58,7 @@ def create_app():
     from .profile import profile as profile_blueprint
     app.register_blueprint(profile_blueprint)
 
+    from .feed import feed as feed_blueprint
+    app.register_blueprint(feed_blueprint)
+
     return app

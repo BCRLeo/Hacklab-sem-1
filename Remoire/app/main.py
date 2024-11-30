@@ -226,7 +226,7 @@ def upload_feed_post():
         
     return jsonify({"success": True, "message": "File successfully uploaded"}), 200
 
-@main.route("/api/posts", methods=["GET"])
+""" @main.route("/api/posts", methods=["GET"])
 def get_feed_posts():
     if not current_user.is_authenticated:
         return jsonify({"success": False, "message": "User not logged in"}), 401
@@ -262,7 +262,7 @@ def get_feed_posts():
     }
     for post in posts
 ]
-    return jsonify(posts_metadata)
+    return jsonify(posts_metadata) """
 
 @main.route("/api/search", methods=["POST"])
 def search_users():

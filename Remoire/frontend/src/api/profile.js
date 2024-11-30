@@ -2,7 +2,7 @@ export async function getProfile(username) {
     try {
         const response = await fetch(`/api/profile/${username}`, { method: "GET" });
         if (!response.ok) {
-            console.error(`Failed to retrieve ${username}'s profile`);
+            console.log(`Failed to retrieve ${username}'s profile`);
             return null;
         }
 
@@ -10,7 +10,7 @@ export async function getProfile(username) {
         if (data.success) {
             return data.user;
         }
-        console.error(`Failed to retrieve ${username}'s profile: `, data.message);
+        console.log(`Failed to retrieve ${username}'s profile: `, data.message);
     } catch (error) {
         console.error(`Error while retrieving ${username}'s profile: `, error);
     }
