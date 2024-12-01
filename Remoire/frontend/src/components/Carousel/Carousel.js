@@ -6,7 +6,7 @@ import IconArrowRight from "../../assets/icons/icon__arrow-right.svg";
 
 import { useEffect, useRef, useState } from "react";
 
-export default function Carousel({ images, children, className, hoveredClassName = "", imageClassName = "" }) {
+export default function Carousel({ images, children, className, imageClassName = "", hoveredClassName = "", clickedClassName = "" }) {
 	const [currentIndex, setCurrentIndex] = useState(0);
 	const [visibleImages, setVisibleImages] = useState([]);
 	const carouselRef = useRef(null);
@@ -14,6 +14,7 @@ export default function Carousel({ images, children, className, hoveredClassName
 	const [imageSize, setImageSize] = useState({ width: 0, height: 0 });
 	const [visibleImageCount, setVisibleImageCount] = useState(0);
 	const [hoveredIndex, setHoveredIndex] = useState(null);
+	const [clickedIndex, setClickedIndex] = useState(null);
 
 	useEffect(() => {
 		const updateSize = () => {
@@ -50,12 +51,18 @@ export default function Carousel({ images, children, className, hoveredClassName
 			if (hoveredClassName) {
 				newVisibleImages.push(
 					<img
-					className={`carousel-image ${hoveredIndex === i ? `${hoveredClassName}` : ""} ${imageClassName}`}
+					className={`
+						carousel-image
+						${imageClassName}
+						${hoveredIndex === i ? `${hoveredClassName}` : ""}
+						${clickedIndex === i ? `${clickedClassName}` : ""}
+						`}
 					key={i}
 					src={images[index]}
 					alt={`slide ${index + 1}`}
 					onMouseEnter={() => setHoveredIndex(i)}
 					onMouseLeave={() => setHoveredIndex(null)}
+					onClick={() => setClickedIndex(i)}
 					/>
 				);
 			} else {

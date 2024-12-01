@@ -16,7 +16,23 @@ button.button-uploading {
     cursor: wait;
 }
 
+.wardrobe-carousel {
+    position: relative;
+}
+
 .wardrobe-carousel .delete {
     filter: sepia(100%) saturate(800%) hue-rotate(-50deg);
+    -webkit-filter: sepia(100%) saturate(800%) hue-rotate(-50deg);
     cursor: pointer;
+}
+
+.wardrobe-carousel .choose {
+    /* filter: sepia(100%) saturate(1000%) hue-rotate(90deg);
+    -webkit-filter: sepia(100%) saturate(1000%) hue-rotate(90deg); */
+    cursor: pointer;
+}
+
+.wardrobe-carousel .outfit {
+    filter: sepia(100%) saturate(150%) hue-rotate(90deg);
+    -webkit-filter: sepia(100%) saturate(150%) hue-rotate(90deg);
 }

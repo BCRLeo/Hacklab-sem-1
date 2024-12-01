@@ -39,7 +39,8 @@ export default function WardrobePage() {
 
     const [status, setStatus] = useState("");
 
-    const outfitHoveredClassName = "outfit"
+    const outfitClassName = "outfit";
+    const chooseHoveredClassName = "choose"
     const deleteHoveredClassName = "delete";
     const [hoveredClassName, setHoveredClassName] = useState("");
 
@@ -114,7 +115,7 @@ export default function WardrobePage() {
         if (isEditing) {
             setHoveredClassName(deleteHoveredClassName);
         } else if (isChoosingOutfit) {
-            setHoveredClassName(outfitHoveredClassName);
+            setHoveredClassName(chooseHoveredClassName);
         } else {
             setHoveredClassName("");
         }
@@ -298,25 +299,53 @@ export default function WardrobePage() {
                 {jackets.length === 0 ? (
                     <p>No jackets available.</p>
                 ) : (
-                    <Carousel id="carousel-jackets" className="wardrobe-carousel" images={jackets.map((image) => image.url)} hoveredClassName={hoveredClassName} imageClassName="jacket" />
+                    <Carousel
+                        id="carousel-jackets"
+                        className="wardrobe-carousel"
+                        images={jackets.map((image) => image.url)}
+                        imageClassName="jacket"
+                        hoveredClassName={hoveredClassName}
+                        clickedClassName={outfitClassName}
+                    />
                 )}
 
                 {shirts.length === 0 ? (
                     <p>No shirts available.</p>
                 ) : (
-                    <Carousel id="carousel-shirts" className="wardrobe-carousel" images={shirts.map((image) => image.url)} hoveredClassName={hoveredClassName} imageClassName="shirt" />
+                    <Carousel
+                        id="carousel-shirts"
+                        className="wardrobe-carousel"
+                        images={shirts.map((image) => image.url)}
+                        imageClassName="shirt"
+                        hoveredClassName={hoveredClassName}
+                        clickedClassName={outfitClassName}
+                    />
                 )}
 
                 {trousers.length === 0 ? (
                     <p>No trousers available.</p>
                 ) : (
-                    <Carousel id="carousel-trousers" className="wardrobe-carousel" images={trousers.map((image) => image.url)} hoveredClassName={hoveredClassName} imageClassName="trouser" />
+                    <Carousel
+                        id="carousel-trousers"
+                        className="wardrobe-carousel"
+                        images={trousers.map((image) => image.url)}
+                        imageClassName="trouser"
+                        hoveredClassName={hoveredClassName}
+                        clickedClassName={outfitClassName}
+                    />
                 )}
 
                 {shoes.length === 0 ? (
                     <p>No shoes available.</p>
                 ) : (
-                    <Carousel id="carousel-shoes" className="wardrobe-carousel" images={shoes.map((image) => image.url)} hoveredClassName={hoveredClassName} imageClassName="shoe" />
+                    <Carousel
+                        id="carousel-shoes"
+                        className="wardrobe-carousel"
+                        images={shoes.map((image) => image.url)}
+                        imageClassName="shoe"
+                        hoveredClassName={hoveredClassName}
+                        clickedClassName={outfitClassName}
+                    />
                 )}
             </div>
         </>
