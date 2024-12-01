@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import MediaQueryProvider from './MediaQueryContext';
 import Clothes from './components/Clothes/Clothes';
 import Header from './components/Header/Header';
+import Outfits from './components/Outfits/Outfits';
 import Posts from './components/Posts/Posts';
 
 import FeedPage from './pages/Feed/FeedPage';
@@ -50,12 +51,12 @@ export default function App() {
 						<Route path=":username" element={<ProfilePage />}>
 							<Route path="posts" element={<Posts />} />
 							<Route path="clothes" element={<Clothes />} />
-							<Route path="outfits" element={<p>outfits!</p>} />
+							<Route path="outfits" element={<Outfits />} />
 						</Route>
 						<Route path="signup" element={<SignUpPage />} />
 						<Route path="wardrobe" element={<WardrobePage />}>
 							<Route path="clothes" element={<Clothes />} />
-							<Route path="outfits" element={<p>outfits</p>} />
+							<Route path="outfits" element={<Outfits />} />
 						</Route>
 						<Route path="search" element={<SearchPage />} />
 					</Routes>

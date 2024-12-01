@@ -30,3 +30,37 @@ export async function postOutfit(outfit) {
     }
     return false;
 }
+
+export async function getOutfitIds() {
+    try {
+        const response = await fetch("/api/wardrobe/outfits", {method: "GET"});
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+            console.error(data.message);
+            return null;
+        }
+
+        return data.outfitIds;
+    } catch (error) {
+        console.error("Error while retrieving outfit IDs: ", error);
+    }
+    return null;
+}
+
+export async function getOutfitImageUrls(outfitId) {
+    try {
+        const response = await fetch(`/api/wardrobe/outfits/outfit-${outfitId}`);
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+            console.error(data.message);
+            return null;
+        }
+
+        return data.imageUrls;
+    } catch (error) {
+        console.log("Error while retrieving outfit image URLs: ", error);
+    }
+    return null;
+}

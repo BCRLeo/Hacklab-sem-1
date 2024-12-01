@@ -1,0 +1,9 @@
+.outfit {
+    margin: 0 auto auto;
+}
+
+.outfit-image {
+    display: block;
+    margin: auto;
+    height: 15dvw;
+}

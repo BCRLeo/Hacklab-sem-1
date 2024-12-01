@@ -45,7 +45,7 @@ export default function WardrobePage() {
     const deleteHoveredClassName = "delete";
     const [hoveredClassName, setHoveredClassName] = useState("");
 
-    const getImages = async (itemType, setImagesCallback) => {
+    /* const getImages = async (itemType, setImagesCallback) => {
         try {
             const response = await fetch(`/api/wardrobe/items/${itemType}`, {
                 method: "GET"
@@ -76,7 +76,7 @@ export default function WardrobePage() {
         } catch (error) {
             console.error("Error: ", error);
         }
-    }
+    } */
 
     useEffect(() => {
         if (user === null) {
@@ -87,11 +87,11 @@ export default function WardrobePage() {
         if (user === -1) {
             navigate("/login");
         }
-        getAllImages();
+        //getAllImages();
         setIsPendingUpdate(false);
     }, [user, uploadStatus, isPendingUpdate]);
 
-    const toggleIsEditing = () => {
+    /* const toggleIsEditing = () => {
         if (isChoosingOutfit && !isEditing) {
             setIsChoosingOutfit(false);
         }
@@ -255,7 +255,7 @@ export default function WardrobePage() {
 
         setIsUploading(false);
         event.target.reset();
-    };
+    }; */
 
     if (isUserLoading) {
         return (
@@ -280,89 +280,6 @@ export default function WardrobePage() {
                 ]}
             />
             <Outlet />
-
-            {/* <Bar orientation="horizontal">
-                <Popover renderToggle={(dropdownProps) => <Button text="Upload" {...dropdownProps}><Icon name="uploadIcon" /></Button>}>
-                    <form onSubmit={handleSubmit} method="post" className="upload">
-                        <Field label="Upload item" onChange={handleFileChange} type="file" name="item" accept="image/png, image/jpeg, image/webp" multiple />
-                        <Field label="Clothing category">
-                            <select name="category" onChange={handleCategoryChange}>
-                                <option value="">Select a clothing category</option>
-                                <option value="jacket">Jacket</option>
-                                <option value="shirt">Shirt</option>
-                                <option value="trouser">Trousers</option>
-                                <option value="shoe">Shoes</option>
-                            </select>
-                        </Field>
-                        {!isUploading ?
-                            <Button type="submit" className="button-upload">
-                                <span>Upload</span>
-                            </Button>
-                        :
-                            <Button type="button" className="button-uploading">
-                                <span>Uploading...</span>
-                            </Button>
-                        }
-                    </form>
-                    <p id="upload-status">{uploadStatus}</p>
-                </Popover>
-                <ToggleButton labels={{"before": "Edit", "after": "Done"}} content={{"before": <Icon name="editIcon" />, "after": <Icon name="checkIcon" />}} isToggled={isEditing} onClick={toggleIsEditing} />
-                <ToggleButton labels={{"before": "Create outfit", "after": "Done"}} content={{"before": <Icon name="hangerIcon" />, "after": <Icon name="checkIcon" />}} isToggled={isChoosingOutfit} onClick={toggleIsChoosingOutfit} />
-            </Bar>
-
-            <div className="wardrobe-carousel-container" onClick={handleClothingClick}>
-                {jackets.length === 0 ? (
-                    <p>No jackets available.</p>
-                ) : (
-                    <Carousel
-                        id="carousel-jackets"
-                        className="wardrobe-carousel"
-                        images={jackets.map((image) => image.url)}
-                        imageClassName="jacket"
-                        hoveredClassName={hoveredClassName}
-                        clickedClassName={outfitClassName}
-                    />
-                )}
-
-                {shirts.length === 0 ? (
-                    <p>No shirts available.</p>
-                ) : (
-                    <Carousel
-                        id="carousel-shirts"
-                        className="wardrobe-carousel"
-                        images={shirts.map((image) => image.url)}
-                        imageClassName="shirt"
-                        hoveredClassName={hoveredClassName}
-                        clickedClassName={outfitClassName}
-                    />
-                )}
-
-                {trousers.length === 0 ? (
-                    <p>No trousers available.</p>
-                ) : (
-                    <Carousel
-                        id="carousel-trousers"
-                        className="wardrobe-carousel"
-                        images={trousers.map((image) => image.url)}
-                        imageClassName="trouser"
-                        hoveredClassName={hoveredClassName}
-                        clickedClassName={outfitClassName}
-                    />
-                )}
-
-                {shoes.length === 0 ? (
-                    <p>No shoes available.</p>
-                ) : (
-                    <Carousel
-                        id="carousel-shoes"
-                        className="wardrobe-carousel"
-                        images={shoes.map((image) => image.url)}
-                        imageClassName="shoe"
-                        hoveredClassName={hoveredClassName}
-                        clickedClassName={outfitClassName}
-                    />
-                )}
-            </div> */}
         </>
     );
 }
