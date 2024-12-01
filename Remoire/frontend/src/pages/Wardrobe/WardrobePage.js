@@ -17,7 +17,6 @@ import { UserContext } from "../../UserContext";
 export default function WardrobePage() {
     const navigate = useNavigate();
     const { user, setUser } = useContext(UserContext);
-    /* const [file, setFile] = useState(null); */
     const [files, setFiles] = useState([]);
     const [category, setCategory] = useState("");
     const [uploadStatus, setUploadStatus] = useState("");
@@ -35,6 +34,10 @@ export default function WardrobePage() {
     const [isChoosingOutfit, setIsChoosingOutfit] = useState(false);
 
     const [status, setStatus] = useState("");
+
+    const outfitHoveredClassName = "outfit"
+    const deleteHoveredClassName = "delete";
+    const [hoveredClassName, setHoveredClassName] = useState("");
 
     const getImages = async (itemType, setImagesCallback) => {
         try {
@@ -82,12 +85,6 @@ export default function WardrobePage() {
         setIsPendingUpdate(false);
     }, [user, uploadStatus, isPendingUpdate]);
 
-    if (isUserLoading) {
-        return (
-            <Loading />
-        );
-    }
-
     const toggleIsEditing = () => {
         if (isChoosingOutfit && !isEditing) {
             setIsChoosingOutfit(false);
@@ -101,6 +98,15 @@ export default function WardrobePage() {
         }
         setIsChoosingOutfit(isChoosingOutfit => !isChoosingOutfit);
     };
+
+    useEffect(() => {
+        if (isEditing) {
+            setHoveredClassName(deleteHoveredClassName);
+        }
+        if (isChoosingOutfit) {
+            setHoveredClassName(outfitHoveredClassName);
+        }
+    }, [isEditing, isChoosingOutfit]);
 
     const handleClothingClick = async (event) => {
         if (event.target.className !== "carousel-image" || !isEditing) {
@@ -128,7 +134,6 @@ export default function WardrobePage() {
 
     const handleFileChange = (event) => {
         setFiles(Array.prototype.slice.call(event.target.files))
-        /* setFile(event.target.files[0]); */
     };
 
     const handleCategoryChange = (event) => {
@@ -213,6 +218,12 @@ export default function WardrobePage() {
         event.target.reset();
     };
 
+    if (isUserLoading) {
+        return (
+            <Loading />
+        );
+    }
+
     return (
         <>
             {user ? <h1>{user.username}'s wardobe</h1> : <h1>Wardrobe</h1>}
@@ -250,25 +261,25 @@ export default function WardrobePage() {
                 {jackets.length === 0 ? (
                     <p>No jackets available.</p>
                 ) : (
-                    <Carousel id="carousel-jackets" images={jackets.map((image) => image.url)} />
+                    <Carousel id="carousel-jackets" className="wardrobe-carousel" images={jackets.map((image) => image.url)} hoveredClassName={hoveredClassName} />
                 )}
 
                 {shirts.length === 0 ? (
                     <p>No shirts available.</p>
                 ) : (
-                    <Carousel id="carousel-shirts" images={shirts.map((image) => image.url)} />
+                    <Carousel id="carousel-shirts" className="wardrobe-carousel" images={shirts.map((image) => image.url)} hoveredClassName={hoveredClassName} />
                 )}
 
                 {trousers.length === 0 ? (
                     <p>No trousers available.</p>
                 ) : (
-                    <Carousel id="carousel-trousers" images={trousers.map((image) => image.url)} />
+                    <Carousel id="carousel-trousers" className="wardrobe-carousel" images={trousers.map((image) => image.url)} hoveredClassName={hoveredClassName} />
                 )}
 
                 {shoes.length === 0 ? (
                     <p>No shoes available.</p>
                 ) : (
-                    <Carousel id="carousel-shoes" images={shoes.map((image) => image.url)} />
+                    <Carousel id="carousel-shoes" className="wardrobe-carousel" images={shoes.map((image) => image.url)} hoveredClassName={hoveredClassName} />
                 )}
             </div>
         </>

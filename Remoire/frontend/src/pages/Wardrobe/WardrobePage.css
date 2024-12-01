@@ -15,3 +15,8 @@ button.button-upload {
 button.button-uploading {
     cursor: wait;
 }
+
+.wardrobe-carousel .delete {
+    filter: sepia(100%) saturate(800%) hue-rotate(-50deg);
+    cursor: pointer;
+}
