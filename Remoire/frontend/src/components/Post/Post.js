@@ -5,6 +5,7 @@ export default function Post({
   postId, 
   className, 
   image, 
+  profilePicture,
   username, 
   likeCount,  
   initialIsLiked = false 

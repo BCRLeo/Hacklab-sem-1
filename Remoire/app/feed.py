@@ -37,6 +37,7 @@ def get_user_posts(user_id: int):
             "url": f"/api/posts/post-{post.id}",
             "caption": post.description,
             "timestamp": post.timestamp,
+            "profile_picture_url": f"/api/users/{post.author.id}/profile-picture",
             "outfit": post.outfit_id,
             "username": post.author.UserName,
             "likes": post.like_count(),
