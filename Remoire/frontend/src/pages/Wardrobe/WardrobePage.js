@@ -266,7 +266,7 @@ export default function WardrobePage() {
             {user ? <h1>{user.username}'s wardobe</h1> : <h1>Wardrobe</h1>}
 
             <Bar orientation="horizontal">
-                <Popover renderToggle={(dropdownProps) => <Button {...dropdownProps}><Icon name="uploadIcon" />Upload item</Button>}>
+                <Popover renderToggle={(dropdownProps) => <Button text="Upload" {...dropdownProps}><Icon name="uploadIcon" /></Button>}>
                     <form onSubmit={handleSubmit} method="post" className="upload">
                         <Field label="Upload item" onChange={handleFileChange} type="file" name="item" accept="image/png, image/jpeg, image/webp" multiple />
                         <Field label="Clothing category">

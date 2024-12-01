@@ -17,3 +17,9 @@
 .button:active {
     transform: scale(0.9);
 }
+
+.button-text {
+    display: block;
+    color: var(--hex__text-contrast);
+    text-align: center;
+}

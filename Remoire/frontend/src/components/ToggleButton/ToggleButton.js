@@ -1,6 +1,6 @@
 import "./ToggleButton.css"
 
-import { useState } from "react";
+import Button from "../Button/Button";
 
 /**
  * ToggleButton is a component that toggles between two states, rendering different content and labels for each state.
@@ -25,7 +25,7 @@ import { useState } from "react";
 
 export default function ToggleButton({ labels, content, isToggled, onClick }) {
     return (
-        <button className="togglebutton" type="button" onClick={onClick}>
+        <Button className="togglebutton" type="button" onClick={onClick}>
             {isToggled ?
                 <>
                     {content.after}
@@ -37,6 +37,6 @@ export default function ToggleButton({ labels, content, isToggled, onClick }) {
                     {labels.before ? <span className="togglebutton-text">{labels.before}</span> : <></>}
                 </>
             }
-        </button>
+        </Button>
     );
 }
