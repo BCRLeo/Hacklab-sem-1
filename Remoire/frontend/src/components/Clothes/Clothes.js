@@ -1,4 +1,4 @@
-import "./WardrobePage.css"
+import "./Clothes.css";
 
 import { postOutfit } from "../../api/wardrobe";
 
@@ -6,7 +6,6 @@ import Bar from "../../components/Bar/Bar";
 import Button from "../../components/Button/Button";
 import Carousel from "../../components/Carousel/Carousel";
 import Field from "../../components/Field/Field";
-import Header from "../../components/Header/Header";
 import Icon from "../../components/Icon/Icon";
 import Loading from "../../components/Loading/Loading";
 import Popover from "../../components/Popover/Popover";
@@ -17,7 +16,7 @@ import { useContext, useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { UserContext } from "../../UserContext";
 
-export default function WardrobePage() {
+export default function Clothes() {
     const navigate = useNavigate();
     const { user, setUser } = useContext(UserContext);
     const [files, setFiles] = useState([]);
@@ -265,23 +264,7 @@ export default function WardrobePage() {
 
     return (
         <>
-            {user ? <h1>{user.username}'s wardobe</h1> : <h1>Wardrobe</h1>}
-            <TabBar
-                orientation="horizontal"
-                links={[
-                    {
-                        href: "/wardrobe/clothes",
-                        label: "Clothes"
-                    },
-                    {
-                        href: "/wardrobe/outfits",
-                        label: "Outfits"
-                    }
-                ]}
-            />
-            <Outlet />
-
-            {/* <Bar orientation="horizontal">
+            <Bar orientation="horizontal">
                 <Popover renderToggle={(dropdownProps) => <Button text="Upload" {...dropdownProps}><Icon name="uploadIcon" /></Button>}>
                     <form onSubmit={handleSubmit} method="post" className="upload">
                         <Field label="Upload item" onChange={handleFileChange} type="file" name="item" accept="image/png, image/jpeg, image/webp" multiple />
@@ -299,7 +282,7 @@ export default function WardrobePage() {
                                 <span>Upload</span>
                             </Button>
                         :
-                            <Button type="button" className="button-uploading">
+                            <Button type="button" className="uploading">
                                 <span>Uploading...</span>
                             </Button>
                         }
@@ -310,13 +293,13 @@ export default function WardrobePage() {
                 <ToggleButton labels={{"before": "Create outfit", "after": "Done"}} content={{"before": <Icon name="hangerIcon" />, "after": <Icon name="checkIcon" />}} isToggled={isChoosingOutfit} onClick={toggleIsChoosingOutfit} />
             </Bar>
 
-            <div className="wardrobe-carousel-container" onClick={handleClothingClick}>
+            <div className="clothes-carousel-container" onClick={handleClothingClick}>
                 {jackets.length === 0 ? (
                     <p>No jackets available.</p>
                 ) : (
                     <Carousel
                         id="carousel-jackets"
-                        className="wardrobe-carousel"
+                        className="clothes-carousel"
                         images={jackets.map((image) => image.url)}
                         imageClassName="jacket"
                         hoveredClassName={hoveredClassName}
@@ -329,7 +312,7 @@ export default function WardrobePage() {
                 ) : (
                     <Carousel
                         id="carousel-shirts"
-                        className="wardrobe-carousel"
+                        className="clothes-carousel"
                         images={shirts.map((image) => image.url)}
                         imageClassName="shirt"
                         hoveredClassName={hoveredClassName}
@@ -342,7 +325,7 @@ export default function WardrobePage() {
                 ) : (
                     <Carousel
                         id="carousel-trousers"
-                        className="wardrobe-carousel"
+                        className="clothes-carousel"
                         images={trousers.map((image) => image.url)}
                         imageClassName="trouser"
                         hoveredClassName={hoveredClassName}
@@ -355,14 +338,14 @@ export default function WardrobePage() {
                 ) : (
                     <Carousel
                         id="carousel-shoes"
-                        className="wardrobe-carousel"
+                        className="clothes-carousel"
                         images={shoes.map((image) => image.url)}
                         imageClassName="shoe"
                         hoveredClassName={hoveredClassName}
                         clickedClassName={outfitClassName}
                     />
                 )}
-            </div> */}
+            </div>
         </>
     );
 }

@@ -1,6 +1,7 @@
 import './App.css';
 import React, { useState, useEffect } from "react";
 import MediaQueryProvider from './MediaQueryContext';
+import Clothes from './components/Clothes/Clothes';
 import Header from './components/Header/Header';
 import Posts from './components/Posts/Posts';
 
@@ -48,11 +49,14 @@ export default function App() {
 						<Route path="login" element={<LogInPage />} />
 						<Route path=":username" element={<ProfilePage />}>
 							<Route path="posts" element={<Posts />} />
-							<Route path="wardrobe" element={<p>wardrobe!</p>} />
+							<Route path="clothes" element={<Clothes />} />
 							<Route path="outfits" element={<p>outfits!</p>} />
 						</Route>
 						<Route path="signup" element={<SignUpPage />} />
-						<Route path="wardrobe" element={<WardrobePage />} />
+						<Route path="wardrobe" element={<WardrobePage />}>
+							<Route path="clothes" element={<Clothes />} />
+							<Route path="outfits" element={<p>outfits</p>} />
+						</Route>
 						<Route path="search" element={<SearchPage />} />
 					</Routes>
 				</Router>

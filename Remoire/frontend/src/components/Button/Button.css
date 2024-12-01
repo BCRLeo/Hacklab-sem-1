@@ -10,6 +10,10 @@
     transition-duration: 0.15s;
 }
 
+.button.uploading {
+    cursor: wait;
+}
+
 .button:hover {
     background-color: var(--hex__button-hover);
 }

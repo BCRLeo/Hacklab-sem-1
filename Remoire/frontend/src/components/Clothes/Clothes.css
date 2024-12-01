@@ -1,0 +1,28 @@
+.clothes-carousel-container div.carousel {
+    width: 70dvw;
+    height: 35dvh;
+}
+
+#upload-status {
+    margin: 1rem auto;
+    text-align: center;
+}
+
+.clothes-carousel {
+    position: relative;
+}
+
+.clothes-carousel .delete {
+    filter: sepia(100%) saturate(800%) hue-rotate(-50deg);
+    -webkit-filter: sepia(100%) saturate(800%) hue-rotate(-50deg);
+    cursor: pointer;
+}
+
+.clothes-carousel .choose {
+    cursor: pointer;
+}
+
+.wardrobe-carousel .outfit {
+    filter: sepia(100%) saturate(150%) hue-rotate(90deg);
+    -webkit-filter: sepia(100%) saturate(150%) hue-rotate(90deg);
+}

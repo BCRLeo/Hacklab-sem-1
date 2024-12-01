@@ -46,8 +46,8 @@ export default function ProfilePage() {
                             label: "Posts",
                         },
                         {
-                            href: `/${profile.username}/wardrobe`,
-                            label: "Wardrobe",
+                            href: `/${profile.username}/clothes`,
+                            label: "Clothes",
                         },
                         {
                             href: `/${profile.username}/outfits`,
