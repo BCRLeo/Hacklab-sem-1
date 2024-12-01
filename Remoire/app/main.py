@@ -244,7 +244,7 @@ def search_users():
     
     userNames = [user.UserName for user in results]
 
-    return jsonify({"success" : True, "message" : "Bravo!", "userNames" : userNames})
+    return jsonify({"success" : True, "message" : "Search was successful", "userNames" : userNames})
 
 @main.route('/view_wardrobe/<item_type>', methods=['GET'])
 def view_wardrobe(item_type):

@@ -1,24 +1,78 @@
-.searchbar {
+.searchbar-container {
+    position: fixed; /* Keep it at the top of the page */
+    top: 10px; /* Adjust distance from the top */
+    left: 50%;
+    transform: translateX(-50%); /* Center horizontally */
+    width: 100%;
+    max-width: 700px; /* Slightly wider than before */
+    z-index: 1000; /* Ensure it's above other content */
+    background-color: white;
+    padding: 5px 15px; /* Reduced padding for a slimmer look */
+    border-radius: 25px; /* Rounded edges for a smoother look */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Softer shadow */
+    border: 1px solid #e0e0e0; /* Add a subtle border */
+  }
+  
+  .searchbar {
     margin: auto;
+    position: relative;
     width: 100%;
     display: flex;
     align-content: center;
     justify-content: center;
-}
-
-.searchbar a {
-    margin: auto 1rem;
-    width: min-content;
-}
-
-.searchbar input {
-    height: 2.5rem;
-    width: auto;
-    
-    margin: auto;
-    padding-left: 1rem;
-
-    flex-grow: 1;
-    border-radius: 1.5rem;
-    border: none;
-}
+    align-items: center; /* Center vertically */
+    z-index: 1001;
+  }
+  
+  .searchbar input[type="text"] {
+    width: 100%; /* Fill the container */
+    padding: 10px 15px; /* Add some inner spacing */
+    font-size: 16px; /* Increase font size for better readability */
+    border: none; /* Remove default border */
+    outline: none; /* Remove outline */
+    border-radius: 25px; /* Match container's rounded style */
+    background-color: #f8f9fa; /* Light gray background */
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle inset shadow */
+  }
+  
+  .searchbar svg {
+    position: absolute;
+    left: 15px;
+    height: 20px;
+    width: 20px;
+    fill: #888; /* Icon color */
+    pointer-events: none;
+  }
+  
+  .search-results {
+    position: absolute; /* Relative to the `.searchbar-container` */
+    top: calc(100% + 5px); /* Add some spacing below the input */
+    left: 0;
+    width: 100%;
+    max-height: 250px;
+    overflow-y: auto;
+    background-color: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px; /* Slightly rounded corners */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1002;
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    transition: 
+      opacity 0.2s ease,
+      transform 0.2s ease;
+  }
+  
+  .search-results li {
+    padding: 10px 15px; /* Add horizontal padding */
+    font-size: 14px; /* Slightly smaller font */
+    border-bottom: 1px solid #f0f0f0;
+    color: black;
+    cursor: pointer;
+  }
+  
+  .search-results li:hover {
+    background-color: #f5f5f5;
+  }
+  
