@@ -32,6 +32,7 @@ export default function WardrobePage() {
     const [isUploading, setIsUploading] = useState(false);
     const [isPendingUpdate, setIsPendingUpdate] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
+    const [isChoosingOutfit, setIsChoosingOutfit] = useState(false);
 
     const [status, setStatus] = useState("");
 
@@ -88,7 +89,17 @@ export default function WardrobePage() {
     }
 
     const toggleIsEditing = () => {
+        if (isChoosingOutfit && !isEditing) {
+            setIsChoosingOutfit(false);
+        }
         setIsEditing(isEditing => !isEditing);
+    };
+
+    const toggleIsChoosingOutfit = () => {
+        if (isEditing && !isChoosingOutfit) {
+            setIsEditing(false);
+        }
+        setIsChoosingOutfit(isChoosingOutfit => !isChoosingOutfit);
     };
 
     const handleClothingClick = async (event) => {
@@ -207,7 +218,7 @@ export default function WardrobePage() {
             {user ? <h1>{user.username}'s wardobe</h1> : <h1>Wardrobe</h1>}
 
             <Bar orientation="horizontal">
-                <Popover renderToggle={(dropdownProps) => <Button {...dropdownProps}>Upload item</Button>}>
+                <Popover renderToggle={(dropdownProps) => <Button {...dropdownProps}><Icon name="uploadIcon" />Upload item</Button>}>
                     <form onSubmit={handleSubmit} method="post" className="upload">
                         <Field label="Upload item" onChange={handleFileChange} type="file" name="item" accept="image/png, image/jpeg, image/webp" multiple />
                         <Field label="Clothing category">
@@ -231,7 +242,8 @@ export default function WardrobePage() {
                     </form>
                     <p id="upload-status">{uploadStatus}</p>
                 </Popover>
-                <ToggleButton labels={{"before": "Edit", "after": "Done"}} content={{"before": <Icon name="editIcon" />, "after": <Icon name="checkIcon" />}} onClick={toggleIsEditing} />
+                <ToggleButton labels={{"before": "Edit", "after": "Done"}} content={{"before": <Icon name="editIcon" />, "after": <Icon name="checkIcon" />}} isToggled={isEditing} onClick={toggleIsEditing} />
+                <ToggleButton labels={{"before": "Create outfit", "after": "Done"}} content={{"before": <Icon name="hangerIcon" />, "after": <Icon name="checkIcon" />}} isToggled={isChoosingOutfit} onClick={toggleIsChoosingOutfit} />
             </Bar>
 
             <div className="wardrobe-carousel-container" onClick={handleClothingClick}>

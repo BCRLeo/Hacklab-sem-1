@@ -13,6 +13,7 @@ import { useState } from "react";
  * @param {Object} content - The content to display inside the button for the two states.
  * @param {React.ReactNode} content.before - The content to display in the default state (before toggle).
  * @param {React.ReactNode} content.after - The content to display in the toggled state (after toggle).
+ * @param {boolean} isToggles - Indicates whether the button is in the toggled state.
  * @param {function} [onClick] - An optional callback function that is called when the button is clicked.
  *
  * @returns {JSX.Element} A toggleable button component.
@@ -22,18 +23,9 @@ import { useState } from "react";
  * <ToggleButton labels={{"before": "Edit", "after": "Done"}} content={{"before": <Icon name="editIcon" />, "after": <Icon name="checkIcon" />}} />
  */
 
-export default function ToggleButton({ labels, content, onClick }) {
-    const [isToggled, setIsToggled] = useState(false);
-
-    const handleClick = () => {
-        setIsToggled(isToggled => !isToggled);
-        if (onClick) {
-            onClick();
-        }
-    };
-
+export default function ToggleButton({ labels, content, isToggled, onClick }) {
     return (
-        <button className="togglebutton" type="button" onClick={handleClick}>
+        <button className="togglebutton" type="button" onClick={onClick}>
             {isToggled ?
                 <>
                     {content.after}
