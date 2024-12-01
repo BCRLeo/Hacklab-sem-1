@@ -16,7 +16,7 @@ import { Link, Outlet, useLocation, useParams } from "react-router-dom";
 export default function ProfilePage() {
     const { username } = useParams();
     const [profile, setProfile] = useState(null);
-    
+
     const location = useLocation();
 
     const { user, setUser } = useContext(UserContext);
@@ -26,9 +26,11 @@ export default function ProfilePage() {
             const data = await getProfile(username);
             if (data) {
                 setProfile(data);
+            } else {
+                setProfile(null); // Handle missing profiles
             }
         })();
-    }, []);
+    }, [username]); // Trigger useEffect on username change
 
     if (profile) {
         return (
@@ -36,20 +38,23 @@ export default function ProfilePage() {
                 <h1>{profile.username}</h1>
                 <Icon className="profile-icon" name="accountIcon" size="xl" />
                 <p>bio test test i'm so cool test test fashion whatever</p>
-                <TabBar orientation="horizontal" links={[
-                    {
-                        "href": `/${profile.username}/posts`,
-                        "label": "Posts"
-                    },
-                    {
-                        "href": `/${profile.username}/wardrobe`,
-                        "label": "Wardrobe"
-                    },
-                    {
-                        "href": `/${profile.username}/outfits`,
-                        "label": "Outfits"
-                    }
-                    ]} />
+                <TabBar
+                    orientation="horizontal"
+                    links={[
+                        {
+                            href: `/${profile.username}/posts`,
+                            label: "Posts",
+                        },
+                        {
+                            href: `/${profile.username}/wardrobe`,
+                            label: "Wardrobe",
+                        },
+                        {
+                            href: `/${profile.username}/outfits`,
+                            label: "Outfits",
+                        },
+                    ]}
+                />
                 <Outlet />
             </>
         );
