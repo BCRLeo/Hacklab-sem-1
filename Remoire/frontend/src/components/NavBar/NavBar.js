@@ -39,14 +39,14 @@ export default function Navbar() {
 		<nav className="navbar">
 			<ul className="navbar-nav">
 				<NavItem><Icon name="logoIcon" /></NavItem>
-				<NavItem href="/" text="Home" className={location.pathname === "/" || location.pathname === "/home" ? "active" : ""} />
-				<NavItem href="/feed" text="Feed" className={location.pathname === "/feed" ? "active" : ""} />
+				<NavItem href="/" text="Home" activeClassName="active" />
+				<NavItem href="/feed" text="Feed" activeClassName="active" />
 				<NavItem className="search">
 					<SearchBar></SearchBar>
 				</NavItem>
 				{user && user !== -1 ? (
 					<>
-						<NavItem href="/wardrobe" text="Wardrobe" className={location.pathname === "/wardrobe" ? "active" : ""} />
+						<NavItem href="/wardrobe" text="Wardrobe" activeClassName="active" />
 						<NavItem>
 							<Dropdown renderToggle={(dropdownProps) => <Link to={`/${user.username}`}><Icon name="accountIcon" {...dropdownProps} /></Link>}>
 								<NavItem text="Log out" onClick={handleLogout} />
