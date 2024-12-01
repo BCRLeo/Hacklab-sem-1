@@ -6,7 +6,7 @@ import IconArrowRight from "../../assets/icons/icon__arrow-right.svg";
 
 import { useEffect, useRef, useState } from "react";
 
-export default function Carousel({ images, children, className, hoveredClassName }) {
+export default function Carousel({ images, children, className, hoveredClassName = "", imageClassName = "" }) {
 	const [currentIndex, setCurrentIndex] = useState(0);
 	const [visibleImages, setVisibleImages] = useState([]);
 	const carouselRef = useRef(null);
@@ -50,7 +50,7 @@ export default function Carousel({ images, children, className, hoveredClassName
 			if (hoveredClassName) {
 				newVisibleImages.push(
 					<img
-					className={`carousel-image${hoveredIndex === i ? ` ${hoveredClassName}` : ""}`}
+					className={`carousel-image ${hoveredIndex === i ? `${hoveredClassName}` : ""} ${imageClassName}`}
 					key={i}
 					src={images[index]}
 					alt={`slide ${index + 1}`}
@@ -61,7 +61,7 @@ export default function Carousel({ images, children, className, hoveredClassName
 			} else {
 				newVisibleImages.push(
 					<img
-					className="carousel-image"
+					className={`carousel-image ${imageClassName}`}
 					key={i}
 					src={images[index]}
 					alt={`slide ${index + 1}`}

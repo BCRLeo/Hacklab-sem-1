@@ -1,5 +1,7 @@
 import "./WardrobePage.css"
 
+import { postOutfit } from "../../api/wardrobe";
+
 import Bar from "../../components/Bar/Bar";
 import Button from "../../components/Button/Button";
 import Carousel from "../../components/Carousel/Carousel";
@@ -31,7 +33,9 @@ export default function WardrobePage() {
     const [isUploading, setIsUploading] = useState(false);
     const [isPendingUpdate, setIsPendingUpdate] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
+
     const [isChoosingOutfit, setIsChoosingOutfit] = useState(false);
+    const [newOutfit, setNewOutfit] = useState({});
 
     const [status, setStatus] = useState("");
 
@@ -92,43 +96,76 @@ export default function WardrobePage() {
         setIsEditing(isEditing => !isEditing);
     };
 
-    const toggleIsChoosingOutfit = () => {
+    const toggleIsChoosingOutfit = async () => {
         if (isEditing && !isChoosingOutfit) {
             setIsEditing(false);
         }
+
+        if (isChoosingOutfit) {
+            if (await postOutfit(newOutfit)) {
+                console.log("Successfully created outfit");
+            }
+        }
+
         setIsChoosingOutfit(isChoosingOutfit => !isChoosingOutfit);
     };
 
     useEffect(() => {
         if (isEditing) {
             setHoveredClassName(deleteHoveredClassName);
-        }
-        if (isChoosingOutfit) {
+        } else if (isChoosingOutfit) {
             setHoveredClassName(outfitHoveredClassName);
+        } else {
+            setHoveredClassName("");
         }
     }, [isEditing, isChoosingOutfit]);
 
     const handleClothingClick = async (event) => {
-        if (event.target.className !== "carousel-image" || !isEditing) {
+        const itemClassName = event.target.className;
+        if (!itemClassName.includes("carousel-image")) {
             return;
         }
 
         const url = new URL(event.target.src);
+        const searchParams = url.searchParams;
+        if (isEditing) {
+            try {
+                const response = await fetch(url, {
+                    method: "DELETE"
+                });
 
-        try {
-            const response = await fetch(url, {
-                method: "DELETE"
-            });
-
-            const data = await response.json();
-            if (response.ok && data.success) {
-                console.log(`Item ${url.search} successfully deleted`);
-                setIsPendingUpdate(true);
-                return;
+                const data = await response.json();
+                if (response.ok && data.success) {
+                    console.log(`Item ${searchParams.get("id")} successfully deleted`);
+                    setIsPendingUpdate(true);
+                    return;
+                }
+                console.log("Image deletion failed: ", data.message);
+            } catch (error) {
+                console.error("Error: ", error);
             }
-            console.log("Image deletion failed: ", data.message);
-        } catch (error) {
-            console.error("Error: ", error);
+        } else if (isChoosingOutfit) {
+            if (itemClassName.includes("jacket")) {
+                setNewOutfit({
+                    ...newOutfit,
+                    "jacket": searchParams.get("id")
+                });
+            } else if (itemClassName.includes("shirt")) {
+                setNewOutfit({
+                    ...newOutfit,
+                    "shirt": searchParams.get("id")
+                });
+            } else if (itemClassName.includes("trouser")) {
+                setNewOutfit({
+                    ...newOutfit,
+                    "trousers": searchParams.get("id")
+                });
+            } else if (itemClassName.includes("shoe")) {
+                setNewOutfit({
+                    ...newOutfit,
+                    "shoes": searchParams.get("id")
+                });
+            }
         }
     };
 
@@ -261,25 +298,25 @@ export default function WardrobePage() {
                 {jackets.length === 0 ? (
                     <p>No jackets available.</p>
                 ) : (
-                    <Carousel id="carousel-jackets" className="wardrobe-carousel" images={jackets.map((image) => image.url)} hoveredClassName={hoveredClassName} />
+                    <Carousel id="carousel-jackets" className="wardrobe-carousel" images={jackets.map((image) => image.url)} hoveredClassName={hoveredClassName} imageClassName="jacket" />
                 )}
 
                 {shirts.length === 0 ? (
                     <p>No shirts available.</p>
                 ) : (
-                    <Carousel id="carousel-shirts" className="wardrobe-carousel" images={shirts.map((image) => image.url)} hoveredClassName={hoveredClassName} />
+                    <Carousel id="carousel-shirts" className="wardrobe-carousel" images={shirts.map((image) => image.url)} hoveredClassName={hoveredClassName} imageClassName="shirt" />
                 )}
 
                 {trousers.length === 0 ? (
                     <p>No trousers available.</p>
                 ) : (
-                    <Carousel id="carousel-trousers" className="wardrobe-carousel" images={trousers.map((image) => image.url)} hoveredClassName={hoveredClassName} />
+                    <Carousel id="carousel-trousers" className="wardrobe-carousel" images={trousers.map((image) => image.url)} hoveredClassName={hoveredClassName} imageClassName="trouser" />
                 )}
 
                 {shoes.length === 0 ? (
                     <p>No shoes available.</p>
                 ) : (
-                    <Carousel id="carousel-shoes" className="wardrobe-carousel" images={shoes.map((image) => image.url)} hoveredClassName={hoveredClassName} />
+                    <Carousel id="carousel-shoes" className="wardrobe-carousel" images={shoes.map((image) => image.url)} hoveredClassName={hoveredClassName} imageClassName="shoe" />
                 )}
             </div>
         </>
