@@ -5,7 +5,7 @@ import Post from "../components/Post/Post";
  * @async
  * @function getPostAuthorUsername
  * @param {number} postId - The ID of the post for which to retrieve the like count.
- * @returns {string | null} The username of the author of the post, or `null` if an error occurred or the post doesn't exist.
+ * @returns {Promise<string | null>} The username of the author of the post, or `null` if an error occurred or the post doesn't exist.
  */
 export async function getPostAuthorUsername(postId) {
     try {
@@ -28,7 +28,7 @@ export async function getPostAuthorUsername(postId) {
  * @async
  * @function getPostImageUrl
  * @param {number} postId - The ID of the post for which to retrieve the like count.
- * @returns {URL | null} The URL for the image of the post, or `null` if an error occurred or the post doesn't exist.
+ * @returns {Promise<URL | null>} The URL for the image of the post, or `null` if an error occurred or the post doesn't exist.
  */
 export async function getPostImageUrl(postId) {
     try {

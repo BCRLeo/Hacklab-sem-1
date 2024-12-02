@@ -1,6 +1,6 @@
 import "./ProfilePage.css";
 
-import { getProfile } from "../../api/profile";
+import { getProfile, getProfilePictureUrl, uploadProfilePicture } from "../../api/profile";
 
 import Bar from "../../components/Bar/Bar";
 import Header from "../../components/Header/Header";
@@ -45,6 +45,16 @@ export default function ProfilePage() {
         fetchProfile();
     }, [username]);
 
+    useEffect(() => {
+        (async () => {
+            const data = await getProfilePictureUrl(username);
+            if (data === null) {
+                return;
+            }
+            setProfilePictureUrl(data);
+        })();
+    }, [uploadStatus]);
+
     const handleFileChange = (event) => {
         const file = event.target.files[0];
         
@@ -76,30 +86,13 @@ export default function ProfilePage() {
             return;
         }
 
-        const formData = new FormData();
-        formData.append("file", selectedFile);
-
-        try {
-            const response = await fetch(`/api/users/${profile.id}/upload-profile-picture`, {
-                method: "POST",
-                body: formData,
-            });
-
-            const data = await response.json();
-            if (response.ok) {
-                // Update profile picture URL immediately
-                setProfilePictureUrl('/api/users/${profile.id}/upload-profile-picture}');
-                setUploadStatus("Profile picture uploaded successfully.");
-                setSelectedFile(null);
-            } else {
-                setUploadStatus(data.message || "Failed to upload profile picture.");
-            }
-        } catch (error) {
-            console.error("Error uploading profile picture:", error);
-            setUploadStatus("An error occurred. Please try again.");
-        } finally {
-            setIsUploading(false);
+        if (uploadProfilePicture(user.username, selectedFile)) {
+            setUploadStatus("Profile picture uploaded successfully.");
+        } else {
+            setUploadStatus("Failed to upload profile picture.");
         }
+        setSelectedFile(null);
+        setIsUploading(false);
     };
 
     if (!profile) {
