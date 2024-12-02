@@ -1,6 +1,6 @@
 .outfits {
     display: flex;
-    width: 50dvw;
+    width: min(50dvw, 950px);
 
     margin: auto;
     padding: 2rem;

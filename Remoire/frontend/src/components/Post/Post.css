@@ -2,6 +2,7 @@ div.post {
     width: var(--width__post);
     height: fit-content;
     margin: auto;
+    margin-bottom: 1rem;
     padding: 0;
 
     filter: drop-shadow(0 0 0.3rem var(--hex__drop-shadow));

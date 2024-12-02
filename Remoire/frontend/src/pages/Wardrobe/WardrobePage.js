@@ -37,7 +37,7 @@ export default function WardrobePage() {
 
     return (
         <>
-            {user ? <h1>{user.username}'s wardobe</h1> : <h1>Wardrobe</h1>}
+            {user ? <h1>{user.username}'s wardrobe</h1> : <h1>Wardrobe</h1>}
             <TabBar
                 orientation="horizontal"
                 links={[

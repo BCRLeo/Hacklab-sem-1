@@ -107,22 +107,36 @@ def get_user_wardrobe_image_endpoints(username, item_type):
 
     ids = [item.id for item in items]
 
-    image_endpoints = [f"/api/wardrobe/items/{item_type}?id={idx}" for idx in ids]
+    image_endpoints = [f"/api/wardrobe/items/{item_type}/{idx}" for idx in ids]
     return jsonify({
         "success": True,
         "message": f"Successfully retrieved {item_type} image endpoints",
         "data": image_endpoints
     }), 200
 
-""" @wardrobe.route("/api/wardrobe/items/<item_type>/<int:item_id>", methods=["GET"])
+@wardrobe.route("/api/wardrobe/items/<item_type>/<int:item_id>", methods=["GET"])
 def get_wardrobe_image(item_type, item_id):
-     """
+    item = None
+    match item_type:
+        case "jacket":
+            item = Jacket.query.get(item_id)
+        case "shirt":
+            item = Shirt.query.get(item_id)
+        case "trousers":
+            item = Trouser.query.get(item_id)
+        case "shoes":
+            item = Shoe.query.get(item_id)
+        case _:
+            return jsonify({"success": False, "message": "Invalid item type"}), 400
+        
+    return send_file(io.BytesIO(item.image_data), mimetype=item.image_mimetype)
 
 @wardrobe.route('/api/wardrobe/items/<item_type>', methods=['GET'])
 def get_wardrobe_images(item_type):
     if not current_user.is_authenticated:
         return jsonify({"success": False, "message": "User not logged in"}), 401
 
+    return get_user_wardrobe_image_endpoints(current_user.UserName, item_type)
     items = None
     match item_type:
         case "jacket":
@@ -262,16 +276,16 @@ def get_clothing_ids(outfit_id: int) -> dict[int]:
 def get_clothing_image_urls(clothing_ids: dict[int]) -> dict[str]:
     clothing_image_urls = {}
     if "jacket" in clothing_ids and Jacket.query.get(clothing_ids["jacket"]):
-        clothing_image_urls["jacket"] = f"/api/wardrobe/items/jacket?id={Jacket.query.get(clothing_ids["jacket"]).id}"
+        clothing_image_urls["jacket"] = f"/api/wardrobe/items/jacket/{Jacket.query.get(clothing_ids["jacket"]).id}"
 
     if "shirt" in clothing_ids and Shirt.query.get(clothing_ids["shirt"]):
-        clothing_image_urls["shirt"] = f"/api/wardrobe/items/shirt?id={Shirt.query.get(clothing_ids["shirt"]).id}"
+        clothing_image_urls["shirt"] = f"/api/wardrobe/items/shirt/{Shirt.query.get(clothing_ids["shirt"]).id}"
 
     if "trouser" in clothing_ids and Trouser.query.get(clothing_ids["trouser"]):
-        clothing_image_urls["trouser"] = f"/api/wardrobe/items/trousers?id={Trouser.query.get(clothing_ids["trouser"]).id}"
+        clothing_image_urls["trouser"] = f"/api/wardrobe/items/trousers/{Trouser.query.get(clothing_ids["trouser"]).id}"
 
     if "shoe" in clothing_ids and Shoe.query.get(clothing_ids["shoe"]):
-        clothing_image_urls["shoe"] = f"/api/wardrobe/items/shoes?id={Shoe.query.get(clothing_ids["shoe"]).id}"
+        clothing_image_urls["shoe"] = f"/api/wardrobe/items/shoes/{Shoe.query.get(clothing_ids["shoe"]).id}"
 
     return clothing_image_urls
     

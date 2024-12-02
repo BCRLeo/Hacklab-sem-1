@@ -14,7 +14,7 @@
 
 .clothes-carousel {
     position: relative;
-    width: 70dvw;
+    width: min(50dvw, 950px);
     height: clamp(75px, 15dvh, 200px);
 }
 
