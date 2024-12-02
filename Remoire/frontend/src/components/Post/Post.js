@@ -1,5 +1,7 @@
 import "./Post.css";
 
+import { getPostAuthorUsername, getPostImageUrl } from "../../api/feed";
+
 import Likes from "../Likes/Likes";
 
 import React, { useState, useEffect } from 'react';
@@ -9,10 +11,31 @@ export default function Post({
     className,
     image,
     userId,
-    username,
     likeCount,
     initialIsLiked = false
 }) {
+    const [username, setUsername] = useState(null);
+    const [imageUrl, setImageUrl] = useState(null);
+
+    useEffect(() => {
+        (async () => {
+            const data = await getPostAuthorUsername(postId);
+            if (data === null) {
+                return;
+            }
+
+            setUsername(data);
+        })();
+
+        (async () => {
+            const data = await getPostImageUrl(postId);
+            if (data === null) {
+                return;
+            }
+
+            setImageUrl(data);
+        })();
+    }, []);
     
 
     return (
@@ -22,7 +45,7 @@ export default function Post({
                     <img src={image} className="post-profile-picture" alt={`${username}'s profile`} />
                     {username}
                 </span>
-                <img src={image} className="post-image" alt="Post" />
+                <img src={imageUrl} className="post-image" alt="Post" />
                 <Likes postId={postId} />
             </div>
         </div>

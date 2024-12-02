@@ -24,7 +24,6 @@ from .algorithm import get_posts as get_feed_posts
 
 feed = Blueprint("feed", __name__)
 
-
 def get_user_posts(user_id: int):
     user = User.query.get(user_id)
     if not user:
@@ -53,7 +52,7 @@ def get_user_posts(user_id: int):
 def get_post(post_id: int):
     post = Post.query.get(post_id)
     if not post:
-        return jsonify({"success": False, "message": f"Post ${post_id} not found"})
+        return jsonify({"success": False, "message": f"Post ${post_id} not found"}), 404
     
     return send_file(io.BytesIO(post.image_data), mimetype=post.image_mimetype)
 
@@ -64,13 +63,37 @@ def get_posts(param: str):
             post_id = int(param[5:])
             return get_post(post_id)
         except ValueError:
-            return jsonify({"success": False, "message": "Invalid post ID"})
+            return jsonify({"success": False, "message": "Invalid post ID"}), 400
 
     user = User.query.filter_by(UserName=param).first()
     if not user:
-        return jsonify({"success": False, "message": f"User ${param} not found"})
+        return jsonify({"success": False, "message": f"User ${param} not found"}), 404
 
     return get_user_posts(user.id)
+
+@feed.route("/api/posts/<param>/author", methods=["GET"])
+def get_post_author(param: str):
+    if not param.startswith("post-"):
+        return jsonify({"success": False, "message": "Invalid post ID", "data": None}), 400
+    
+    try:
+        post_id = int(param[5:])
+    except ValueError:
+        return jsonify({"success": False, "message": "Invalid post ID", "data": None}), 400
+    
+    post = Post.query.get(post_id)
+    if not post:
+        return jsonify({"success": False, "message": f"Post ${post_id} not found", "data": None}), 404
+    
+    author = post.author
+    return jsonify({
+        "success": True,
+        "message": f"Successfully retrieved author of post #{post_id}",
+        "data": {
+            "username": author.UserName,
+            "userId": author.id
+        }
+    }), 200
 
 
 @feed.route("/api/feed", methods=["GET"])

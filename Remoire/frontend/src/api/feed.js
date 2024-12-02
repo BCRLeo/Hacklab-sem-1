@@ -1,5 +1,56 @@
 import Post from "../components/Post/Post";
 
+/**
+ * Fetches the username of the author for a given post.
+ * @async
+ * @function getPostAuthorUsername
+ * @param {number} postId - The ID of the post for which to retrieve the like count.
+ * @returns {string | null} The username of the author of the post, or `null` if an error occurred or the post doesn't exist.
+ */
+export async function getPostAuthorUsername(postId) {
+    try {
+        const response = await fetch(`/api/posts/post-${postId}/author`, { method: "GET" });
+        const data = await response.json();
+        if (!response.ok || !data.success) {
+            console.error(data.message);
+            return null;
+        }
+
+        return data.data.username;
+    } catch (error) {
+        console.error(`Error fetching author's username for post #${postId}:`, error);
+        return null;
+    }
+}
+
+/**
+ * Fetches the image URL for a given post.
+ * @async
+ * @function getPostImageUrl
+ * @param {number} postId - The ID of the post for which to retrieve the like count.
+ * @returns {URL | null} The URL for the image of the post, or `null` if an error occurred or the post doesn't exist.
+ */
+export async function getPostImageUrl(postId) {
+    try {
+        const response = await fetch(`/api/posts/post-${postId}`, { method: "GET" });
+        if (!response.ok) {
+            console.error(`Failed to retrieve post #${postId} image`);
+            return null;
+        }
+
+        const imageBlob = await response.blob();
+        if (!imageBlob) {
+            console.error(`No image data found for post #${postId}`);
+            return null;
+        }
+
+        return URL.createObjectURL(imageBlob);
+    } catch (error) {
+        console.error(`Error fetching post #${postId} image: `, error);
+        return null;
+    }
+}
+
 export async function getUserPosts(username) {
     try {
         const response = await fetch(`/api/posts/${username}`, { method: "GET" });
