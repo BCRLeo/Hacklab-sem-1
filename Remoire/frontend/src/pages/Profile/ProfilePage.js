@@ -48,12 +48,13 @@ export default function ProfilePage() {
     useEffect(() => {
         (async () => {
             const data = await getProfilePictureUrl(username);
-            if (data === null) {
+            /* if (data === null) {
+
                 return;
-            }
+            } */
             setProfilePictureUrl(data);
         })();
-    }, [uploadStatus]);
+    }, [uploadStatus, username]);
 
     const handleFileChange = (event) => {
         const file = event.target.files[0];
@@ -106,7 +107,7 @@ export default function ProfilePage() {
             {profilePictureUrl ? (
                 <img src={profilePictureUrl} className="profile-picture" alt={`${username}'s profile`} />
             ) : (
-                <Icon className="profile-icon" name="accountIcon" size="lg" />
+                <Icon className="profile-icon" name="accountIcon" size="xl" />
             )}
                 {/* <Icon className="profile-icon" name="accountIcon" size="lg" /> */}
                 {/* <img
@@ -120,8 +121,7 @@ export default function ProfilePage() {
                 /> */}
             </div>
                 {/* <p>bio test test i'm so cool test test fashion whatever</p> */}
-
-            <Popover renderToggle={(dropdownProps) => <Button {...dropdownProps}>Upload Profile Picture</Button>}>
+            {user && user !== -1 && username === user.username && <Popover renderToggle={(dropdownProps) => <Button {...dropdownProps}>Upload Profile Picture</Button>}>
                 <form
                     onSubmit={(e) => {
                         e.preventDefault();
@@ -144,7 +144,7 @@ export default function ProfilePage() {
                     />
                 </form>
                 {uploadStatus && <p id="upload-status">{uploadStatus}</p>}
-            </Popover>
+            </Popover>}
 
             <TabBar
                 orientation="horizontal"
