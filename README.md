@@ -2,8 +2,56 @@
 
 ----
 # Setting up the project
-Ensure that Python 3.12 is installed. Additionally, make sure that Flask (and some additional modules that will become clear when attempting to run) are installed. Then, install Node.js and React.
+Instructions on *running* the project are further down, in the "Building and running the project" section
 
+Ensure that Python 3.12 is installed, as well as pip to allow you to execute "Step 0 - install python libraries".
+Then, install Node.js and React. 
+
+
+---
+# Building and running the project
+## Step 0 - install python libraries
+Assuming you're in the `Hacklab-sem-1` directory, run
+```
+cd Remoire
+```
+Once you're in the Remoire directory, run
+```
+pip install -r requirements.txt
+```
+and now you should have all the python libraries needed to run this project!
+
+## Step 1 - locating the directory
+Assuming you're in the `Hacklab-sem-1` directory, run
+```
+cd Remoire/frontend
+```
+to enter the `frontend` directory.
+
+## Step 2 - build static React files
+From inside the `/frontend` directory, run
+```
+npm run build
+```
+to build the static files from the React code.
+
+## Step 3 - copy static files 
+Run the following command
+```
+cp build/index.html ../app/templates/ && rm -rf ../app/static/* && cp -r build/static/* ../app/static/
+```
+to copy `build/index.html` to `/app/templates`, and replacing the contents of the `/app/static` directory with the `/frontend/build/static` directory. If prompted to confirm, type `y`.
+
+## Step 4 - running the full web app
+In a new terminal, enter `cd Remoire` and run
+```
+python run.py
+```
+Click the resulting link to open the web app.
+
+---
+# Note
+Make sure the `package.json` file has `"proxy": "http://localhost:5000"` (or whatever port the Python runs from)
 ---
 # Project info
 ## Front-end
@@ -30,35 +78,3 @@ To access back-end features, you have to create an API call with an address `/ap
 Every individual change or feature (i.e. adding a button to the wardrobe page, styling the nav bar) should be be a separate Git commit to ensure safety of code and ease of integration.
 
 ---
-# Building and running the project
-## Step 0 - locating the directory
-Assuming you're in the `Hacklab-sem-1` directory, run
-```
-cd Remoire/frontend
-```
-to enter the `frontend` directory.
-
-## Step 1 - build static React files
-From inside the `/frontend` directory, run
-```
-npm run build
-```
-to build the static files from the React code.
-
-## Step 2 - copy static files 
-Run the following command
-```
-cp build/index.html ../app/templates/ && rm -rf ../app/static/* && cp -r build/static/* ../app/static/
-```
-to copy `build/index.html` to `/app/templates`, and replacing the contents of the `/app/static` directory with the `/frontend/build/static` directory. If prompted to confirm, type `y`.
-
-## Step 3 - running the full web app
-In a new terminal, enter `cd Remoire` and run
-```
-python run.py
-```
-Click the resulting link to open the web app.
-
----
-# Note
-Make sure the `package.json` file has `"proxy": "http://localhost:5000"` (or whatever port the Python runs from)
