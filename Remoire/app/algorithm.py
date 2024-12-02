@@ -12,7 +12,7 @@ def get_posts(user_id, exclude_ids=None, limit=20):
     # Query posts, excluding already fetched ones
     random_posts = (
         db.session.query(Post)
-        .filter(~Post.id.in_(exclude_ids))  # Exclude posts with IDs in `exclude_ids`
+        .filter(~Post.id.in_(exclude_ids))  # Exclude user's posts
         .order_by(func.random())
         .limit(limit)
         .all()
