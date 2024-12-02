@@ -88,7 +88,7 @@ export default function ProfilePage() {
             const data = await response.json();
             if (response.ok) {
                 // Update profile picture URL immediately
-                setProfilePictureUrl(`/api/users/${profile.id}/profile-picture?timestamp=${Date.now()}`);
+                setProfilePictureUrl('/api/users/${profile.id}/profile-picture}');
                 setUploadStatus("Profile picture uploaded successfully.");
                 setSelectedFile(null);
             } else {
@@ -109,7 +109,17 @@ export default function ProfilePage() {
     return (
         <>
             <h1>{profile.username}</h1>
-                <Icon className="profile-icon" name="accountIcon" size="xl" />
+            <div className="profile-picture-container">
+                <img
+                    className="profile-icon"
+                    src={profilePictureUrl}
+                    alt={`${profile.username}'s profile`}
+                    onError={(e) => {
+                        e.target.src = "/path/to/placeholder/image.jpg"; // Fallback image
+                        e.target.onerror = null; // Prevent infinite loop
+                    }}
+                />
+            </div>
                 <p>bio test test i'm so cool test test fashion whatever</p>
             <TabBar
                 orientation="horizontal"

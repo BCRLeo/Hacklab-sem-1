@@ -1,8 +1,9 @@
 from flask import Flask, Blueprint, current_app, render_template, redirect, request, url_for, jsonify, send_file
 from flask_login import LoginManager, login_required, current_user
-import io
+from io import BytesIO
 import os
 import app
+import imghdr
 from .models import User, Like, Post
 from . import ImageBackgroundRemoverV1
 from . import db
@@ -71,3 +72,41 @@ def upload_profile_picture(user_id):
         # Rollback the session to prevent any partial commits
         db.session.rollback()
         return jsonify({"success": False, "message": "Error uploading profile picture"}), 500
+    
+@profile.route('/api/users/<int:user_id>/profile-picture', methods=['GET'])
+def get_profile_picture(user_id):
+    try:
+        # Retrieve the user from the database
+        user = User.query.get(user_id)
+        
+        if not user:
+            # User not found
+            print(f"User {user_id} not found.")
+            return jsonify({"success": False, "message": "User not found"}), 404
+        
+        if not user.ProfilePicture:
+            # User has no profile picture
+            print(f"User {user_id} has no profile picture.")
+            # Respond with a 404 and a message
+            return jsonify({"success": False, "message": "No profile picture available"}), 404
+
+        # Infer image type using the `imghdr` module
+        image_type = imghdr.what(None, h=user.ProfilePicture)
+        if not image_type:
+            print(f"Unable to determine the image type for user {user_id}.")
+            return jsonify({"success": False, "message": "Invalid image data"}), 500
+
+        # Serve the user's profile picture with the inferred MIME type
+        mime_type = f"image/{image_type}"
+        print(f"Serving profile picture for user {user_id} with MIME type {mime_type}.")
+        return send_file(
+            BytesIO(user.ProfilePicture),
+            mimetype=mime_type,
+        )
+
+    except Exception as e:
+        # Log and handle any unexpected errors
+        print(f"Error retrieving profile picture for user {user_id}: {e}")
+        return jsonify({"success": False, "message": "Failed to retrieve profile picture"}), 500
+    
+    

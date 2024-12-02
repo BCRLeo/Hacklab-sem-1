@@ -1,3 +1,16 @@
+
+.profile-picture-container {
+    display: flex;
+    justify-content: center; /* Center the image horizontally */
+    align-items: center;    /* Center the image vertically */
+    margin: 20px 0;         /* Add some spacing around the image */
+}
+
 .profile-icon {
-    fill: var(--hex__overlay);
+    width: 100px;           /* Set the desired width */
+    height: 100px;          /* Set the desired height */
+    border-radius: 50%;     /* Make it a circle */
+    object-fit: cover;      /* Ensure the image fits within the circle without distortion */
+    border: 2px solid #ccc; /* Optional: Add a border */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional: Add a subtle shadow */
 }
