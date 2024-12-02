@@ -8,7 +8,7 @@ import Post from "../Post/Post";
 
 export default function Posts() {
     const { username } = useParams();
-    const { user, setUser } = useContext(UserContext);
+    const { user } = useContext(UserContext);
     const [posts, setPosts] = useState([]);
 
     useEffect(() => {

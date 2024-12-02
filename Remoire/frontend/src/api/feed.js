@@ -51,6 +51,24 @@ export async function getPostImageUrl(postId) {
     }
 }
 
+/**
+ * Asynchronously retrieves posts for a given username and returns an array of `Post` components.
+ *
+ * This function fetches a list of posts metadata from an API endpoint using the provided `username`.
+ * For each post metadata, it renders a `Post` component. If the fetch request or data processing fails,
+ * an error is logged and `null` is returned.
+ *
+ * @async
+ * @function getUserPosts
+ * @param {string} username - The username whose posts are to be retrieved.
+ * @returns {Promise<Array<JSX.Element> | null>} A promise that resolves to an array of `Post` components if successful, or `null` if an error occurs.
+ *
+ * @example
+ * const posts = await getUserPosts('johnDoe');
+ * if (posts) {
+ *   // Render posts
+ * }
+ */
 export async function getUserPosts(username) {
     try {
         const response = await fetch(`/api/posts/${username}`, { method: "GET" });
@@ -67,25 +85,9 @@ export async function getUserPosts(username) {
 
         const postsMetadata = data.postsMetadata;
         const postComponents = await Promise.all(postsMetadata.map(async (postMetadata) => {
-            try {
-                const imageResponse = await fetch(postMetadata.url);
-                const imageBlob = await imageResponse.blob();
-                const imageUrl = URL.createObjectURL(imageBlob);
-                
-                return (
-                    <Post
-                        key={postMetadata.id}
-                        postId={postMetadata.id}
-                        image={imageUrl}
-                        username={postMetadata.username}
-                        likeCount={postMetadata.like_count}
-                        initialIsLiked={postMetadata.is_liked}  // New prop
-                    />
-                );
-            } catch (imageError) {
-                console.error(`Error fetching image for post ${postMetadata.id}:`, imageError);
-                return null;
-            }
+            return (
+                <Post key={postMetadata.id} postId={postMetadata.id} />
+            );
         }));
         return postComponents.filter(Boolean);
     } catch (error) {
