@@ -109,18 +109,9 @@ export default function ProfilePage() {
     return (
         <>
             <h1>{profile.username}</h1>
-                <Icon className="profile-icon" name="accountIcon" size="xl" />
-                <p>bio test test i'm so cool test test fashion whatever</p>
-            <TabBar
-                orientation="horizontal"
-                links={[
-                    { href: `/${profile.username}/posts`, label: "Posts" },
-                    { href: `/${profile.username}/clothes`, label: "Clothes" },
-                    { href: `/${profile.username}/outfits`, label: "Outfits" },
-                ]}
-            />
-
-            <Popover renderToggle={(dropdownProps) => <Button {...dropdownProps}>Upload Profile Picture</Button>}>
+            <Icon className="profile-icon" name="accountIcon" size="xl" />
+            <p>bio test test i'm so cool test test fashion whatever</p>
+            <Popover renderToggle={(dropdownProps) => <Button text="Upload Profile Picture" {...dropdownProps} />}>
                 <form
                     onSubmit={(e) => {
                         e.preventDefault();
@@ -135,16 +126,24 @@ export default function ProfilePage() {
                         type="file"
                         name="item"
                     />
-                    <button 
-                        type="submit" 
-                        className={`button-${isUploading ? 'uploading' : 'upload'}`} 
+                    <Button
+                        text={isUploading ? 'Uploading...' : 'Upload'}
+                        type="submit"
+                        className={`button-${isUploading ? 'uploading' : 'upload'}`}
                         disabled={isUploading}
-                    >
-                        <span>{isUploading ? 'Uploading...' : 'Upload'}</span>
-                    </button>
+                    />
                 </form>
                 {uploadStatus && <p id="upload-status">{uploadStatus}</p>}
             </Popover>
+
+            <TabBar
+                orientation="horizontal"
+                links={[
+                    { href: `/${profile.username}/posts`, label: "Posts" },
+                    { href: `/${profile.username}/clothes`, label: "Clothes" },
+                    { href: `/${profile.username}/outfits`, label: "Outfits" },
+                ]}
+            />
 
             <Outlet />
         </>

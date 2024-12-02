@@ -277,15 +277,7 @@ export default function Clothes() {
                                 <option value="shoe">Shoes</option>
                             </select>
                         </Field>
-                        {!isUploading ?
-                            <Button type="submit" className="button-upload">
-                                <span>Upload</span>
-                            </Button>
-                        :
-                            <Button type="button" className="uploading">
-                                <span>Uploading...</span>
-                            </Button>
-                        }
+                        <Button text={isUploading ? "Uploading..." : "Upload"} type="submit" className={isUploading ? "uploading" : "upload"} disabled={isUploading} />
                     </form>
                     <p id="upload-status">{uploadStatus}</p>
                 </Popover>

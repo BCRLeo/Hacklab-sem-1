@@ -1,3 +1,7 @@
+.togglebutton {
+    margin: auto;
+}
+
 .togglebutton-text {
     display: block;
     color: var(--hex__text-contrast);
