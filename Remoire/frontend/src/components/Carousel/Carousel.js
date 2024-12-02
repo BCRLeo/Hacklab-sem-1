@@ -68,7 +68,11 @@ export default function Carousel({ images, children, className, imageClassName =
 			} else {
 				newVisibleImages.push(
 					<img
-					className={`carousel-image ${imageClassName}`}
+					className={`
+						carousel-image
+						${imageClassName}
+						${clickedIndex === i ? `${clickedClassName}` : ""}
+						`}
 					key={i}
 					src={images[index]}
 					alt={`slide ${index + 1}`}
@@ -77,7 +81,7 @@ export default function Carousel({ images, children, className, imageClassName =
 			}
 		}
 		setVisibleImages(newVisibleImages);
-	}, [currentIndex, visibleImageCount, images, hoveredIndex]);
+	}, [currentIndex, visibleImageCount, images, hoveredIndex, hoveredClassName, clickedClassName, clickedIndex]);
 
 	const handleClickPrevious = () => {
 		setCurrentIndex((currentIndex) => (currentIndex - 1 + images.length) % images.length);
