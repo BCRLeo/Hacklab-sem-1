@@ -1,3 +1,3 @@
-####Go to *Dev branch* for running the project locally, and read the "README.md" in that branch
+##### Go to *Dev branch* for running the project locally, and read the "README.md" in that branch
 
 This is the demo branch that will be shown in the pitch meeting, as it is the one being hosted hosted on Digital Ocean and with out very own domain. The code will (mostly) remain the same, bar some chnages that will need to occur during merging of the two branches. You cana give a look at this one if you want to see the configs and everything for webhosting, noting that if you want to run this version locally, it's a massive headache (you can't use vs code, it has to be done from the command line as vs code doesn't like env variables)
