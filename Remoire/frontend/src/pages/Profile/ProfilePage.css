@@ -7,6 +7,10 @@
 }
 
 .profile-icon {
+    fill: var(--hex__overlay);
+}
+
+.profile-picture {
     width: 100px;           /* Set the desired width */
     height: 100px;          /* Set the desired height */
     border-radius: 50%;     /* Make it a circle */

@@ -33,7 +33,7 @@ export default function ProfilePage() {
                 if (data) {
                     setProfile(data);
                     // Set initial profile picture URL
-                    setProfilePictureUrl(`/api/users/${data.id}/profile-picture`);
+                    /* setProfilePictureUrl(`/api/users/${data.id}/profile-picture`); */
                 } else {
                     setProfile(null);
                 }
@@ -110,25 +110,18 @@ export default function ProfilePage() {
         <>
             <h1>{profile.username}</h1>
             <div className="profile-picture-container">
-                <img
+                <Icon className="profile-icon" name="accountIcon" size="lg" />
+                {/* <img
                     className="profile-icon"
                     src={profilePictureUrl}
                     alt={`${profile.username}'s profile`}
                     onError={(e) => {
-                        e.target.src = "/path/to/placeholder/image.jpg"; // Fallback image
+                        e.target.src = ""; // Fallback image
                         e.target.onerror = null; // Prevent infinite loop
                     }}
-                />
+                /> */}
             </div>
                 <p>bio test test i'm so cool test test fashion whatever</p>
-            <TabBar
-                orientation="horizontal"
-                links={[
-                    { href: `/${profile.username}/posts`, label: "Posts" },
-                    { href: `/${profile.username}/clothes`, label: "Clothes" },
-                    { href: `/${profile.username}/outfits`, label: "Outfits" },
-                ]}
-            />
 
             <Popover renderToggle={(dropdownProps) => <Button {...dropdownProps}>Upload Profile Picture</Button>}>
                 <form

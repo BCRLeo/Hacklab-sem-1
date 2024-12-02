@@ -24,4 +24,4 @@ from .algorithm import get_posts as get_feed_posts
 
 social = Blueprint("social", __name__)
 
-"likes, follows, etc."
+"follows, messages, etc."

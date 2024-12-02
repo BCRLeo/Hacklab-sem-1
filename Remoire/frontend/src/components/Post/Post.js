@@ -1,6 +1,35 @@
-import React, { useState, useEffect } from 'react';
 import "./Post.css";
 
+import Likes from "../Likes/Likes";
+
+import React, { useState, useEffect } from 'react';
+
+export default function Post({
+    postId,
+    className,
+    image,
+    userId,
+    username,
+    likeCount,
+    initialIsLiked = false
+}) {
+    
+
+    return (
+        <div className={`post ${className}`}>
+            <div id={`post-${postId}`} className="post-container">
+                <span className="post-username">
+                    <img src={image} className="post-profile-picture" alt={`${username}'s profile`} />
+                    {username}
+                </span>
+                <img src={image} className="post-image" alt="Post" />
+                <Likes postId={postId} />
+            </div>
+        </div>
+    );
+}
+
+/* 
 export default function Post({
     postId,
     className,
@@ -16,7 +45,7 @@ export default function Post({
     useEffect(() => {
         const fetchLikes = async () => {
             try {
-                const response = await fetch(`/api/posts/${postId}/like`);
+                const response = await fetch(`/api/posts/${postId}/likes`);
                 if (!response.ok) {
                     throw new Error('Failed to fetch likes');
                 }
@@ -35,8 +64,8 @@ export default function Post({
 
     const handleLike = async () => {
         try {
-            const response = await fetch(`/api/posts/${postId}/like`, {
-                method: 'POST'
+            const response = await fetch(`/api/posts/${postId}/likes`, {
+                method: 'PUT'
             });
 
             if (!response.ok) {
@@ -84,3 +113,4 @@ export default function Post({
         </div>
     );
 }
+*/

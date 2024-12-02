@@ -85,3 +85,26 @@ export async function getUserFeedPosts(username) {
         return null;
     }
 }
+
+/**
+ * Fetches the number of likes for a given post.
+ * 
+ * @param {number} postId - The ID of the post for which to retrieve the like count.
+ * @returns {number | null} The number of likes for the post, or `null` if an error occurred or the post doesn't exist.
+ */
+export async function getPostLikes(postId) {
+    try {
+        const response = await fetch(`/api/posts/${postId}/likes`, { method: "GET" });
+        const data = await response.json();
+        if (!response.ok || !data.success) {
+            console.error(data.message);
+            return null;
+        }
+
+        return data.data.likeCount;
+    } catch (error) {
+        console.error(`Error while retrieving post #${postId}'s likes: `, error);
+    }
+
+    return null;
+}

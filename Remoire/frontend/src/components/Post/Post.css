@@ -33,7 +33,7 @@ span.post-username {
     ;
 }
 
-img.profile-picture {
+img.post-profile-picture {
     width: 2rem;
     aspect-ratio: 1;
     object-fit: cover;

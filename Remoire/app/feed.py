@@ -95,3 +95,107 @@ def get_user_feed_posts():
         for post in posts
     ]
     return jsonify({"success": True, "postsMetadata": posts_metadata, "message": "Successfully retrieved feed posts"})
+
+@feed.route('/api/posts/<int:post_id>/likes', methods=['GET'])
+def get_likes(post_id):
+    # Query the post by ID
+    post = Post.query.get(post_id)
+    if post is not None:
+        like_count = post.like_count()
+        print(like_count)
+        return jsonify({
+            "success": True,
+            "message": f"Post #{post_id} successfully",
+            "data": {
+                "likeCount": like_count
+            }
+        }), 200
+    else:
+        return jsonify({"success": False, "message": f"Post #{post_id} not found", "data": None}), 404
+
+@feed.route("/api/posts/<int:post_id>/liked", methods=["GET"])
+def is_liked(post_id: int):
+    if not current_user.is_authenticated:
+        return jsonify({"success": False, "message": "User not logged in", "data": None}), 401
+    
+    post = Post.query.get(post_id)
+    if not post:
+        return jsonify({"success": False, "message": f"Post #{post_id} not found", "data": None}), 404
+    
+    if Like.query.filter_by(user_id=current_user.id, post_id=post_id).first():
+        return jsonify({
+            "success": True,
+            "message": f"Successfully checked if post #{post_id} is liked",
+            "data": {
+                "isLiked": True
+            }
+        }), 200
+    
+    return jsonify({
+            "success": True,
+            "message": f"Successfully checked if post #{post_id} is liked",
+            "data": {
+                "isLiked": False
+            }
+        }), 200
+
+@feed.route("/api/posts/<int:post_id>/likes", methods=["PUT"])
+def like_post(post_id):
+    if not current_user.is_authenticated:
+        return jsonify({"success": False, "message": "User not logged in", "data": None}), 401
+
+    post = Post.query.get(post_id)
+    if not post:
+        return jsonify({"success": False, "message": f"Post #{post_id} not found", "data": None}), 404
+    
+    existing_like = Like.query.filter_by(user_id=current_user.id, post_id=post_id).first()
+    
+    if not existing_like:
+        like = Like(user_id=current_user.id, post_id=post_id)
+        db.session.add(like)
+        db.session.commit()
+        return jsonify({
+            "success": True, 
+            "message": f"Post #{post_id} successfully liked",
+            "data": {
+                "likeCount": post.like_count()
+            }
+        }), 200
+    
+    return jsonify({
+        "success": True, 
+        "message": f"Post #{post_id} already liked",
+        "data": {
+            "likeCount": post.like_count()
+        }
+    }), 200
+    
+@feed.route("/api/posts/<int:post_id>/likes", methods=["DELETE"])
+def unlike_post(post_id):
+    if not current_user.is_authenticated:
+        return jsonify({"success": False, "message": "User not logged in", "data": None}), 401
+
+    post = Post.query.get(post_id)
+    if not post:
+        return jsonify({"success": False, "message": f"Post #{post_id} not found", "data": None}), 404
+    
+    existing_like = Like.query.filter_by(user_id=current_user.id, post_id=post_id).first()
+    
+    if existing_like:
+        db.session.delete(existing_like)
+        db.session.commit()
+        return jsonify({
+            "success": True, 
+            "message": f"Successfully unliked post #{post_id}",
+            "data": {
+                "likeCount": post.like_count()
+            }
+        }), 200
+    
+    return jsonify({
+        "success": True,
+        "message": f"Post #{post_id} already not liked",
+        "data": {
+            "likeCount": post.like_count()
+        }
+    }), 200

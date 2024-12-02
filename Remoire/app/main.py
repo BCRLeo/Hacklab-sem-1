@@ -246,43 +246,6 @@ def search_users():
 
     return jsonify({"success" : True, "message" : "Search was successful", "userNames" : userNames})
     
-@main.route('/api/posts/<int:post_id>/like', methods=['GET'])
-def get_likes(post_id):
-    # Query the post by ID
-    post = Post.query.get(post_id)
-    if post is not None:
-        # Use the like_count method defined in your Post model
-        like_count = post.like_count()
-        print(like_count)
-        return jsonify({'success': True, 'like_count': like_count}), 200
-    else:
-        return jsonify({'success': False, 'message': 'Post not found'}), 404
-
-@main.route("/api/posts/<int:post_id>/like", methods=["POST"])
-@login_required
-def like_post(post_id):
-    post = Post.query.get_or_404(post_id)
-    existing_like = Like.query.filter_by(user_id=current_user.id, post_id=post_id).first()
-    
-    if existing_like:
-        # Unlike the post
-        db.session.delete(existing_like)
-        db.session.commit()
-        return jsonify({
-            "success": True, 
-            "action": "unliked", 
-            "like_count": post.like_count()  # Get current like count after unlike
-        })
-    else:
-        # Like the post
-        like = Like(user_id=current_user.id, post_id=post_id)
-        db.session.add(like)
-        db.session.commit()
-        return jsonify({
-            "success": True, 
-            "action": "liked", 
-            "like_count": post.like_count()  # Get current like count after like
-        })
 ##this is just a quick function to return the favorited items, chnage it as you need
 # @app.route('/wardrobe/favorites')
 # def favorite_items():
