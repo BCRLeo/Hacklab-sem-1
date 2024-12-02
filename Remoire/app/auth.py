@@ -12,7 +12,8 @@ from datetime import datetime, date
 auth = Blueprint('auth', __name__)
 # Regular expression for basic email and password validation
 EMAIL_REGEX = r"(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)"
-PASSWORD_REGEX = r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$"
+PASSWORD_REGEX = r"^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$"
+
 # Function to get the correct JS and CSS file paths
 def get_js_and_css():
     js_dir = os.path.join(auth.root_path, 'static', 'js')
@@ -85,14 +86,12 @@ def login():
 
 @auth.route("/api/signup", methods=["POST"])
 def signup():
-    print("hi")
     # Get form data
     data = request.get_json()
     email = data.get("email")
     username = data.get("username")
     password = data.get("password")
     birthday_str = data.get("birthday")
-    print("hi")
     # Validate email format
     if not re.match(EMAIL_REGEX, email):
         return jsonify({"success": False, "message": "Invalid email format"})
@@ -126,7 +125,7 @@ def signup():
     db.session.add(new_wardrobe)
     db.session.commit()
     login_user(new_user)
-    print("hiiiiiiiiiiiii")
+
     return jsonify({
         "success": True,
         "user": {
@@ -141,9 +140,3 @@ def logout():
         logout_user()
         return jsonify({"success": True, "message": "User successfully logged out"}), 200
     return jsonify({"success": False, "message": "User not originally logged in"}), 401
-
-""" @auth.route('/logout')
-@login_required
-def logout():
-    logout_user()
-    return redirect(url_for('auth.login')) """
