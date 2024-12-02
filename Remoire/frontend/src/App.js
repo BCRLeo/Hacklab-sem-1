@@ -23,7 +23,8 @@ export default function App() {
 		<Router>
 			<Header />
 			<Routes>
-				<Route index element={user && user !== -1 ? <Navigate to="feed" replace /> : <HomePage />} />
+				{/* <Route index element={user && user !== -1 ? <Navigate to="feed" replace /> : <HomePage />} /> */}
+				<Route index element={<Navigate to="feed" replace />} />
 				<Route path="feed" element={<FeedPage />} />
 				<Route path="login" element={<LogInPage />} />
 				<Route path="signup" element={<SignUpPage />} />

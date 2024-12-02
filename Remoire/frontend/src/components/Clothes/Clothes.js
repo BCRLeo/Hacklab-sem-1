@@ -99,7 +99,7 @@ export default function Clothes() {
                 console.log("Successfully created outfit");
             }
         }
-
+        
         setIsChoosingOutfit(isChoosingOutfit => !isChoosingOutfit);
     };
 
@@ -141,22 +141,22 @@ export default function Clothes() {
             if (itemClassName.includes("jacket")) {
                 setNewOutfit({
                     ...newOutfit,
-                    "jacket": searchParams.get("id")
+                    "jacket": event.target.src.split("/")[4]
                 });
             } else if (itemClassName.includes("shirt")) {
                 setNewOutfit({
                     ...newOutfit,
-                    "shirt": searchParams.get("id")
+                    "shirt": event.target.src.split("/")[4]
                 });
             } else if (itemClassName.includes("trouser")) {
                 setNewOutfit({
                     ...newOutfit,
-                    "trousers": searchParams.get("id")
+                    "trousers": event.target.src.split("/")[4]
                 });
             } else if (itemClassName.includes("shoe")) {
                 setNewOutfit({
                     ...newOutfit,
-                    "shoes": searchParams.get("id")
+                    "shoes": event.target.src.split("/")[4]
                 });
             }
         }

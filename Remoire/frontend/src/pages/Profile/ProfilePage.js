@@ -119,7 +119,7 @@ export default function ProfilePage() {
                     }}
                 /> */}
             </div>
-                <p>bio test test i'm so cool test test fashion whatever</p>
+                {/* <p>bio test test i'm so cool test test fashion whatever</p> */}
 
             <Popover renderToggle={(dropdownProps) => <Button {...dropdownProps}>Upload Profile Picture</Button>}>
                 <form

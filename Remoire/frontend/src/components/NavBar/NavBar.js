@@ -59,7 +59,7 @@ export default function Navbar() {
 		<nav className="navbar">
 			<ul className="navbar-nav">
 				<NavItem><Icon name="logoIcon" /></NavItem>
-				<NavItem href="/" text="Home" activeClassName="active" />
+				{/* <NavItem href="/" text="Home" activeClassName="active" /> */}
 				<NavItem href="/feed" text="Explore" activeClassName="active" />
 				<NavItem className="search">
 					<SearchBar></SearchBar>
