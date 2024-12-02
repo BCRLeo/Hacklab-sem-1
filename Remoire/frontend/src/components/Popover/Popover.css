@@ -1,6 +1,10 @@
 .popover-container {
     width: fit-content;
-    margin: 2rem auto;
+    margin: auto;
+}
+
+.popover-toggle {
+    margin: auto;
 }
 
 .popover-content {

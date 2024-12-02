@@ -14,12 +14,16 @@
     cursor: wait;
 }
 
-.button:hover {
+.button:hover:not(:disabled) {
     background-color: var(--hex__button-hover);
 }
 
-.button:active {
+.button:active:not(:disabled) {
     transform: scale(0.9);
+}
+
+.button:disabled {
+    background-color: var(--hex__button-disabled);
 }
 
 .button-text {

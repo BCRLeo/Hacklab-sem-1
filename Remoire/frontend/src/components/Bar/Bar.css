@@ -2,8 +2,8 @@
     display: flex;
     width: fit-content;
 
-    margin: auto;
-    padding: 2rem 0;
+    margin: 1rem auto;
+    padding: 0;
     gap: 2rem;
     justify-content: space-around;
 
