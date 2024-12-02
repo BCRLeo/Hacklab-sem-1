@@ -88,7 +88,7 @@ def upload_wardrobe_item():
 
 @wardrobe.route("/api/wardrobe/<username>/items/<item_type>", methods=["GET"])
 def get_user_wardrobe_image_endpoints(username, item_type):
-    user = User.query.filter_by(UserName=username)
+    user = User.query.filter_by(UserName=username).first()
     if not user:
         return jsonify({"success": False, "message": f"User {username} not found"}), 404
     
@@ -228,7 +228,7 @@ def create_outfit():
         return jsonify({"success": True, "message": "Successfully created outfit"}), 200
     return jsonify({"success": False, "message": "Failed to create outfit"})
 
-
+@wardrobe.route("/api/wardrobe/<username>/outfits", methods=["GET"])
 def get_user_outfit_ids(username: str):
     user = User.query.filter_by(UserName=username).first()
     if not user:
@@ -237,7 +237,8 @@ def get_user_outfit_ids(username: str):
     outfits = user.outfits
     outfit_ids = [outfits[i].id for i in range(len(outfits))]
 
-    return jsonify({"success": True, "outfitIds": outfit_ids, "message": "Successfully retrieved outfits"}), 200
+    return jsonify({"success": True, "outfitIds": outfit_ids, "message": "Successfully retrieved outfit IDs"}), 200
+
 
 def get_user_outfit_urls(username: str):
     user = User.query.filter_by(UserName=username).first()
