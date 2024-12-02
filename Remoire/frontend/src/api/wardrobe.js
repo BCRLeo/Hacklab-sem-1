@@ -64,6 +64,32 @@ export async function uploadClothingImages(imageFiles, category) {
 }
 
 /**
+ * Fetches image endpoints for a specified clothing item type and username from the wardrobe API.
+ * 
+ * @async
+ * @function getUserClothingImageEndpoints
+ * @param {string} username - The username to fetch images from.
+ * @param {string} itemType - The type of clothing item (e.g., "shirt", "pants", "shoes") to fetch image endpoints for.
+ * @returns {Promise<string[]|null>} A promise that resolves to an array of image endpoints if successful, or null if there was an error.
+ * @throws Will log an error message to the console if the fetch operation or response parsing fails.
+ */
+export async function getUserClothingImageEndpoints(username, itemType) {
+    try {
+        const response = await fetch(`/api/wardrobe/${username}/items/${itemType}`, { method: "GET" });
+        const data = await response.json();
+        if (!response.ok || !data.success) {
+            console.error(data.message);
+            return null;
+        }
+
+        return data.data;
+    } catch (error) {
+        console.error(`Error retrieving ${itemType} image endpoints: `, error);
+    }
+    return null;
+}
+
+/**
  * Fetches image endpoints for a specified clothing item type from the wardrobe API.
  * 
  * @async

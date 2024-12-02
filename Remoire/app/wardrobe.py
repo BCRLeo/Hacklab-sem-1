@@ -95,13 +95,13 @@ def get_user_wardrobe_image_endpoints(username, item_type):
     items = None
     match item_type:
         case "jacket":
-            items = current_user.wardrobe.jackets
+            items = user.wardrobe.jackets
         case "shirt":
-            items = current_user.wardrobe.shirts
+            items = user.wardrobe.shirts
         case "trousers":
-            items = current_user.wardrobe.trousers
+            items = user.wardrobe.trousers
         case "shoes":
-            items = current_user.wardrobe.shoes
+            items = user.wardrobe.shoes
         case _:
             return jsonify({"success": False, "message": "Invalid item type"}), 400
 

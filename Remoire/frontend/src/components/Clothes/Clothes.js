@@ -1,6 +1,6 @@
 import "./Clothes.css";
 
-import { getClothingImageEndpoints, postOutfit, uploadClothingImages } from "../../api/wardrobe";
+import { getClothingImageEndpoints, getUserClothingImageEndpoints, postOutfit, uploadClothingImages } from "../../api/wardrobe";
 
 import Bar from "../../components/Bar/Bar";
 import Button from "../../components/Button/Button";
@@ -46,7 +46,7 @@ export default function Clothes() {
     const [hoveredClassName, setHoveredClassName] = useState("");
 
     const getImages = async (itemType, setImagesCallback) => {
-        const data = await getClothingImageEndpoints(itemType);
+        const data = username ? await getUserClothingImageEndpoints(username, itemType) : await getClothingImageEndpoints(itemType);
         if (data === null) {
             console.error(`"Failed to fetch ${itemType} image list"`);
             setIsLoading(false);
@@ -206,7 +206,7 @@ export default function Clothes() {
 
     return (
         <>
-            <Bar orientation="horizontal">
+            {!username && <Bar orientation="horizontal">
                 <Popover renderToggle={(dropdownProps) => <Button text="Upload" {...dropdownProps}><Icon name="uploadIcon" /></Button>}>
                     <form onSubmit={handleSubmit} method="post" className="upload">
                         <Field label="Upload item" onChange={handleFileChange} type="file" name="item" accept="image/png, image/jpeg, image/webp" multiple />
@@ -225,7 +225,8 @@ export default function Clothes() {
                 </Popover>
                 <ToggleButton labels={{"before": "Edit", "after": "Done"}} content={{"before": <Icon name="editIcon" />, "after": <Icon name="checkIcon" />}} isToggled={isEditing} onClick={toggleIsEditing} />
                 <ToggleButton labels={{"before": "Create outfit", "after": "Done"}} content={{"before": <Icon name="hangerIcon" />, "after": <Icon name="checkIcon" />}} isToggled={isChoosingOutfit} onClick={toggleIsChoosingOutfit} />
-            </Bar>
+            </Bar>}
+            
 
             <div className="clothes-carousel-container" onClick={handleClothingClick}>
                 {jackets.length === 0 ? (
