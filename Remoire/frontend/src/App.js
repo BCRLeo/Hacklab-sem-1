@@ -14,7 +14,7 @@ import SearchPage from './pages/Search/SearchPage';
 import SignUpPage from "./pages/SignUp/SignUpPage"
 import WardrobePage from './pages/Wardrobe/WardrobePage';
 
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import { UserProvider } from './UserContext';
 
 export default function App() {
@@ -49,12 +49,14 @@ export default function App() {
 						<Route path="home" element={<HomePage />} />
 						<Route path="login" element={<LogInPage />} />
 						<Route path=":username" element={<ProfilePage />}>
+							<Route index element={<Navigate to="posts" replace />} />
 							<Route path="posts" element={<Posts />} />
 							<Route path="clothes" element={<Clothes />} />
 							<Route path="outfits" element={<Outfits />} />
 						</Route>
 						<Route path="signup" element={<SignUpPage />} />
 						<Route path="wardrobe" element={<WardrobePage />}>
+							<Route index element={<Navigate to="clothes" replace />} />
 							<Route path="clothes" element={<Clothes />} />
 							<Route path="outfits" element={<Outfits />} />
 						</Route>
