@@ -37,7 +37,7 @@ def get_user_posts(user_id: int):
             "url": f"/api/posts/post-{post.id}",
             "caption": post.description,
             "timestamp": post.timestamp,
-            "profile_picture_url": f"/api/users/{post.author.id}/profile-picture",
+            "profile_picture": f"/api/users/{post.author.id}/upload-profile-picture",
             "outfit": post.outfit_id,
             "username": post.author.UserName,
             "likes": post.like_count(),
@@ -85,6 +85,7 @@ def get_user_feed_posts():
             "caption": post.description,
             "timestamp": post.timestamp,
             "outfit": post.outfit_id,
+            "profile_picture":f"/api/users/{post.author.id}/upload-profile-picture",
             "username": post.author.UserName,
             "likes": post.like_count(),
             "is_liked": Like.query.filter_by(

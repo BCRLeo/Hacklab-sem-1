@@ -5,14 +5,13 @@ export default function Post({
   postId, 
   className, 
   image, 
-  userId,
+  profilePicture,
   username, 
   likeCount,  
   initialIsLiked = false 
 }) {
   const [likes, setLikes] = useState(likeCount);  
   const [isLiked, setIsLiked] = useState(initialIsLiked);
-
   useEffect(() => {
     const fetchLikes = async () => {
       try {
@@ -31,7 +30,6 @@ export default function Post({
 
     fetchLikes();
   }, [postId]);
-
 
   const handleLike = async () => {
       try {
@@ -65,7 +63,7 @@ export default function Post({
        <div className={`post ${className}`}>
           <div id={`post-${postId}`} className="post-container">
                 <span className="post-username">
-                    <img src={image} className="profile-picture" alt={`${username}'s profile`}/>
+                    <img src={profilePicture} className="profile-picture" alt={`${username}'s profile`}/>
                     {username}
                 </span>
                 <img src={image} className="post-image" alt="Post"/> 
@@ -84,3 +82,5 @@ export default function Post({
       </div>
   );
 }
+
+

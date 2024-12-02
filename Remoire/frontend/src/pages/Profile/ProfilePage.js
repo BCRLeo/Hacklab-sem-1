@@ -33,7 +33,7 @@ export default function ProfilePage() {
                 if (data) {
                     setProfile(data);
                     // Set initial profile picture URL
-                    setProfilePictureUrl(`/api/users/${data.id}/profile-picture`);
+                    setProfilePictureUrl(`/api/users/${data.id}/upload-profile-picture`);
                 } else {
                     setProfile(null);
                 }
@@ -88,7 +88,7 @@ export default function ProfilePage() {
             const data = await response.json();
             if (response.ok) {
                 // Update profile picture URL immediately
-                setProfilePictureUrl('/api/users/${profile.id}/profile-picture}');
+                setProfilePictureUrl('/api/users/${profile.id}/upload-profile-picture}');
                 setUploadStatus("Profile picture uploaded successfully.");
                 setSelectedFile(null);
             } else {
