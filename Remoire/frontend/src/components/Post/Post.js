@@ -5,7 +5,7 @@ export default function Post({
   postId, 
   className, 
   image, 
-  profilePicture,
+  userId,
   username, 
   likeCount,  
   initialIsLiked = false 
@@ -31,7 +31,6 @@ export default function Post({
 
     fetchLikes();
   }, [postId]);
-
 
 
   const handleLike = async () => {
