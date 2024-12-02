@@ -41,6 +41,31 @@ def inject_js_and_css():
 def serve_react_app(path):
     return render_template("index.html")
 
+"""
+API ROUTES
+profile
+"/api/profile/<username>", methods=["GET"]
+'/api/profile/<username>/picture', methods=['POST']
+'/api/profile/<username>/picture', methods=['POST']
+
+wardrobe
+"/api/wardrobe/items", methods=["POST"]
+'/api/wardrobe/items/<item_type>', methods=['GET']
+"/api/wardrobe/items/<item_type>", methods=["DELETE"]
+"/api/wardrobe/outfits", methods = ["POST"]
+"/api/wardrobe/outfits", methods=["GET"]
+"/api/wardrobe/outfits/<param>", methods=["GET"]
+
+feed
+"/api/posts/<param>", methods=["GET"]
+"/api/posts/<param>/author", methods=["GET"]
+"/api/feed", methods=["GET"]
+'/api/posts/<int:post_id>/likes', methods=['GET']
+"/api/posts/<int:post_id>/liked", methods=["GET"]
+"/api/posts/<int:post_id>/likes", methods=["PUT"]
+"/api/posts/<int:post_id>/likes", methods=["DELETE"]
+"""
+
 
 """ @main.route("/api/wardrobe/items", methods=["POST"])
 def upload_wardrobe_item():

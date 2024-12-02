@@ -63,6 +63,54 @@ export async function uploadClothingImages(imageFiles, category) {
     return successfulUploads;
 }
 
+/**
+ * Fetches image endpoints for a specified clothing item type from the wardrobe API.
+ * 
+ * @async
+ * @function getClothingImageEndpoints
+ * @param {string} itemType - The type of clothing item (e.g., "shirt", "pants", "shoes") to fetch image endpoints for.
+ * @returns {Promise<string[]|null>} A promise that resolves to an array of image endpoints if successful, or null if there was an error.
+ * @throws Will log an error message to the console if the fetch operation or response parsing fails.
+ */
+export async function getClothingImageEndpoints(itemType) {
+    try {
+        const response = await fetch(`/api/wardrobe/items/${itemType}`, { method: "GET" });
+        const data = await response.json();
+        if (!response.ok || !data.success) {
+            console.error(data.message);
+            return null;
+        }
+
+        return data.data;
+    } catch (error) {
+        console.error(`Error retrieving ${itemType} image endpoints: `, error);
+    }
+    return null;
+}
+
+// NOT READY. if URLs for image blobs are passed to clothing items at the moment, it'll break outfit selection
+async function getClothingImageUrls(itemType) {
+    const imageEndpoints = await getClothingImageEndpoints(itemType);
+    if (imageEndpoints === null) {
+        return null;
+    }
+
+    let imageUrls = [];
+
+    imageEndpoints.forEach((imageEndpoint) => {
+        const imageBlob = imageEndpoint.blob();
+        if (!imageBlob) {
+            console.error(`No image data found for ${imageEndpoint}`);
+            return;
+        }
+
+        imageUrls.push(URL.createObjectURL(imageBlob));
+    })
+
+    return imageUrls;
+}
+
+
 export async function postOutfit(outfit) {
     if (Object.keys(outfit).length === 0) {
         console.log("Must select at least one item");

@@ -1,6 +1,6 @@
 import "./Clothes.css";
 
-import { postOutfit, uploadClothingImages } from "../../api/wardrobe";
+import { getClothingImageEndpoints, postOutfit, uploadClothingImages } from "../../api/wardrobe";
 
 import Bar from "../../components/Bar/Bar";
 import Button from "../../components/Button/Button";
@@ -46,24 +46,15 @@ export default function Clothes() {
     const [hoveredClassName, setHoveredClassName] = useState("");
 
     const getImages = async (itemType, setImagesCallback) => {
-        try {
-            const response = await fetch(`/api/wardrobe/items/${itemType}`, {
-                method: "GET"
-            });
-
-            if (response.ok) {
-                const data = await response.json();
-                if (data) {
-                    setImagesCallback(data);
-                }
-            } else {
-                console.error(`"Failed to fetch ${itemType} image list"`);
-            }
-        } catch (error) {
-            console.error("Error: ", error);
-        } finally {
+        const data = await getClothingImageEndpoints(itemType);
+        if (data === null) {
+            console.error(`"Failed to fetch ${itemType} image list"`);
             setIsLoading(false);
+            return;
         }
+
+        setImagesCallback(data);
+        setIsLoading(false);
     }
 
     const getAllImages = async () => {
@@ -243,7 +234,7 @@ export default function Clothes() {
                     <Carousel
                         id="carousel-jackets"
                         className="clothes-carousel"
-                        images={jackets.map((image) => image.url)}
+                        images={jackets}
                         imageClassName="jacket"
                         hoveredClassName={hoveredClassName}
                         clickedClassName={outfitClassName}
@@ -256,7 +247,7 @@ export default function Clothes() {
                     <Carousel
                         id="carousel-shirts"
                         className="clothes-carousel"
-                        images={shirts.map((image) => image.url)}
+                        images={shirts}
                         imageClassName="shirt"
                         hoveredClassName={hoveredClassName}
                         clickedClassName={outfitClassName}
@@ -269,7 +260,7 @@ export default function Clothes() {
                     <Carousel
                         id="carousel-trousers"
                         className="clothes-carousel"
-                        images={trousers.map((image) => image.url)}
+                        images={trousers}
                         imageClassName="trouser"
                         hoveredClassName={hoveredClassName}
                         clickedClassName={outfitClassName}
@@ -282,7 +273,7 @@ export default function Clothes() {
                     <Carousel
                         id="carousel-shoes"
                         className="clothes-carousel"
-                        images={shoes.map((image) => image.url)}
+                        images={shoes}
                         imageClassName="shoe"
                         hoveredClassName={hoveredClassName}
                         clickedClassName={outfitClassName}

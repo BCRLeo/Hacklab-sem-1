@@ -15,7 +15,7 @@
 .clothes-carousel {
     position: relative;
     width: 70dvw;
-    height: clamp(75px, 20dvh, 200px);
+    height: clamp(75px, 15dvh, 200px);
 }
 
 .clothes-carousel .delete {

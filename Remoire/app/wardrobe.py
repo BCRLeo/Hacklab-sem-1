@@ -86,13 +86,40 @@ def upload_wardrobe_item():
         
     return jsonify({"success": True, "message": "File successfully uploaded"}), 200
 
+@wardrobe.route("/api/wardrobe/<username>/items/<item_type>", methods=["GET"])
+def get_user_wardrobe_image_endpoints(username, item_type):
+    user = User.query.filter_by(UserName=username)
+    if not user:
+        return jsonify({"success": False, "message": f"User {username} not found"}), 404
+    
+    items = None
+    match item_type:
+        case "jacket":
+            items = current_user.wardrobe.jackets
+        case "shirt":
+            items = current_user.wardrobe.shirts
+        case "trousers":
+            items = current_user.wardrobe.trousers
+        case "shoes":
+            items = current_user.wardrobe.shoes
+        case _:
+            return jsonify({"success": False, "message": "Invalid item type"}), 400
+
+    ids = [item.id for item in items]
+
+    image_endpoints = [f"/api/wardrobe/items/{item_type}?id={idx}" for idx in ids]
+    return jsonify({
+        "success": True,
+        "message": f"Successfully retrieved {item_type} image endpoints",
+        "data": image_endpoints
+    }), 200
+
+""" @wardrobe.route("/api/wardrobe/items/<item_type>/<int:item_id>", methods=["GET"])
+def get_wardrobe_image(item_type, item_id):
+     """
+
 @wardrobe.route('/api/wardrobe/items/<item_type>', methods=['GET'])
 def get_wardrobe_images(item_type):
-    user_id = request.args.get("user-id")
-    if user_id:
-        user_id = int(user_id)
-        
-
     if not current_user.is_authenticated:
         return jsonify({"success": False, "message": "User not logged in"}), 401
 
@@ -124,11 +151,12 @@ def get_wardrobe_images(item_type):
         image_io = io.BytesIO(image_bytes)
         return send_file(image_io, mimetype = mimetypes[index])
 
-    image_metadata = [
-        {"id": idx, "url": f"/api/wardrobe/items/{item_type}?id={idx}"}
-        for idx in ids
-    ]
-    return jsonify(image_metadata)
+    image_endpoints = [f"/api/wardrobe/items/{item_type}?id={idx}" for idx in ids]
+    return jsonify({
+        "success": True,
+        "message": f"Successfully retrieved {item_type} image endpoints",
+        "data": image_endpoints
+    }), 200
 
 @wardrobe.route("/api/wardrobe/items/<item_type>", methods=["DELETE"])
 def delete_wardrobe_item(item_type):
