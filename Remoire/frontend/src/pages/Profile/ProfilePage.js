@@ -103,7 +103,12 @@ export default function ProfilePage() {
         <>
             <h1>{profile.username}</h1>
             <div className="profile-picture-container">
+            {profilePictureUrl ? (
+                <img src={profilePictureUrl} className="profile-picture" alt={`${username}'s profile`} />
+            ) : (
                 <Icon className="profile-icon" name="accountIcon" size="lg" />
+            )}
+                {/* <Icon className="profile-icon" name="accountIcon" size="lg" /> */}
                 {/* <img
                     className="profile-icon"
                     src={profilePictureUrl}

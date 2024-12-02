@@ -21,8 +21,8 @@ div.post-container {
     /* box-shadow: 0.75rem 0.75rem black; */
 }
 
-span.post-username {
-    display: block;
+span.post-user-info {
+    display: flex;
     width: fit-content;
     height: fit-content;
 
@@ -30,7 +30,11 @@ span.post-username {
     padding: 1rem 1.5rem;
 
     text-align: center;
-    ;
+    gap: 1rem;
+}
+
+.post-username {
+    margin: auto;
 }
 
 img.post-profile-picture {
