@@ -24,6 +24,150 @@ from .algorithm import get_posts as get_feed_posts
 
 wardrobe = Blueprint("wardrobe", __name__)
 
+@wardrobe.route("/api/wardrobe/items", methods=["POST"])
+def upload_wardrobe_item():
+    if not current_user.is_authenticated:
+        return jsonify({"success": False, "message": "User not logged in"}), 401
+
+    wardrobe = current_user.wardrobe 
+    if "file" not in request.files:
+        return jsonify({"success": False, "message": "No file part"}), 400
+
+    file = request.files['file']
+    if not file:
+        return jsonify({"success": False, "message": "File could not be uploaded"}), 400
+    
+    if file.filename == "":
+        return jsonify({"success": False, "message": "No selected file"}), 400
+
+    if "category" not in request.form:
+        return jsonify({"success": False, "message": "No category part"}), 400
+    
+    category = request.form["category"]
+    if not category:
+        return jsonify({"success": False, "message": "File could not be uploaded"}), 400
+
+    if category == "":
+        return jsonify({"success": False, "message": "No selected category"}), 400
+    
+    # Secure the filename (though not strictly necessary since we're storing in DB)
+    filename = secure_filename(file.filename)
+                
+    # Create a new Jacket instance associated with the user's wardrobe
+    new_clothing = ""
+    match category:
+        case "jacket":
+            new_clothing = models.Jacket(wardrobe_id=wardrobe.id)
+        case "shirt":
+            new_clothing = models.Shirt(wardrobe_id=wardrobe.id)
+        case "trouser":
+            new_clothing = models.Trouser(wardrobe_id=wardrobe.id)
+        case "shoe":
+            new_clothing = models.Shoe(wardrobe_id=wardrobe.id)
+        case _:
+            return jsonify({"success": False, "message": "Invalid clothing category"}), 400
+    
+        
+    # Read the image data and get the MIME type
+    file_data = file.read()
+    file_data = ImageBackgroundRemoverV1.remove_background_file(file_data)
+    mimetype = file.mimetype
+
+    if not mimetype.startswith('image/'):
+        return jsonify({"success": False, "message": "Uploaded file is not an image"}), 400
+
+    # Assign the image data and MIME type to the new jacket
+    new_clothing.image_data = file_data
+    new_clothing.image_mimetype = mimetype
+
+     # Add and commit the new jacket to the database
+    db.session.add(new_clothing)
+    db.session.commit()
+        
+    return jsonify({"success": True, "message": "File successfully uploaded"}), 200
+
+@wardrobe.route('/api/wardrobe/items/<item_type>', methods=['GET'])
+def get_wardrobe_images(item_type):
+    user_id = request.args.get("user-id")
+    if user_id:
+        user_id = int(user_id)
+        
+
+    if not current_user.is_authenticated:
+        return jsonify({"success": False, "message": "User not logged in"}), 401
+
+    items = None
+    match item_type:
+        case "jacket":
+            items = current_user.wardrobe.jackets
+        case "shirt":
+            items = current_user.wardrobe.shirts
+        case "trousers":
+            items = current_user.wardrobe.trousers
+        case "shoes":
+            items = current_user.wardrobe.shoes
+        case _:
+            return jsonify({"success": False, "message": "Invalid item type"}), 400
+
+    images = [item.image_data for item in items]
+    ids = [item.id for item in items]
+
+    id = request.args.get("id")
+    if id:
+        id = int(id)
+        if id not in ids:
+            return jsonify({"success": False, "message": "Invalid image ID"}), 404
+        
+        index = ids.index(id)
+        mimetypes = [item.image_mimetype for item in items]
+        image_bytes = images[index]
+        image_io = io.BytesIO(image_bytes)
+        return send_file(image_io, mimetype = mimetypes[index])
+
+    image_metadata = [
+        {"id": idx, "url": f"/api/wardrobe/items/{item_type}?id={idx}"}
+        for idx in ids
+    ]
+    return jsonify(image_metadata)
+
+@wardrobe.route("/api/wardrobe/items/<item_type>", methods=["DELETE"])
+def delete_wardrobe_item(item_type):
+    if not current_user.is_authenticated:
+        return jsonify({"success": False, "message": "User not logged in"}), 401
+    
+    items = None
+    match item_type:
+        case "jacket":
+            items = current_user.wardrobe.jackets
+        case "shirt":
+            items = current_user.wardrobe.shirts
+        case "trousers":
+            items = current_user.wardrobe.trousers
+        case "shoes":
+            items = current_user.wardrobe.shoes
+        case _:
+            return jsonify({"success": False, "message": "Invalid item type"}), 400
+        
+    id = request.args.get("id")
+    if not id:
+        return jsonify({"success": False, "message": "No item ID provided"}), 400
+    id = int(id)
+
+    ids = [item.id for item in items]
+
+    if id not in ids:
+            return jsonify({"success": False, "message": "Invalid item ID"}), 404
+    
+    for element in items:
+        if element.id != id:
+            continue
+        if element.wardrobe.user_id == current_user.id:
+            db.session.delete(element)
+            db.session.commit()
+            return jsonify({"success": True, "message": f"{item_type.capitalize()} deleted successfully"}), 200
+    
+    return jsonify({"success": False, "message": "You do not have permission to delete this item"}), 403
+
 @wardrobe.route("/api/wardrobe/outfits", methods = ["POST"])
 def create_outfit():
     if not current_user.is_authenticated:

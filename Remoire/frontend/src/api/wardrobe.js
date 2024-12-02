@@ -1,3 +1,68 @@
+/**
+ * Uploads an clothing image file along with a category to the server.
+ * @async
+ * @function uploadClothingImage
+ * @param {File} imageFile - The image file to be uploaded.
+ * @param {string} category - The category associated with the item.
+ * @returns {Promise<Object>} - Returns a promise that resolves to a JSON Object with `success` flag and `fileName`.
+ */
+export async function uploadClothingImage(imageFile, category) {
+    const formData = new FormData();
+    formData.append("file", imageFile);
+    formData.append("category", category);
+
+    try {
+        const response = await fetch("/api/wardrobe/items", {
+            method: "POST",
+            body: formData
+        });
+        if (!response.ok) {
+            console.error(`Failed to upload item ${imageFile.name}`);
+            return { "success": false, "fileName": imageFile.name };
+        }
+
+        const data = await response.json();
+        if (data.success) {
+            return { "success": true, "fileName": imageFile.name };
+        }
+
+        console.error(`Failed to upload item ${imageFile.name}`);
+    } catch (error) {
+        console.error(`Error uploading file ${imageFile.name}: `, error);
+    }
+    return { "success": false, "fileName": imageFile.name };
+}
+
+/**
+ * Uploads clothing image files along with a category to the server.
+ * @async
+ * @function uploadClothingImages
+ * @param {File[]} imageFiles - The image files to be uploaded.
+ * @param {string} category - The category associated with the item.
+ * @returns {Promise<number>} - Returns a promise that resolves to the number of the successful uploads.
+ */
+export async function uploadClothingImages(imageFiles, category) {
+    let successfulUploads = 0;
+    let failedUploads = 0;
+
+    const uploadPromises = imageFiles.map(file =>
+        uploadClothingImage(file, category).then((result) => {
+            if (result.success) {
+                successfulUploads++;
+                console.log(`Successfully uploaded: ${result.fileName}`);
+            } else {
+                failedUploads++;
+                console.log(`Failed to upload: ${result.fileName}`);
+            }
+
+            return result;
+        })
+    );
+    await Promise.all(uploadPromises);
+
+    return successfulUploads;
+}
+
 export async function postOutfit(outfit) {
     if (Object.keys(outfit).length === 0) {
         console.log("Must select at least one item");

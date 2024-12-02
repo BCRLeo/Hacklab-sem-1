@@ -42,7 +42,7 @@ def serve_react_app(path):
     return render_template("index.html")
 
 
-@main.route("/api/wardrobe/items", methods=["POST"])
+""" @main.route("/api/wardrobe/items", methods=["POST"])
 def upload_wardrobe_item():
     if not current_user.is_authenticated:
         return jsonify({"success": False, "message": "User not logged in"}), 401
@@ -184,7 +184,7 @@ def delete_wardrobe_item(item_type):
             db.session.commit()
             return jsonify({"success": True, "message": f"{item_type.capitalize()} deleted successfully"}), 200
     
-    return jsonify({"success": False, "message": "You do not have permission to delete this item"}), 403
+    return jsonify({"success": False, "message": "You do not have permission to delete this item"}), 403 """
 
 
 @main.route("/api/posts", methods=["POST"])

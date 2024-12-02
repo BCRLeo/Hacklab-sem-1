@@ -1,6 +1,6 @@
 import "./Clothes.css";
 
-import { postOutfit } from "../../api/wardrobe";
+import { postOutfit, uploadClothingImages } from "../../api/wardrobe";
 
 import Bar from "../../components/Bar/Bar";
 import Button from "../../components/Button/Button";
@@ -13,11 +13,12 @@ import TabBar from "../../components/TabBar/TabBar";
 import ToggleButton from "../../components/ToggleButton/ToggleButton";
 
 import { useContext, useEffect, useState } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { UserContext } from "../../UserContext";
 
 export default function Clothes() {
     const navigate = useNavigate();
+    const { username } = useParams();
     const { user, setUser } = useContext(UserContext);
     const [files, setFiles] = useState([]);
     const [category, setCategory] = useState("");
@@ -186,74 +187,24 @@ export default function Clothes() {
             return;
         }
 
-        const uploadFile = async (file) => {
-            const formData = new FormData();
-            formData.append("file", file);
-            formData.append("category", category);
-
-            try {
-                const response = await fetch("/api/wardrobe/items", {
-                    method: "POST",
-                    body: formData
-                });
-    
-                if (response.ok) {
-                    return { success: true, file: file.name };
-                } else {
-                    return { success: false, file: file.name };
-                }
-            } catch (error) {
-                console.error("Error uploading file: ", file.name, error);
-                return { success: false, file: file.name, error };
-            }
-        };
-
         if (files.length > 1) {
             setUploadStatus(`Uploading ${files.length} files...`);
         } else {
             setUploadStatus("Uploading file...");
-            const result = await uploadFile(files[0]);
-            if (result.success) {
-                setUploadStatus("File uploaded successfully.");
+        }
+
+        (async () => {
+            const data = await uploadClothingImages(files, category);
+            if (data === 0) {
+                setUploadStatus(`Failed to upload ${files.length > 1 ? `${files.length} of ${files.length} files` : "file"}.`);
+            } else if (data < files.length) {
+                setUploadStatus(`Uploaded ${data} of ${files.length} files. Failed to upload ${data > 1 ? `${data} files` : "1 file"}.`);
             } else {
-                setUploadStatus("Failed to upload file.");
+                setUploadStatus(`${files.length === 1 ? "File" : `All ${files.length} files`} uploaded successfully.`);
             }
             setIsUploading(false);
             event.target.reset();
-            return;
-        }
-
-        let successfulUploads = 0;
-        let failedUploads = 0;
-
-        const uploadPromises = files.map(file =>
-            uploadFile(file).then((result) => {
-                if (result.success) {
-                    successfulUploads++;
-                    console.log(`Successfully uploaded: ${result.file}`);
-                } else {
-                    failedUploads++;
-                    console.log(`Failed to upload: ${result.file}`);
-                }
-
-                if (failedUploads > 0) {
-                    setUploadStatus(`Uploaded ${successfulUploads} of ${files.length} files. Failed to upload ${failedUploads} files.`);
-                } else {
-                    setUploadStatus(`Uploaded ${successfulUploads} of ${files.length} files.`);
-                }
-                return result;
-            })
-        );
-        await Promise.all(uploadPromises);
-
-        if (failedUploads > 0) {
-            setUploadStatus(`${successfulUploads} of ${files.length} files uploaded successfully.`);
-        } else {
-            setUploadStatus("All files uploaded successfully.");
-        }
-
-        setIsUploading(false);
-        event.target.reset();
+        })();
     };
 
     if (isUserLoading) {
