@@ -88,7 +88,7 @@ export default function ProfilePage() {
             const data = await response.json();
             if (response.ok) {
                 // Update profile picture URL immediately
-                setProfilePictureUrl('/api/users/${profile.id}/profile-picture}');
+                setProfilePictureUrl('/api/users/${profile.id}/upload-profile-picture}');
                 setUploadStatus("Profile picture uploaded successfully.");
                 setSelectedFile(null);
             } else {

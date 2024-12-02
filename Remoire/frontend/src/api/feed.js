@@ -122,6 +122,7 @@ export async function getUserFeedPosts(username) {
                         key={postMetadata.id}
                         postId={postMetadata.id}
                         image={imageUrl}
+                        profilePicture={postMetadata.profile_picture}
                         username={postMetadata.username}
                         likeCount={postMetadata.like_count}
                         initialIsLiked={postMetadata.is_liked}  // New prop

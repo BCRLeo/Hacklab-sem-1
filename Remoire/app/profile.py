@@ -73,7 +73,7 @@ def upload_profile_picture(user_id):
         db.session.rollback()
         return jsonify({"success": False, "message": "Error uploading profile picture"}), 500
     
-@profile.route('/api/users/<int:user_id>/profile-picture', methods=['GET'])
+@profile.route('/api/users/<int:user_id>/upload-profile-picture', methods=['GET'])
 def get_profile_picture(user_id):
     try:
         # Retrieve the user from the database

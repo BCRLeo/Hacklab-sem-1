@@ -44,3 +44,5 @@ export default function Post({ postId, className = "" }) {
         </div>
     );
 }
+
+
