@@ -8,6 +8,8 @@ import { ReactComponent as CheckIcon } from "../../assets/icons/icon__check.svg"
 import { ReactComponent as EditIcon } from "../../assets/icons/icon__edit.svg";
 import { ReactComponent as ErrorIcon } from "../../assets/icons/icon__error.svg";
 import { ReactComponent as HangerIcon } from "../../assets/icons/icon__hanger.svg";
+import { ReactComponent as HeartFilledIcon } from "../../assets/icons/icon__heart-filled.svg";
+import { ReactComponent as HeartOutlinedIcon } from "../../assets/icons/icon__heart-outlined.svg";
 import { ReactComponent as LogoIcon } from "../../assets/icons/icon__logo.svg";
 import { ReactComponent as SearchIcon } from "../../assets/icons/icon__search.svg";
 import { ReactComponent as UploadIcon } from "../../assets/icons/icon__upload.svg";
@@ -20,7 +22,7 @@ import { ReactComponent as UploadIcon } from "../../assets/icons/icon__upload.sv
  * SVG properties can be passed and will be spread onto the rendered SVG component.
  *
  * @param {Object} props - The props object for the MyIcon component.
- * @param {'accountIcon' | 'arrowLeftIcon' | 'arrowRightIcon' | "briefcaseIcon" | "checkIcon" | "editIcon" | "errorIcon" | "hangerIcon" | "logoIcon" | 'searchIcon' | "uploadIcon"} props.name - The name of the icon to render.
+ * @param {'accountIcon' | 'arrowLeftIcon' | 'arrowRightIcon' | "briefcaseIcon" | "checkIcon" | "editIcon" | "errorIcon" | "hangerIcon" | "heartFilledIcon" | "heartOutlinedIcon" | "logoIcon" | 'searchIcon' | "uploadIcon"} props.name - The name of the icon to render.
  * @param {"xs" | "sm" | "md" | "lg" | "xl" | "xll"} props.size - The size of the icon to render. 
  * @param {Object} [props.svgProps] - Any additional props to be spread to the SVG component (e.g., width, height, className, etc.).
  * @returns {JSX.Element|null} - Returns the corresponding SVG component for the specified icon name, or `null` if the name is invalid.
@@ -46,6 +48,8 @@ export default function Icon(props) {
         editIcon: <EditIcon className={fullClassName} {...svgProps} />,
         errorIcon: <ErrorIcon className={fullClassName} {...svgProps} />,
         hangerIcon: <HangerIcon className={fullClassName} {...svgProps} />,
+        heartFilledIcon: <HeartFilledIcon className={fullClassName} {...svgProps} />,
+        heartOutlinedIcon: <HeartOutlinedIcon className={fullClassName} {...svgProps} />,
         logoIcon: <LogoIcon className={fullClassName} {...svgProps} />,
         searchIcon: <SearchIcon className={fullClassName} {...svgProps} />,
         uploadIcon: <UploadIcon className={fullClassName} {...svgProps} />

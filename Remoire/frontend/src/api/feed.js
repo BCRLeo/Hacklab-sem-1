@@ -108,3 +108,72 @@ export async function getPostLikes(postId) {
 
     return null;
 }
+
+/**
+ * Fetches whether a given post is liked.
+ * 
+ * @param {number} postId - The ID of the post for which to check if it is liked.
+ * @returns {boolean | null} Whether the post is liked, or `null` if an error occurred or the post doesn't exist.
+ */
+export async function isPostLiked(postId) {
+    try {
+        const response = await fetch(`/api/posts/${postId}/liked`, { method: "GET" });
+        const data = await response.json();
+        if (!response.ok || !data.success) {
+            console.error(data.message);
+            return null;
+        }
+
+        return data.data.isLiked;
+    } catch (error) {
+        console.error(`Error while checking if post #${postId}'s is liked: `, error);
+    }
+
+    return null;
+}
+
+/**
+ * Likes a given post.
+ * 
+ * @param {number} postId - The ID of the post to be liked.
+ * @returns {number | null} New like count, or `null` if an error occurred or the post doesn't exist.
+ */
+export async function likePost(postId) {
+    try {
+        const response = await fetch(`/api/posts/${postId}/likes`, { method: "PUT" });
+        const data = await response.json();
+        if (!response.ok || !data.success) {
+            console.error(data.message);
+            return null;
+        }
+
+        return data.data.likeCount;
+    } catch (error) {
+        console.error(`Error while liking post #${postId}: `, error);
+    }
+
+    return null;
+}
+
+/**
+ * Unlikes a given post.
+ * 
+ * @param {number} postId - The ID of the post to be liked.
+ * @returns {number | null} New like count, or `null` if an error occurred or the post doesn't exist.
+ */
+export async function unlikePost(postId) {
+    try {
+        const response = await fetch(`/api/posts/${postId}/likes`, { method: "DELETE" });
+        const data = await response.json();
+        if (!response.ok || !data.success) {
+            console.error(data.message);
+            return null;
+        }
+
+        return data.data.likeCount;
+    } catch (error) {
+        console.error(`Error while unliking post #${postId}: `, error);
+    }
+
+    return null;
+}
