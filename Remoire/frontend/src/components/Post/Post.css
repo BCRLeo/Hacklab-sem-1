@@ -37,7 +37,9 @@ img.profile-picture {
     width: 2rem;
     aspect-ratio: 1;
     object-fit: cover;
+    border-radius: 50%; /* Makes the image round */
 }
+
 
 .post-image {
     display: block;
