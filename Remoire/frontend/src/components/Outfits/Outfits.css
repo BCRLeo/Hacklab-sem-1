@@ -9,5 +9,7 @@
     border-radius: 2rem;
 
     overflow-x: scroll;
+    scroll-snap-type: x mandatory;
+    overscroll-behavior-x: contain;
     gap: 2rem;
 }

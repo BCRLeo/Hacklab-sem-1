@@ -1,9 +1,12 @@
 .outfit {
     margin: 0 auto auto;
+    scroll-snap-align: center;
 }
 
 .outfit-image {
     display: block;
     margin: auto;
     height: 15dvw;
+    aspect-ratio: 4 / 5;
+    object-fit: contain;
 }

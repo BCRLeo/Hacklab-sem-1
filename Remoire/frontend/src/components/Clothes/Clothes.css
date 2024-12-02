@@ -1,6 +1,10 @@
-.clothes-carousel-container div.carousel {
-    width: 70dvw;
-    height: 35dvh;
+.clothes-carousel-container {
+    width: fit-content;
+
+    margin: auto;
+    padding: 2rem;
+    background-color: var(--hex__inset);
+    border-radius: 2rem;
 }
 
 #upload-status {
@@ -10,6 +14,8 @@
 
 .clothes-carousel {
     position: relative;
+    width: 70dvw;
+    height: 25dvh;
 }
 
 .clothes-carousel .delete {
@@ -22,7 +28,7 @@
     cursor: pointer;
 }
 
-.wardrobe-carousel .outfit {
+.clothes-carousel .outfit {
     filter: sepia(100%) saturate(150%) hue-rotate(90deg);
     -webkit-filter: sepia(100%) saturate(150%) hue-rotate(90deg);
 }

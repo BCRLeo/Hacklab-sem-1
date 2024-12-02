@@ -27,7 +27,6 @@ export default function Outfit({ outfitId }) {
 
     return (
         <div className="outfit">
-            <h4>Outfit</h4>
             {images}
         </div>
     );
