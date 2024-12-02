@@ -223,3 +223,49 @@ def unlike_post(post_id):
             "likeCount": post.like_count()
         }
     }), 200
+
+
+@feed.route("/api/posts/<int:post_id>", methods=["DELETE"])
+def delete_post(post_id):
+    # Check if the user is authenticated
+    if not current_user.is_authenticated:
+        return jsonify({
+            "success": False,
+            "message": "User not logged in",
+            "data": None
+        }), 401
+
+    # Retrieve the post from the database
+    post = Post.query.get(post_id)
+    if not post:
+        return jsonify({
+            "success": False,
+            "message": f"Post #{post_id} not found",
+            "data": None
+        }), 404
+
+    # Check if the current user is the author of the post
+    if post.author != current_user:
+        return jsonify({
+            "success": False,
+            "message": "You are not authorized to delete this post",
+            "data": None
+        }), 403
+
+    # Attempt to delete the post
+    try:
+        db.session.delete(post)
+        db.session.commit()
+        return jsonify({
+            "success": True,
+            "message": f"Successfully deleted post #{post_id}",
+            "data": {"post_id": post_id}
+        }), 200
+    except Exception as e:
+        # Rollback changes in case of an error
+        db.session.rollback()
+        return jsonify({
+            "success": False,
+            "message": f"Failed to delete post: {str(e)}",
+            "data": None
+        }), 500
