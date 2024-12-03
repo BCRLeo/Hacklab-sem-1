@@ -24,6 +24,8 @@ export default function Clothes() {
     const [category, setCategory] = useState("");
     const [uploadStatus, setUploadStatus] = useState("");
 
+    const [isUploadPopoverToggled, setIsUploadPopoverToggled] = useState(false);
+
     const [jackets, setJackets] = useState([]);
     const [shirts, setShirts] = useState([]);
     const [trousers, setTrousers] = useState([]);
@@ -171,12 +173,12 @@ export default function Clothes() {
     };
 
     const handleSubmit = async (event) => {
-        setIsUploading(true);
         event.preventDefault();
         if (!files || files.length === 0) {
             setUploadStatus("Please select at least one file");
             return;
         }
+        setIsUploading(true);
 
         if (files.length > 1) {
             setUploadStatus(`Uploading ${files.length} files...`);
@@ -207,7 +209,10 @@ export default function Clothes() {
     return (
         <>
             {!username && <Bar orientation="horizontal">
-                <Popover renderToggle={(dropdownProps) => <Button text="Upload" {...dropdownProps}><Icon name="uploadIcon" /></Button>}>
+                <Popover
+                    renderToggle={(dropdownProps) => <Button text="Upload" {...dropdownProps}><Icon name="uploadIcon" /></Button>}
+                    onToggle={() => setUploadStatus("")}
+                >
                     <form onSubmit={handleSubmit} method="post" className="upload">
                         <Field label="Upload item" onChange={handleFileChange} type="file" name="item" accept="image/png, image/jpeg, image/webp" multiple />
                         <Field label="Clothing category">

@@ -111,30 +111,35 @@ export default function ProfilePage() {
             )}
             </div>
                 {/* <p>bio test test i'm so cool test test fashion whatever</p> */}
-            {user && user !== -1 && username === user.username && <Popover renderToggle={(dropdownProps) => <Button text="Upload Profile Picture" {...dropdownProps} />}>
-                <form
-                    onSubmit={(e) => {
-                        e.preventDefault();
-                        handleUpload();
-                    }}
-                    method="post"
-                    className="upload"
+            {user && user !== -1 && username === user.username && (
+                <Popover
+                    renderToggle={(dropdownProps) => <Button text="Upload Profile Picture" {...dropdownProps} />}
+                    onToggle={() => setUploadStatus("")}
                 >
-                    <Field
-                        label="Upload Profile Picture"
-                        onChange={handleFileChange}
-                        type="file"
-                        name="item"
-                    />
-                    <Button
-                        text={isUploading ? 'Uploading...' : 'Upload'}
-                        type="submit"
-                        className={`button-${isUploading ? 'uploading' : 'upload'}`}
-                        disabled={isUploading}
-                    />
-                </form>
-                {uploadStatus && <p id="upload-status">{uploadStatus}</p>}
-            </Popover>}
+                    <form
+                        onSubmit={(e) => {
+                            e.preventDefault();
+                            handleUpload();
+                        }}
+                        method="post"
+                        className="upload"
+                    >
+                        <Field
+                            label="Upload Profile Picture"
+                            onChange={handleFileChange}
+                            type="file"
+                            name="item"
+                        />
+                        <Button
+                            text={isUploading ? 'Uploading...' : 'Upload'}
+                            type="submit"
+                            className={`button-${isUploading ? 'uploading' : 'upload'}`}
+                            disabled={isUploading}
+                        />
+                    </form>
+                    {uploadStatus && <p id="upload-status">{uploadStatus}</p>}
+                </Popover>
+            )}
 
             <TabBar
                 orientation="horizontal"

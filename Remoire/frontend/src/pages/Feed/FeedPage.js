@@ -27,6 +27,8 @@ export default function FeedPage() {
     const [posts, setPosts] = useState([]); 
     const [postWidth, setPostWidth] = useState(0);
     const [columns, setColumns] = useState([]);
+
+    const [isCreatingPost, setIsCreatingPost] = useState(false);
     
     const [postFile, setPostFile] = useState(null);
     const [isUploading, setIsUploading] = useState(false);
@@ -109,7 +111,14 @@ export default function FeedPage() {
         <>
             <h1>Feed</h1>
             {user && user!== -1 && (
-                <Popover renderToggle={(dropdownProps) => <Button text="Create post" {...dropdownProps} />}>
+                <Popover
+                    renderToggle={(dropdownProps) => <Button text="Create post" {...dropdownProps} />}
+                    isToggled={isCreatingPost}
+                    onToggle={() => {
+                        setIsCreatingPost(isCreatingPost => !isCreatingPost);
+                        setUploadStatus("");
+                    }}
+                >
                     <form onSubmit={handleSubmit} method="post" className="upload">
                         <Field label="Upload item" onChange={handleFileChange} type="file" name="item" />
                         <Button text={isUploading ? "Posting..." : "Post"} type="submit" className={isUploading ? "uploading" : "upload"} disabled={isUploading} />
