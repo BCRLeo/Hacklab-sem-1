@@ -140,25 +140,27 @@ export default function Clothes() {
                 console.error("Error: ", error);
             }
         } else if (isChoosingOutfit) {
+            const parts = event.target.src.split("/");
+
             if (itemClassName.includes("jacket")) {
                 setNewOutfit({
                     ...newOutfit,
-                    "jacket": event.target.src.split("/")[4]
+                    "jacket": parts[parts.indexOf("jacket") + 1]
                 });
             } else if (itemClassName.includes("shirt")) {
                 setNewOutfit({
                     ...newOutfit,
-                    "shirt": event.target.src.split("/")[4]
+                    "shirt": parts[parts.indexOf("shirt") + 1]
                 });
             } else if (itemClassName.includes("trouser")) {
                 setNewOutfit({
                     ...newOutfit,
-                    "trousers": event.target.src.split("/")[4]
+                    "trousers": parts[parts.indexOf("trouser") + 1]
                 });
             } else if (itemClassName.includes("shoe")) {
                 setNewOutfit({
                     ...newOutfit,
-                    "shoes": event.target.src.split("/")[4]
+                    "shoes": parts[parts.indexOf("shoe") + 1]
                 });
             }
         }

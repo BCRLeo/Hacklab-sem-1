@@ -228,7 +228,7 @@ def get_user_outfit_ids(username: str):
         return jsonify({"success": False, "message": f"User {username} not be found"}), 404
 
     outfits = user.outfits
-    outfit_ids = [outfits[i].id for i in range(len(outfits))]
+    outfit_ids = [outfit.id for outfit in outfits]
 
     return jsonify({"success": True, "outfitIds": outfit_ids, "message": "Successfully retrieved outfit IDs"}), 200
 
