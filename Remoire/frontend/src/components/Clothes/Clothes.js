@@ -75,14 +75,6 @@ export default function Clothes() {
     }
 
     useEffect(() => {
-        if (user === null) {
-            setIsUserLoading(true);
-            return;
-        }
-        setIsUserLoading(false);
-        if (user === -1) {
-            navigate("/login");
-        }
         getAllImages();
         setIsPendingUpdate(false);
     }, [user, uploadStatus, isPendingUpdate]);
@@ -210,12 +202,6 @@ export default function Clothes() {
             event.target.reset();
         })();
     };
-
-    if (isUserLoading) {
-        return (
-            <Loading />
-        );
-    }
 
     return (
         <>

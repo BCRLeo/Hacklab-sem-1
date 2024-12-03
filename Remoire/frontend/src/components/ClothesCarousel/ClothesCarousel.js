@@ -9,9 +9,11 @@ import IconArrowRight from "../../assets/icons/icon__arrow-right.svg";
 import { UserContext } from "../../UserContext";
 
 import { useContext, useEffect, useRef, useState } from "react";
+import { useParams } from "react-router-dom";
 
 export default function ClothesCarousel({ className = "", itemType, imageClassName, hoveredClassName, clickedClassName, isPendingUpdate }) {
     const { user } = useContext(UserContext);
+    const { username } = useParams();
 
     const carouselRef = useRef(null);
     const { visibleImageCount, imageSize } = useCarouselLayout(carouselRef);
@@ -21,12 +23,12 @@ export default function ClothesCarousel({ className = "", itemType, imageClassNa
     const [itemIds, setItemIds] = useState([]);
 
     useEffect(() => {
-        if (!user || user === -1) {
+        if ((!user || user === -1) && !username) {
             return;
         }
 
         (async () => {
-            const data = await getClothingIds(user.username, itemType);
+            const data = username ? await getClothingIds(username, itemType) : await getClothingIds(user.username, itemType);
             if (data !== null) {
                 setItemIds(data);
             }
