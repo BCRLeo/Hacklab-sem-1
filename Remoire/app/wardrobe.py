@@ -135,6 +135,9 @@ def get_wardrobe_image(item_type, item_id):
         case _:
             return jsonify({"success": False, "message": "Invalid item type"}), 400
         
+    if not item:
+        return jsonify({"success": False, "message": f"{item_type} #{item_id} not found"}), 404
+        
     return send_file(io.BytesIO(item.image_data), mimetype=item.image_mimetype)
 
 @wardrobe.route('/api/wardrobe/items/<item_type>', methods=['GET'])
@@ -178,41 +181,31 @@ def get_wardrobe_images(item_type):
         "data": image_endpoints
     }), 200
 
-@wardrobe.route("/api/wardrobe/items/<item_type>", methods=["DELETE"])
-def delete_wardrobe_item(item_type):
+@wardrobe.route("/api/wardrobe/items/<item_type>/<int:item_id>", methods=["DELETE"])
+def delete_wardrobe_item(item_type, item_id: int):
     if not current_user.is_authenticated:
         return jsonify({"success": False, "message": "User not logged in"}), 401
     
-    items = None
+    item = None
     match item_type:
         case "jacket":
-            items = current_user.wardrobe.jackets
+            item = Jacket.query.get(item_id)
         case "shirt":
-            items = current_user.wardrobe.shirts
+            item = Shirt.query.get(item_id)
         case "trousers":
-            items = current_user.wardrobe.trousers
+            item = Trouser.query.get(item_id)
         case "shoes":
-            items = current_user.wardrobe.shoes
+            item = Shoe.query.get(item_id)
         case _:
             return jsonify({"success": False, "message": "Invalid item type"}), 400
-        
-    id = request.args.get("id")
-    if not id:
-        return jsonify({"success": False, "message": "No item ID provided"}), 400
-    id = int(id)
-
-    ids = [item.id for item in items]
-
-    if id not in ids:
-            return jsonify({"success": False, "message": "Invalid item ID"}), 404
     
-    for element in items:
-        if element.id != id:
-            continue
-        if element.wardrobe.user_id == current_user.id:
-            db.session.delete(element)
-            db.session.commit()
-            return jsonify({"success": True, "message": f"{item_type.capitalize()} deleted successfully"}), 200
+    if not item:
+        return jsonify({"success": False, "message": f"{item_type.capitalize()} #{item_id} not found"}), 404
+    
+    if item.wardrobe.user_id == current_user.id:
+        db.session.delete(item)
+        db.session.commit()
+        return jsonify({"success": True, "message": f"{item_type.capitalize()} #{item_id} deleted successfully"}), 200
     
     return jsonify({"success": False, "message": "You do not have permission to delete this item"}), 403
 

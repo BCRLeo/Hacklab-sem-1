@@ -96,6 +96,29 @@ export default function ProfilePage() {
         setIsUploading(false);
     };
 
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+
+        setIsUploading(true);
+        setUploadStatus("");
+
+        if (!selectedFile) {
+            setUploadStatus("Please select a file first.");
+            setIsUploading(false);
+            return;
+        }
+
+        if (uploadProfilePicture(user.username, selectedFile)) {
+            setUploadStatus("Profile picture uploaded successfully.");
+            setSelectedFile(null);
+            event.target.reset();
+        } else {
+            setUploadStatus("Failed to upload profile picture.");
+        }
+        
+        setIsUploading(false);
+    };
+
     if (!profile) {
         return <p>{username}'s profile could not be found.</p>;
     }
@@ -109,42 +132,35 @@ export default function ProfilePage() {
             ) : (
                 <Icon className="profile-icon" name="accountIcon" size="xl" />
             )}
-                {/* <Icon className="profile-icon" name="accountIcon" size="lg" /> */}
-                {/* <img
-                    className="profile-icon"
-                    src={profilePictureUrl}
-                    alt={`${profile.username}'s profile`}
-                    onError={(e) => {
-                        e.target.src = ""; // Fallback image
-                        e.target.onerror = null; // Prevent infinite loop
-                    }}
-                /> */}
             </div>
                 {/* <p>bio test test i'm so cool test test fashion whatever</p> */}
-            {user && user !== -1 && username === user.username && <Popover renderToggle={(dropdownProps) => <Button {...dropdownProps}>Upload Profile Picture</Button>}>
-                <form
-                    onSubmit={(e) => {
-                        e.preventDefault();
-                        handleUpload();
-                    }}
-                    method="post"
-                    className="upload"
+            {user && user !== -1 && username === user.username && (
+                <Popover
+                    renderToggle={(dropdownProps) => <Button text="Upload Profile Picture" {...dropdownProps} />}
+                    onToggle={() => setUploadStatus("")}
                 >
-                    <Field
-                        label="Upload Profile Picture"
-                        onChange={handleFileChange}
-                        type="file"
-                        name="item"
-                    />
-                    <Button
-                        text={isUploading ? 'Uploading...' : 'Upload'}
-                        type="submit"
-                        className={`button-${isUploading ? 'uploading' : 'upload'}`}
-                        disabled={isUploading}
-                    />
-                </form>
-                {uploadStatus && <p id="upload-status">{uploadStatus}</p>}
-            </Popover>}
+                    <form
+                        onSubmit={handleSubmit}
+                        method="post"
+                        className="upload"
+                    >
+                        <Field
+                            label="Upload Profile Picture"
+                            onChange={handleFileChange}
+                            type="file"
+                            name="item"
+                            disabled={isUploading}
+                        />
+                        <Button
+                            text={isUploading ? 'Uploading...' : 'Upload'}
+                            type="submit"
+                            className={`button-${isUploading ? 'uploading' : 'upload'}`}
+                            disabled={isUploading}
+                        />
+                    </form>
+                    {uploadStatus && <p id="upload-status">{uploadStatus}</p>}
+                </Popover>
+            )}
 
             <TabBar
                 orientation="horizontal"
