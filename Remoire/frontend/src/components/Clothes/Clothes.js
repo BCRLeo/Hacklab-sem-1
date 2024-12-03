@@ -5,8 +5,10 @@ import { getClothingImageEndpoints, getUserClothingImageEndpoints, createOutfit,
 import Bar from "../../components/Bar/Bar";
 import Button from "../../components/Button/Button";
 import Carousel from "../../components/Carousel/Carousel";
+import ClothesCarousel from "../ClothesCarousel/ClothesCarousel";
 import Field from "../../components/Field/Field";
 import Icon from "../../components/Icon/Icon";
+import ImageCarousel from "../ImageCarousel/ImageCarousel";
 import Loading from "../../components/Loading/Loading";
 import Popover from "../../components/Popover/Popover";
 import TabBar from "../../components/TabBar/TabBar";
@@ -46,6 +48,7 @@ export default function Clothes() {
     const chooseHoveredClassName = "choose"
     const deleteHoveredClassName = "delete";
     const [hoveredClassName, setHoveredClassName] = useState("");
+    const [clickedClassName, setClickedClassName] = useState("");
 
     const getImages = async (itemType, setImagesCallback) => {
         const data = username ? await getUserClothingImageEndpoints(username, itemType) : await getClothingImageEndpoints(itemType);
@@ -108,10 +111,13 @@ export default function Clothes() {
     useEffect(() => {
         if (isEditing) {
             setHoveredClassName(deleteHoveredClassName);
+            setClickedClassName("");
         } else if (isChoosingOutfit) {
             setHoveredClassName(chooseHoveredClassName);
+            setClickedClassName(outfitClassName);
         } else {
             setHoveredClassName("");
+            setClickedClassName("");
         }
     }, [isEditing, isChoosingOutfit]);
 
@@ -140,27 +146,28 @@ export default function Clothes() {
                 console.error("Error: ", error);
             }
         } else if (isChoosingOutfit) {
-            const parts = event.target.src.split("/");
+            const clothingId = event.target.dataset.clothingId;
+            console.log(clothingId);
 
             if (itemClassName.includes("jacket")) {
                 setNewOutfit({
                     ...newOutfit,
-                    "jacket": parts[parts.indexOf("jacket") + 1]
+                    "jacket": clothingId
                 });
             } else if (itemClassName.includes("shirt")) {
                 setNewOutfit({
                     ...newOutfit,
-                    "shirt": parts[parts.indexOf("shirt") + 1]
+                    "shirt": clothingId
                 });
             } else if (itemClassName.includes("trouser")) {
                 setNewOutfit({
                     ...newOutfit,
-                    "trousers": parts[parts.indexOf("trouser") + 1]
+                    "trousers": clothingId
                 });
             } else if (itemClassName.includes("shoe")) {
                 setNewOutfit({
                     ...newOutfit,
-                    "shoes": parts[parts.indexOf("shoe") + 1]
+                    "shoes": clothingId
                 });
             }
         }
@@ -194,8 +201,10 @@ export default function Clothes() {
                 setUploadStatus(`Failed to upload ${files.length > 1 ? `${files.length} of ${files.length} files` : "file"}.`);
             } else if (data < files.length) {
                 setUploadStatus(`Uploaded ${data} of ${files.length} files. Failed to upload ${data > 1 ? `${data} files` : "1 file"}.`);
+                setIsPendingUpdate(true);
             } else {
                 setUploadStatus(`${files.length === 1 ? "File" : `All ${files.length} files`} uploaded successfully.`);
+                setIsPendingUpdate(true);
             }
             setIsUploading(false);
             event.target.reset();
@@ -235,56 +244,57 @@ export default function Clothes() {
             </Bar>}
             
 
+
             <div className="clothes-carousel-container" onClick={handleClothingClick}>
                 {jackets.length === 0 ? (
                     <p>No jackets available.</p>
                 ) : (
-                    <Carousel
-                        id="carousel-jackets"
+                    <ClothesCarousel
                         className="clothes-carousel"
-                        images={jackets}
+                        itemType="jacket"
                         imageClassName="jacket"
                         hoveredClassName={hoveredClassName}
-                        clickedClassName={outfitClassName}
+                        clickedClassName={clickedClassName}
+                        isPendingUpdate={isPendingUpdate}
                     />
                 )}
 
                 {shirts.length === 0 ? (
                     <p>No shirts available.</p>
                 ) : (
-                    <Carousel
-                        id="carousel-shirts"
+                    <ClothesCarousel
                         className="clothes-carousel"
-                        images={shirts}
+                        itemType="shirt"
                         imageClassName="shirt"
                         hoveredClassName={hoveredClassName}
-                        clickedClassName={outfitClassName}
+                        clickedClassName={clickedClassName}
+                        isPendingUpdate={isPendingUpdate}
                     />
                 )}
 
                 {trousers.length === 0 ? (
                     <p>No trousers available.</p>
                 ) : (
-                    <Carousel
-                        id="carousel-trousers"
+                    <ClothesCarousel
                         className="clothes-carousel"
-                        images={trousers}
+                        itemType="trouser"
                         imageClassName="trouser"
                         hoveredClassName={hoveredClassName}
-                        clickedClassName={outfitClassName}
+                        clickedClassName={clickedClassName}
+                        isPendingUpdate={isPendingUpdate}
                     />
                 )}
 
                 {shoes.length === 0 ? (
                     <p>No shoes available.</p>
                 ) : (
-                    <Carousel
-                        id="carousel-shoes"
+                    <ClothesCarousel
                         className="clothes-carousel"
-                        images={shoes}
+                        itemType="shoe"
                         imageClassName="shoe"
                         hoveredClassName={hoveredClassName}
-                        clickedClassName={outfitClassName}
+                        clickedClassName={clickedClassName}
+                        isPendingUpdate={isPendingUpdate}
                     />
                 )}
             </div>

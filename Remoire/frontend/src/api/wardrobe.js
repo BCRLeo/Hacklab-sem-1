@@ -38,15 +38,15 @@ export async function uploadClothingImage(imageFile, category) {
  * @async
  * @function uploadClothingImages
  * @param {File[]} imageFiles - The image files to be uploaded.
- * @param {string} category - The category associated with the item.
+ * @param {string} itemType - The type associated with the item.
  * @returns {Promise<number>} - Returns a promise that resolves to the number of the successful uploads.
  */
-export async function uploadClothingImages(imageFiles, category) {
+export async function uploadClothingImages(imageFiles, itemType) {
     let successfulUploads = 0;
     let failedUploads = 0;
 
     const uploadPromises = imageFiles.map(file =>
-        uploadClothingImage(file, category).then((result) => {
+        uploadClothingImage(file, itemType).then((result) => {
             if (result.success) {
                 successfulUploads++;
                 console.log(`Successfully uploaded: ${result.fileName}`);
@@ -61,6 +61,33 @@ export async function uploadClothingImages(imageFiles, category) {
     await Promise.all(uploadPromises);
 
     return successfulUploads;
+}
+
+/**
+ * Fetches image IDs for a specified clothing item type and username from the wardrobe API.
+ * 
+ * @async
+ * @function getClothingIds
+ * @param {string} username - The username to fetch images from.
+ * @param {string} itemType - The type of clothing item (e.g., "shirt", "pants", "shoes") to fetch image endpoints for.
+ * @returns {Promise<int[]|null>} A promise that resolves to an array of image IDs if successful, or null if there was an error.
+ * @throws Will log an error message to the console if the fetch operation or response parsing fails.
+ */
+export async function getClothingIds(username, itemType) {
+    try {
+        const response = await fetch(`/api/wardrobe/${username}/ids/${itemType}`, { method: "GET" });
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+            console.error(data.message);
+            return null;
+        }
+
+        return data.data;
+    } catch (error) {
+        console.error(`Error retrieving ${itemType} image IDs: `, error);
+    }
+    return null;
 }
 
 /**

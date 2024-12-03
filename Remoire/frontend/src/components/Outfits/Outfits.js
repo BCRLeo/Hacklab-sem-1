@@ -49,6 +49,7 @@ export default function Outfits() {
             }
             setOutfitIds(data);
         })();
+        setIsPendingUpdate(false);
     }, [isPendingUpdate]);
 
     return (
