@@ -30,7 +30,7 @@ export default function Popover({ renderToggle, children }) {
     const [isOpen, setIsOpen] = useState(false);
     const newRef = useRef(null);
 
-    const  handleClickOutside = (event) => {
+    const handleClickOutside = (event) => {
         if (newRef.current && !newRef.current.contains(event.target)) {
             setIsOpen(false);
         }

@@ -49,11 +49,11 @@ export default function FeedPage() {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        setIsUploading(true);
         if (!postFile) {
             setUploadStatus("Please select a file");
             return;
         }
+        setIsUploading(true);
 
         const formData = new FormData();
         formData.append("file", postFile);
@@ -108,13 +108,15 @@ export default function FeedPage() {
     return (
         <>
             <h1>Feed</h1>
-            {user && user!== -1 && <Popover renderToggle={(dropdownProps) => <Button text="Create post" {...dropdownProps} />}>
-                <form onSubmit={handleSubmit} method="post" className="upload">
-                    <Field label="Upload item" onChange={handleFileChange} type="file" name="item" />
-                    <Button text={isUploading ? "Posting..." : "Post"} type="submit" className={isUploading ? "uploading" : "upload"} disabled={isUploading} />
-                </form>
-                <p id="upload-status">{uploadStatus}</p>
-            </Popover>}
+            {user && user!== -1 && (
+                <Popover renderToggle={(dropdownProps) => <Button text="Create post" {...dropdownProps} />}>
+                    <form onSubmit={handleSubmit} method="post" className="upload">
+                        <Field label="Upload item" onChange={handleFileChange} type="file" name="item" />
+                        <Button text={isUploading ? "Posting..." : "Post"} type="submit" className={isUploading ? "uploading" : "upload"} disabled={isUploading} />
+                    </form>
+                    <p id="upload-status">{uploadStatus}</p>
+                </Popover>
+            )}
             
             <div className="feed-container">
                 {columns}
