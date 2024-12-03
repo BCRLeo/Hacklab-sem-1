@@ -12,7 +12,7 @@ from datetime import datetime, date
 auth = Blueprint('auth', __name__)
 # Regular expression for basic email and password validation
 EMAIL_REGEX = r"(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)"
-PASSWORD_REGEX = r"^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$"
+PASSWORD_REGEX = r"^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)[A-Za-z\d@$!%*?&-]{8,}$"
 
 # Function to get the correct JS and CSS file paths
 def get_js_and_css():

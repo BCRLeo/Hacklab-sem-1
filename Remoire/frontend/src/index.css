@@ -15,6 +15,8 @@
 	--hex__overlay: var(--hex__brand-main);
 	--hex__text: var(--hex__brand-black);
 	--hex__text-contrast: var(--hex__brand-white);
+	--hex__link: var(--hex__brand-alt);
+	--hex__link-active: var(--hex__brand-light);
 	--hex__button: var(--hex__brand-light);
 	--hex__button-hover: var(--hex__brand-medium);
 	--hex__button-disabled: var(--hex__brand-grey);

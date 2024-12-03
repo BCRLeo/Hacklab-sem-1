@@ -32,3 +32,7 @@
     filter: sepia(100%) saturate(150%) hue-rotate(90deg);
     -webkit-filter: sepia(100%) saturate(150%) hue-rotate(90deg);
 }
+
+.popover-container.upload-popover {
+    margin: auto;
+}

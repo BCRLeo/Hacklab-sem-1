@@ -18,3 +18,7 @@
     border: #b8a6b7 2px solid;
     border-radius: 0.5rem;
 }
+
+.field-input.invalid {
+    border: solid red 0.1rem;
+}
