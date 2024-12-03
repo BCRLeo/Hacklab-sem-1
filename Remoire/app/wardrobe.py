@@ -221,6 +221,22 @@ def create_outfit():
         return jsonify({"success": True, "message": "Successfully created outfit"}), 200
     return jsonify({"success": False, "message": "Failed to create outfit"})
 
+@wardrobe.route("/api/wardrobe/outfits/<int:outfit_id>", methods=["DELETE"])
+def delete_outfit(outfit_id: int):
+    if not current_user.is_authenticated:
+        return jsonify({"success": False, "message": "User not logged in", "data": None}), 401
+    
+    outfit = Outfit.query.get(outfit_id)
+    if not outfit:
+        return jsonify({"success": False, "message": f"Outfit #{outfit_id} not found", "data": None}), 404
+    
+    if outfit.user_id != current_user.id:
+        return jsonify({"success": False, "message": "Outfits from other users cannot be deleted", "data": None}), 403
+
+    db.session.delete(outfit)
+    db.session.commit()
+    return jsonify({"success": True, "message": f"Outfit #{outfit_id} deleted successfully", "data": None}), 200
+
 @wardrobe.route("/api/wardrobe/<username>/outfits", methods=["GET"])
 def get_user_outfit_ids(username: str):
     user = User.query.filter_by(UserName=username).first()

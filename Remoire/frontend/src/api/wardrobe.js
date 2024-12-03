@@ -137,7 +137,7 @@ async function getClothingImageUrls(itemType) {
 }
 
 
-export async function postOutfit(outfit) {
+export async function createOutfit(outfit) {
     if (Object.keys(outfit).length === 0) {
         console.log("Must select at least one item");
         return false;
@@ -170,9 +170,26 @@ export async function postOutfit(outfit) {
     return false;
 }
 
+export async function deleteOutfit(outfit_id) {
+    try {
+        const response = await fetch(`/api/wardrobe/outfits/${outfit_id}`, { method: "DELETE" });
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+            console.error(data.message);
+            return false;
+        }
+
+        return true;
+    } catch (error) {
+        console.error(`Error while deleting outfit #${outfit_id}: `, error);
+    }
+    return false;
+}
+
 export async function getUserOutfitIds(username) {
     try {
-        const response = await fetch(`/api/wardrobe/${username}/outfits`, {method: "GET"});
+        const response = await fetch(`/api/wardrobe/${username}/outfits`, { method: "GET" });
         const data = await response.json();
 
         if (!response.ok || !data.success) {

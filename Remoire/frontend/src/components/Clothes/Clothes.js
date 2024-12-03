@@ -1,6 +1,6 @@
 import "./Clothes.css";
 
-import { getClothingImageEndpoints, getUserClothingImageEndpoints, postOutfit, uploadClothingImages } from "../../api/wardrobe";
+import { getClothingImageEndpoints, getUserClothingImageEndpoints, createOutfit, uploadClothingImages } from "../../api/wardrobe";
 
 import Bar from "../../components/Bar/Bar";
 import Button from "../../components/Button/Button";
@@ -97,7 +97,7 @@ export default function Clothes() {
         }
 
         if (isChoosingOutfit) {
-            if (await postOutfit(newOutfit)) {
+            if (await createOutfit(newOutfit)) {
                 console.log("Successfully created outfit");
             }
         }
