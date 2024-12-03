@@ -29,48 +29,44 @@ def get_js_and_css():
         'css': css_file if css_file else 'main.css',  # Default fallback
     }
 
-
-
 # Register the function globally in all templates
 @main.context_processor
 def inject_js_and_css():
     return dict(get_js_and_css=get_js_and_css)
 
-
-@main.route('/')
-def index_page():
-    return render_template('index.html')
-
-@main.route('/home')
-def home_page():
-    return render_template('index.html')
-
-@main.route("/wardrobe")
-def wardrobe_page():
+# Catch-all route to serve index.html for any other route
+@main.route('/', defaults={'path': ''})
+@main.route('/<path:path>')
+def serve_react_app(path):
     return render_template("index.html")
 
-@main.route("/login")
-def login_page():
-    return render_template("index.html")
+"""
+API ROUTES
+profile
+"/api/profile/<username>", methods=["GET"]
+'/api/profile/<username>/picture', methods=['POST']
+'/api/profile/<username>/picture', methods=['POST']
 
-@main.route("/profile")
-def profile_page():
-    return render_template("index.html")
+wardrobe
+"/api/wardrobe/items", methods=["POST"]
+'/api/wardrobe/items/<item_type>', methods=['GET']
+"/api/wardrobe/items/<item_type>", methods=["DELETE"]
+"/api/wardrobe/outfits", methods = ["POST"]
+"/api/wardrobe/outfits", methods=["GET"]
+"/api/wardrobe/outfits/<param>", methods=["GET"]
 
-@main.route("/signup")
-def signup_page():
-    return render_template("index.html")
-
-@main.route("/feed")
-def feed_page():
-    return render_template("index.html")
-
-@main.route("/search")
-def search_page():
-    return render_template("index.html")
+feed
+"/api/posts/<param>", methods=["GET"]
+"/api/posts/<param>/author", methods=["GET"]
+"/api/feed", methods=["GET"]
+'/api/posts/<int:post_id>/likes', methods=['GET']
+"/api/posts/<int:post_id>/liked", methods=["GET"]
+"/api/posts/<int:post_id>/likes", methods=["PUT"]
+"/api/posts/<int:post_id>/likes", methods=["DELETE"]
+"""
 
 
-@main.route("/api/wardrobe/items", methods=["POST"])
+""" @main.route("/api/wardrobe/items", methods=["POST"])
 def upload_wardrobe_item():
     if not current_user.is_authenticated:
         return jsonify({"success": False, "message": "User not logged in"}), 401
@@ -212,7 +208,7 @@ def delete_wardrobe_item(item_type):
             db.session.commit()
             return jsonify({"success": True, "message": f"{item_type.capitalize()} deleted successfully"}), 200
     
-    return jsonify({"success": False, "message": "You do not have permission to delete this item"}), 403
+    return jsonify({"success": False, "message": "You do not have permission to delete this item"}), 403 """
 
 
 @main.route("/api/posts", methods=["POST"])
@@ -254,44 +250,6 @@ def upload_feed_post():
         
     return jsonify({"success": True, "message": "File successfully uploaded"}), 200
 
-@main.route("/api/posts", methods=["GET"])
-def get_feed_posts():
-    if not current_user.is_authenticated:
-        return jsonify({"success": False, "message": "User not logged in"}), 401
-    user_id = current_user.id
-
-    posts = get_posts(user_id)
-
-    ids = [post.id for post in posts]
-    images = [post.image_data for post in posts]
-
-    id = request.args.get("id")
-    if id:
-        id = int(id)
-        if id not in ids:
-            return jsonify({"success": False, "message": "Invalid post ID"}), 404
-        
-        index = ids.index(id)
-        mimetypes = [item.image_mimetype for item in posts]
-        image_bytes = images[index]
-        image_io = io.BytesIO(image_bytes)
-        return send_file(image_io, mimetype = mimetypes[index])
-
-    posts_metadata = [
-    {
-        "id": post.id,
-        "url": f"/api/posts?id={post.id}",
-        "caption": post.description,
-        "timestamp": post.timestamp,
-        "outfit": post.outfit_id,
-        "username": post.author.UserName,
-        "likes": post.like_count(),
-        "is_liked": Like.query.filter_by(user_id=current_user.id, post_id=post.id).first() is not None
-    }
-    for post in posts
-]
-    return jsonify(posts_metadata)
-
 @main.route("/api/search", methods=["POST"])
 def search_users():
 
@@ -310,60 +268,8 @@ def search_users():
     
     userNames = [user.UserName for user in results]
 
-    return jsonify({"success" : True, "message" : "Bravo!", "userNames" : userNames})
-
-@main.route('/view_wardrobe/<item_type>', methods=['GET'])
-def view_wardrobe(item_type):
-
-    pass
-@main.route("/api/create_outfit", methods = ["POST"])
-def create_outfit():
-    data = request.get_json()
-    jacket = models.Jacket.query.get(data.get('jacket', [])) if data.get('jacket', []) else None
-    shirt = models.Shirt.query.get(data.get('shirt', [])) if data.get('shirt', []) else None
-    trouser = models.Trouser.query.get(data.get('trousers', [])) if data.get('trousers', []) else None
-    shoe = models.Shoe.query.get(data.get('shoes', []) ) if data.get('shoes', [])  else None  
-    flag = models.Outfit.create_outfit(current_user,jacket, shirt, trouser, shoe )
-
-    if flag:
-        return jsonify({"success":True }), 200
-@main.route('/api/posts/<int:post_id>/like', methods=['GET'])
-def get_likes(post_id):
-    # Query the post by ID
-    post = Post.query.get(post_id)
-    if post is not None:
-        # Use the like_count method defined in your Post model
-        like_count = post.like_count()
-        print(like_count)
-        return jsonify({'success': True, 'like_count': like_count}), 200
-    else:
-        return jsonify({'success': False, 'message': 'Post not found'}), 404
-
-@main.route("/api/posts/<int:post_id>/like", methods=["POST"])
-@login_required
-def like_post(post_id):
-    post = Post.query.get_or_404(post_id)
-    existing_like = Like.query.filter_by(user_id=current_user.id, post_id=post_id).first()
+    return jsonify({"success" : True, "message" : "Search was successful", "userNames" : userNames})
     
-    if existing_like:
-        # Unlike the post
-        db.session.delete(existing_like)
-        db.session.commit()
-        return jsonify({
-            "success": True, 
-            "action": "unliked", 
-            "like_count": post.like_count()  # Get current like count after unlike
-        })
-    else:
-        # Like the post
-        like = Like(user_id=current_user.id, post_id=post_id)
-        db.session.add(like)
-        db.session.commit()
-        return jsonify({
-            "success": True, 
-            "action": "liked", 
-            "like_count": post.like_count()  # Get current like count after like
-        })
 ##this is just a quick function to return the favorited items, chnage it as you need
 # @app.route('/wardrobe/favorites')
 # def favorite_items():

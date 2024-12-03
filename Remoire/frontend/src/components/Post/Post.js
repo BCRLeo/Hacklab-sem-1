@@ -1,86 +1,64 @@
-import React, { useState, useEffect } from 'react';
 import "./Post.css";
 
-export default function Post({ 
-  postId, 
-  className, 
-  image, 
-  username, 
-  likeCount,  
-  initialIsLiked = false 
-}) {
-  const [likes, setLikes] = useState(likeCount);  
-  const [isLiked, setIsLiked] = useState(initialIsLiked);
+import { getPostAuthorUsername, getPostImageUrl } from "../../api/feed";
+import { getProfilePictureUrl } from "../../api/profile";
 
-  useEffect(() => {
-    const fetchLikes = async () => {
-      try {
-        const response = await fetch(`/api/posts/${postId}/like`);
-        if (!response.ok) {
-          throw new Error('Failed to fetch likes');
-        }
-        const data = await response.json();
-        if (data.success) {
-          setLikes(data.like_count); // Set likes from server response
-        }
-      } catch (error) {
-        console.error('Error fetching likes:', error);
-      }
-    };
+import Icon from "../Icon/Icon";
+import Likes from "../Likes/Likes";
 
-    fetchLikes();
-  }, [postId]);
+import React, { useState, useEffect } from 'react';
 
+export default function Post({ postId, className = "" }) {
+    const [username, setUsername] = useState(null);
+    const [imageUrl, setImageUrl] = useState(null);
+    const [profilePictureUrl, setProfilePictureUrl] = useState(null);
 
+    useEffect(() => {
+        (async () => {
+            const data = await getPostAuthorUsername(postId);
+            if (data === null) {
+                return;
+            }
 
-  const handleLike = async () => {
-      try {
-          const response = await fetch(`/api/posts/${postId}/like`, {
-              method: 'POST'
-          });
-          
-          if (!response.ok) {
-              throw new Error('Failed to like/unlike post');
-          }
-          
-          const data = await response.json();
+            setUsername(data);
+        })();
 
-          if (data.success) {
-              setIsLiked(data.action === 'liked');
-              setLikes(data.like_count);  
-          }
-      } catch (error) {
-          console.error('Error liking post:', error);
-      }
-  };
+        (async () => {
+            const data = await getPostImageUrl(postId);
+            if (data === null) {
+                return;
+            }
 
-  useEffect(() => {
-    console.log("Initial likeCount:", likeCount);
-    setLikes(likeCount);
-  }, [likeCount]);
+            setImageUrl(data);
+        })();
+    }, []);
+    
+    useEffect(() => {
+        (async () => {
+            if (!username) {
+                return;
+            }
+            const data = await getProfilePictureUrl(username);
+            if (data === null) {
+                return;
+            }
 
-  console.log("Current likes:", likes);
+            setProfilePictureUrl(data);
+        })();
+    }, [username]);
 
-  return (
-       <div className={`post ${className}`}>
-          <div id={`post-${postId}`} className="post-container">
-                <span className="post-username">
-                    <img src={image} className="profile-picture" alt={`${username}'s profile`}/>
-                    {username}
+    return (
+        <div className={`post ${className}`}>
+            <div id={`post-${postId}`} className="post-container">
+                <span className="post-user-info">
+                    {profilePictureUrl ? <img src={profilePictureUrl} className="post-profile-picture" alt={`${username}'s profile`} /> : <Icon className="profile-icon" name="accountIcon" size="sm" />}
+                    <h4 className="post-username">{username}</h4>
                 </span>
-                <img src={image} className="post-image" alt="Post"/> 
-              <span className="post-likes-container">
-                  <button
-                      className={`like-button ${isLiked ? 'liked' : ''}`}
-                      onClick={handleLike}
-                  >
-                      {isLiked ? '❤️' : '🤍'}
-                  </button>
-                  <div className="post-likes">
-                      {likes} likes
-                  </div>
-              </span>
-          </div>
-      </div>
-  );
+                <img src={imageUrl} className="post-image" alt="Post" />
+                <Likes postId={postId} />
+            </div>
+        </div>
+    );
 }
+
+

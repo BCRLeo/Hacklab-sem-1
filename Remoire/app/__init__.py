@@ -42,5 +42,20 @@ def create_app():
     from .main import main as main_blueprint
     app.register_blueprint(main_blueprint)
 
+    from .profile import profile as profile_blueprint
+    app.register_blueprint(profile_blueprint)
+
+    from .feed import feed as feed_blueprint
+    app.register_blueprint(feed_blueprint)
+
+    from .wardrobe import wardrobe as wardrobe_blueprint
+    app.register_blueprint(wardrobe_blueprint)
+
+    from .social import social as social_blueprint
+    app.register_blueprint(social_blueprint)
+
+    from .search import search as search_blueprint
+    app.register_blueprint(search_blueprint)
+
     return app
 

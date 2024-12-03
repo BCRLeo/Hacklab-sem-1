@@ -10,6 +10,7 @@
     margin: auto;
     padding: 1rem 1.5rem;
     width: max-content;
+    color: var(--hex__text-contrast);
 }
 
 .nav-link:link {  

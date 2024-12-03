@@ -4,14 +4,15 @@ from . import db
 from .models import Post, User, Like
 import random
 
+
 def get_posts(user_id, exclude_ids=None, limit=20):
     if exclude_ids is None:
-        exclude_ids = []
+        exclude_ids = [post.id for post in User.query.get(user_id).posts]
 
     # Query posts, excluding already fetched ones
     random_posts = (
         db.session.query(Post)
-        .filter(~Post.id.in_(exclude_ids))  # Exclude posts with IDs in `exclude_ids`
+        .filter(~Post.id.in_(exclude_ids))  # Exclude user's posts
         .order_by(func.random())
         .limit(limit)
         .all()

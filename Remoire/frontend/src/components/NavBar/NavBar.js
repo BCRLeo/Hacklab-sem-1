@@ -35,37 +35,37 @@ export default function Navbar() {
 		}
 	};
 
+	if (user && user !== -1) {
+		return (
+			<nav className="navbar">
+				<ul className="navbar-nav">
+					<NavItem><Icon name="logoIcon" /></NavItem>
+					<NavItem href="/feed" text="Explore" activeClassName="active" />
+					<NavItem className="search">
+						<SearchBar></SearchBar>
+					</NavItem>
+					<NavItem href="/wardrobe" text="Wardrobe" activeClassName="active" />
+					<NavItem>
+						<Dropdown renderToggle={(dropdownProps) => <Link to={`/${user.username}`}><Icon name="accountIcon" {...dropdownProps} /></Link>}>
+							<NavItem text="Log out" onClick={handleLogout} />
+						</Dropdown>
+					</NavItem>
+				</ul>
+			</nav>
+		);
+	}
+
 	return (
 		<nav className="navbar">
 			<ul className="navbar-nav">
 				<NavItem><Icon name="logoIcon" /></NavItem>
-				<NavItem href="/" text="Home" className={location.pathname === "/" || location.pathname === "/home" ? "active" : ""} />
-				<NavItem href="/feed" text="Feed" className={location.pathname === "/feed" ? "active" : ""} />
+				{/* <NavItem href="/" text="Home" activeClassName="active" /> */}
+				<NavItem href="/feed" text="Explore" activeClassName="active" />
 				<NavItem className="search">
 					<SearchBar></SearchBar>
 				</NavItem>
-				{user && user !== -1 ? 
-					<>
-						<NavItem href="/wardrobe" text="Wardrobe" className={location.pathname === "/wardrobe" ? "active" : ""} />
-					</>
-					: 
-					<>
-					</>
-				}
-				<NavItem>
-					<Dropdown renderToggle={(dropdownProps) => <Link to="/profile"><Icon name="accountIcon" {...dropdownProps} /></Link>}>
-					{user && user !== -1 ? 
-					<>
-						<NavItem text="Log out" onClick={handleLogout} />
-					</>
-					: 
-					<>
-						<NavItem href="/login" text="Log in" className={location.pathname === "/login" ? "active" : ""} />
-						<NavItem href="/signup" text="Sign up" className={location.pathname === "/signup" ? "active" : ""} />
-					</>
-				}
-					</Dropdown>
-				</NavItem>
+				<NavItem href="/login" text="Log in" className={location.pathname === "/login" ? "active" : ""} />
+				<NavItem href="/signup" text="Sign up" className={location.pathname === "/signup" ? "active" : ""} />
 			</ul>
 		</nav>
 	);

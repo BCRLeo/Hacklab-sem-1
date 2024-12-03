@@ -1,6 +1,7 @@
 :root {
 	--hex__brand-main: #660C42;
 	--hex__brand-alt: #A01367;
+	--hex__brand-off-white: #e0d8de;
 	--hex__brand-light: #C286B7;
 	--hex__brand-medium: #916288;
 	--hex__brand-dark: #3F1B64;
@@ -16,8 +17,10 @@
 	--hex__text-contrast: var(--hex__brand-white);
 	--hex__button: var(--hex__brand-light);
 	--hex__button-hover: var(--hex__brand-medium);
+	--hex__button-disabled: var(--hex__brand-grey);
 	--hex__drop-shadow: var(--hex__brand-grey);
 	--hex__icon: var(--hex__brand-white);
+	--hex__inset: var(--hex__brand-off-white);
 
 	--font-size__base: 3vw;
 	--font-size__h1: clamp(4rem, var(--font-size__base) * 8, 8rem);
@@ -92,10 +95,6 @@ h1, h2, h3, h4, h5, h6 {
 
 p {
 	text-align: center;
-}
-
-a {
-	color: var(--hex__text-contrast);
 }
 
 button {

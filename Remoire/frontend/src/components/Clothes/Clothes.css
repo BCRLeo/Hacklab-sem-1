@@ -1,0 +1,34 @@
+.clothes-carousel-container {
+    width: fit-content;
+
+    margin: auto;
+    padding: 2rem;
+    background-color: var(--hex__inset);
+    border-radius: 2rem;
+}
+
+#upload-status {
+    margin: 1rem auto;
+    text-align: center;
+}
+
+.clothes-carousel {
+    position: relative;
+    width: min(50dvw, 950px);
+    height: clamp(75px, 15dvh, 200px);
+}
+
+.clothes-carousel .delete {
+    filter: sepia(100%) saturate(800%) hue-rotate(-50deg);
+    -webkit-filter: sepia(100%) saturate(800%) hue-rotate(-50deg);
+    cursor: pointer;
+}
+
+.clothes-carousel .choose {
+    cursor: pointer;
+}
+
+.clothes-carousel .outfit {
+    filter: sepia(100%) saturate(150%) hue-rotate(90deg);
+    -webkit-filter: sepia(100%) saturate(150%) hue-rotate(90deg);
+}

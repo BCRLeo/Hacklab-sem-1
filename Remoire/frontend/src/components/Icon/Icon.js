@@ -3,10 +3,16 @@ import "./Icon.css"
 import { ReactComponent as AccountIcon } from "../../assets/icons/icon__account-circle.svg";
 import { ReactComponent as ArrowLeftIcon } from "../../assets/icons/icon__arrow-left.svg";
 import { ReactComponent as ArrowRightIcon } from "../../assets/icons/icon__arrow-right.svg";
+import { ReactComponent as BriefcaseIcon } from "../../assets/icons/icon__briefcase.svg";
 import { ReactComponent as CheckIcon } from "../../assets/icons/icon__check.svg";
 import { ReactComponent as EditIcon } from "../../assets/icons/icon__edit.svg";
+import { ReactComponent as ErrorIcon } from "../../assets/icons/icon__error.svg";
+import { ReactComponent as HangerIcon } from "../../assets/icons/icon__hanger.svg";
+import { ReactComponent as HeartFilledIcon } from "../../assets/icons/icon__heart-filled.svg";
+import { ReactComponent as HeartOutlinedIcon } from "../../assets/icons/icon__heart-outlined.svg";
 import { ReactComponent as LogoIcon } from "../../assets/icons/icon__logo.svg";
 import { ReactComponent as SearchIcon } from "../../assets/icons/icon__search.svg";
+import { ReactComponent as UploadIcon } from "../../assets/icons/icon__upload.svg";
 
 /**
  * The Icon component renders an SVG icon as a React component based on the given name prop.
@@ -16,7 +22,7 @@ import { ReactComponent as SearchIcon } from "../../assets/icons/icon__search.sv
  * SVG properties can be passed and will be spread onto the rendered SVG component.
  *
  * @param {Object} props - The props object for the MyIcon component.
- * @param {'accountIcon' | 'arrowLeftIcon' | 'arrowRightIcon' | "checkIcon" | "editIcon" | "logoIcon" | 'searchIcon'} props.name - The name of the icon to render.
+ * @param {'accountIcon' | 'arrowLeftIcon' | 'arrowRightIcon' | "briefcaseIcon" | "checkIcon" | "editIcon" | "errorIcon" | "hangerIcon" | "heartFilledIcon" | "heartOutlinedIcon" | "logoIcon" | 'searchIcon' | "uploadIcon"} props.name - The name of the icon to render.
  * @param {"xs" | "sm" | "md" | "lg" | "xl" | "xll"} props.size - The size of the icon to render. 
  * @param {Object} [props.svgProps] - Any additional props to be spread to the SVG component (e.g., width, height, className, etc.).
  * @returns {JSX.Element|null} - Returns the corresponding SVG component for the specified icon name, or `null` if the name is invalid.
@@ -31,15 +37,22 @@ import { ReactComponent as SearchIcon } from "../../assets/icons/icon__search.sv
  */
 export default function Icon(props) {
     const { name, size = "sm", className, ...svgProps } = props;
+    const fullClassName = `icon ${size}` + (className ? ` ${className}` : "");
 
     const Icons = {
-        accountIcon: <AccountIcon className={`icon ${size} ${className ? className : ""}`} {...svgProps} />,
-        arrowLeftIcon: <ArrowLeftIcon className={`icon ${size} ${className ? className : ""}`} {...svgProps} />,
-        arrowRightIcon: <ArrowRightIcon className={`icon ${size} ${className ? className : ""}`} {...svgProps} />,
-        checkIcon: <CheckIcon className={`icon ${size} ${className ? className : ""}`} {...svgProps} />,
-        editIcon: <EditIcon className={`icon ${size} ${className ? className : ""}`} {...svgProps} />,
-        logoIcon: <LogoIcon className={`icon ${size} ${className ? className : ""}`} {...svgProps} />,
-        searchIcon: <SearchIcon className={`icon ${size} ${className ? className : ""}`} {...svgProps} />,
+        accountIcon: <AccountIcon className={fullClassName} {...svgProps} />,
+        arrowLeftIcon: <ArrowLeftIcon className={fullClassName} {...svgProps} />,
+        arrowRightIcon: <ArrowRightIcon className={fullClassName} {...svgProps} />,
+        briefcaseIcon: <BriefcaseIcon className={fullClassName} {...svgProps} />,
+        checkIcon: <CheckIcon className={fullClassName} {...svgProps} />,
+        editIcon: <EditIcon className={fullClassName} {...svgProps} />,
+        errorIcon: <ErrorIcon className={fullClassName} {...svgProps} />,
+        hangerIcon: <HangerIcon className={fullClassName} {...svgProps} />,
+        heartFilledIcon: <HeartFilledIcon className={fullClassName} {...svgProps} />,
+        heartOutlinedIcon: <HeartOutlinedIcon className={fullClassName} {...svgProps} />,
+        logoIcon: <LogoIcon className={fullClassName} {...svgProps} />,
+        searchIcon: <SearchIcon className={fullClassName} {...svgProps} />,
+        uploadIcon: <UploadIcon className={fullClassName} {...svgProps} />
     };
 
     return Icons[name] || null;

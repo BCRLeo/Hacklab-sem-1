@@ -21,11 +21,11 @@
     transition-duration: 0.15s;
 }
 
-.carouselbutton:hover {
+.carouselbutton:hover:not(:disabled) {
     background-color: var(--hex__button-hover);
 }
 
-.carouselbutton:active {
+.carouselbutton:active:not(:disabled) {
     transform: translateY(-50%) scale(0.9);
 }
 

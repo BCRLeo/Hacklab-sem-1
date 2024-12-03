@@ -1,0 +1,15 @@
+.outfits {
+    display: flex;
+    width: min(50dvw, 950px);
+
+    margin: auto;
+    padding: 2rem;
+
+    background-color: var(--hex__inset);
+    border-radius: 2rem;
+
+    overflow-x: scroll;
+    scroll-snap-type: x mandatory;
+    overscroll-behavior-x: contain;
+    gap: 2rem;
+}

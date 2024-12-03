@@ -17,7 +17,7 @@
     gap: 0.5rem;
 }
 
-.active .nav-link {
+.nav-link.active {
     background-color: var(--hex__background);
     color: var(--hex__text);
     border-radius: 1.5rem;
