@@ -1,8 +1,11 @@
+import "./LogInPage.css";
+
+import Button from "../../components/Button/Button";
 import Card from "../../components/Card/Card";
 import Field from "../../components/Field/Field";
 import Header from "../../components/Header/Header";
 
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useContext, useState } from "react";
 import { UserContext } from "../../UserContext";
 
@@ -10,24 +13,38 @@ export default function LogInPage() {
     const navigate = useNavigate();
     const { user, setUser } = useContext(UserContext);
 
-    const [email, setEmail] = useState("");
+    const [login, setLogin] = useState("");
     const [password, setPassword] = useState("");
+    const [isInvalid, setIsInvalid] = useState({login: false, password: false});
 
-    const handleEmailInput = (event) => {
-        setEmail(event.target.value);
+    const [loginStatus, setLoginStatus] = useState("");
+
+    const handleLoginInput = (event) => {
+        if (isInvalid.login) {
+            setIsInvalid(isInvalid => ({...isInvalid, login: false}));
+        }
+
+        setLogin(event.target.value);
     };
 
     const handlePasswordInput = (event) => {
+        if (isInvalid.password) {
+            setIsInvalid(isInvalid => ({...isInvalid, password: false}));
+        }
+
         setPassword(event.target.value);
     };
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+        
+        setIsInvalid({login: !Boolean(login), password: !Boolean(password)})
+
         try {
             const response = await fetch("/api/login", {
                 method: "POST",
                 body: JSON.stringify({
-                    login: email,
+                    login: login,
                     password: password
                 }),
                 headers: {
@@ -41,9 +58,11 @@ export default function LogInPage() {
                 setUser(data.user);
                 navigate("/wardrobe");
             } else {
+                setLoginStatus(data.message);
                 console.log("Login failed: ", data.message);
             }
         } catch (error) {
+            setLoginStatus(`Error during login: ${error}`);
             console.error("Error during login: ", error);
         }
     };
@@ -51,13 +70,15 @@ export default function LogInPage() {
     return (
         <>
             <h1>Welcome to Remoire</h1>
-            <Card id="card-login">
+            <Card className="login">
                 <h3>Card!</h3>
                 <form onSubmit={handleSubmit} method="post" className="login">
-                    <Field label="Email" onChange={handleEmailInput} type="text" name="login" placeholder="Email" />
-                    <Field label="Password" onChange={handlePasswordInput} type="password" name="password" placeholder="Password" />
-                    <button type="submit">Log in</button>
+                    <Field className={isInvalid.login ? "invalid" : ""} label="Email/username" onChange={handleLoginInput} type="text" name="login" placeholder="Email/username" aria-required />
+                    <Field className={isInvalid.password ? "invalid" : ""} label="Password" onChange={handlePasswordInput} type="password" name="password" placeholder="Password" aria-required />
+                    <Button text="Log in" type="submit" />
                 </form>
+                <p>{loginStatus}</p>
+                <NavLink to="/signup" className="nav-link no-account">Don't have an account?</NavLink>
             </Card>
         </>
     );

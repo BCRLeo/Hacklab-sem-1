@@ -21,3 +21,7 @@
 .bar-item {
     margin: auto;
 }
+
+.bar-item * {
+    margin: auto;
+}

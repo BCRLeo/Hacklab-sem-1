@@ -8,6 +8,7 @@ import { useState, useRef, useEffect } from "react";
  * Popover component that displays a toggleable popover menu.
  *
  * @component
+ * @param {string} className - Class name.
  * @param {Function} renderToggle - A function that renders the toggle button for the popover. This function receives an object containing the className and onClick handler for the button.
  * @param {boolean} isToggled - An optional boolean that replaces `isOpen` if `onToggle` is defined.
  * @param {Function} onToggle - An optional function that is called when the popover is toggled.
@@ -28,13 +29,13 @@ import { useState, useRef, useEffect } from "react";
  *     <div>Popover Content</div>
  * </Popover>
  */
-export default function Popover({ renderToggle, isToggled, onToggle, children }) {
+export default function Popover({ className = "", renderToggle, isToggled, onToggle, children }) {
     const [isOpen, setIsOpen] = useState(false);
     const newRef = useRef(null);
 
     const handleClickOutside = (event) => {
         if (newRef.current && !newRef.current.contains(event.target)) {
-            if (onToggle !== undefined) {
+            if (onToggle !== undefined && isOpen) {
                 onToggle();
             }
 
@@ -62,7 +63,7 @@ export default function Popover({ renderToggle, isToggled, onToggle, children })
     };
 
     return (
-        <div className="popover-container" ref={newRef}>
+        <div className={`popover-container ${className}`} ref={newRef}>
             {renderToggle({className: "popover-toggle", onClick: togglePopover})}
             {(isToggled !== undefined && onToggle !== undefined && isToggled || isOpen) && (
                 <Card className="popover-content">

@@ -221,6 +221,7 @@ export default function Clothes() {
         <>
             {!username && <Bar orientation="horizontal">
                 <Popover
+                    className="upload-popover"
                     renderToggle={(dropdownProps) => <Button text="Upload" {...dropdownProps}><Icon name="uploadIcon" /></Button>}
                     onToggle={() => setUploadStatus("")}
                 >

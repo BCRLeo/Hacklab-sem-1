@@ -1,14 +1,14 @@
-.card.registration {
+.card.login {
     width: min(50dvw, 400px);
 }
 
-.nav-link.account {
+.nav-link.no-account {
     display: block;
     text-align: center;
     color: var(--hex__link);
     text-decoration: underline;
 }
 
-.nav-link.account:active {
+.nav-link.no-account:active {
     color: var(--hex__link-active);
 }

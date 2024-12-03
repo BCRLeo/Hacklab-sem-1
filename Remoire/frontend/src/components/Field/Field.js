@@ -1,7 +1,7 @@
 import "./Field.css"
 
 export default function Field(props) {
-    const { label, children, ...rest } = props;
+    const { className="", label, children, ...rest } = props;
 
     if (children) {
         return (
@@ -15,7 +15,7 @@ export default function Field(props) {
     return (
         <div className="field">
             {label && <h4 className="field-label">{label}</h4>}
-            <input className="field-input" {...rest} />
+            <input className={`field-input ${className}`} {...rest} />
         </div>
     );
 }

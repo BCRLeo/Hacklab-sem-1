@@ -4,7 +4,7 @@ import Card from "../../components/Card/Card";
 import Field from "../../components/Field/Field";
 import Header from "../../components/Header/Header";
 
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useState, useContext } from "react";
 import { UserContext } from "../../UserContext";
 
@@ -65,7 +65,7 @@ export default function SignUpPage() {
     return (
         <>
             <h1>Create your Remoire account</h1>
-            <Card id="card-registration">
+            <Card className="registration">
                 <h3>Card!</h3>
                 <form onSubmit={handleSubmit} method="post" class="registration">
                     <Field label="Username" onChange={handleUsernameInput} type="text" name="username" placeholder="MarioRossi88" />
@@ -74,6 +74,7 @@ export default function SignUpPage() {
                     <Field label="Birthday" onChange={handleBirthdayInput} type="date" name="birthday" />
                     <button type="submit">Sign up</button>
                 </form>
+                <NavLink to="/login" className="nav-link account">Already have an account?</NavLink>
             </Card>
         </>
     );

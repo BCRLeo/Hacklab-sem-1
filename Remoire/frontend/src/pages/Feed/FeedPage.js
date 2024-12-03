@@ -109,17 +109,11 @@ export default function FeedPage() {
 
     return (
         <>
-            <h1>Feed</h1>
+            <h1>Explore</h1>
             {user && user!== -1 && (
                 <Popover
                     renderToggle={(dropdownProps) => <Button text="Create post" {...dropdownProps} />}
-                    isToggled={isCreatingPost}
-                    onToggle={() => {
-                        if (isCreatingPost) {
-                            setIsCreatingPost(isCreatingPost => !isCreatingPost);
-                            setUploadStatus("");
-                        }
-                    }}
+                    onToggle={() => setUploadStatus("")}
                 >
                     <form onSubmit={handleSubmit} method="post" className="upload">
                         <Field label="Upload item" onChange={handleFileChange} type="file" name="item" disabled={isUploading} />
