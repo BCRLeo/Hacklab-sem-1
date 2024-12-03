@@ -108,7 +108,7 @@ export default function FeedPage() {
     return (
         <>
             <h1>Feed</h1>
-            <Popover renderToggle={(dropdownProps) => <Button {...dropdownProps}>Create post</Button>}>
+            {user && user!== -1 && <Popover renderToggle={(dropdownProps) => <Button {...dropdownProps}>Create post</Button>}>
                 <form onSubmit={handleSubmit} method="post" className="upload">
                     <Field label="Upload item" onChange={handleFileChange} type="file" name="item" />
                     {!isUploading ?
@@ -122,7 +122,8 @@ export default function FeedPage() {
                     }
                 </form>
                 <p id="upload-status">{uploadStatus}</p>
-            </Popover>
+            </Popover>}
+            
             <div className="feed-container">
                 {columns}
             </div>
