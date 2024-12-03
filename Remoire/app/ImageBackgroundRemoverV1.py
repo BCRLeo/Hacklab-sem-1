@@ -17,9 +17,9 @@ def remove_background_path(input_path, output_path):
 
 
 
-def remove_background_file(img):
+def remove_background_file(img, session):
     try:
-        output = remove(img, force_return_bytes=True)
+        ooutput = remove(img, session=session, force_return_bytes=True)
         # Ensure the image is in RGBA mode (to have an alpha channel)
         #output = output.convert("RGBA")
         output = Image.open(io.BytesIO(output)).convert("RGBA")
@@ -42,6 +42,7 @@ def remove_background_file(img):
 
     except Exception as e:
         print(f"Error during background removal: {e}")
+        return None
 
 
 
