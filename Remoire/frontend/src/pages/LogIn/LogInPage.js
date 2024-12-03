@@ -21,7 +21,7 @@ export default function LogInPage() {
 
     const handleLoginInput = (event) => {
         if (isInvalid.login) {
-            setIsInvalid(isInvalid => ({...isInvalid, login: false}));
+            setIsInvalid(isInvalid => ({login: false, password: false}));
         }
 
         setLogin(event.target.value);
@@ -29,7 +29,7 @@ export default function LogInPage() {
 
     const handlePasswordInput = (event) => {
         if (isInvalid.password) {
-            setIsInvalid(isInvalid => ({...isInvalid, password: false}));
+            setIsInvalid(isInvalid => ({login: false, password: false}));
         }
 
         setPassword(event.target.value);
