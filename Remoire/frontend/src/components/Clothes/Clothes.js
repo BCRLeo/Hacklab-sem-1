@@ -277,7 +277,7 @@ export default function Clothes() {
                 ) : (
                     <ClothesCarousel
                         className="clothes-carousel"
-                        itemType="trouser"
+                        itemType="trousers"
                         imageClassName="trouser"
                         hoveredClassName={hoveredClassName}
                         clickedClassName={clickedClassName}
@@ -290,7 +290,7 @@ export default function Clothes() {
                 ) : (
                     <ClothesCarousel
                         className="clothes-carousel"
-                        itemType="shoe"
+                        itemType="shoes"
                         imageClassName="shoe"
                         hoveredClassName={hoveredClassName}
                         clickedClassName={clickedClassName}
