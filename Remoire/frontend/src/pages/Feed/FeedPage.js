@@ -115,8 +115,10 @@ export default function FeedPage() {
                     renderToggle={(dropdownProps) => <Button text="Create post" {...dropdownProps} />}
                     isToggled={isCreatingPost}
                     onToggle={() => {
-                        setIsCreatingPost(isCreatingPost => !isCreatingPost);
-                        setUploadStatus("");
+                        if (isCreatingPost) {
+                            setIsCreatingPost(isCreatingPost => !isCreatingPost);
+                            setUploadStatus("");
+                        }
                     }}
                 >
                     <form onSubmit={handleSubmit} method="post" className="upload">
