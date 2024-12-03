@@ -109,19 +109,9 @@ export default function ProfilePage() {
             ) : (
                 <Icon className="profile-icon" name="accountIcon" size="xl" />
             )}
-                {/* <Icon className="profile-icon" name="accountIcon" size="lg" /> */}
-                {/* <img
-                    className="profile-icon"
-                    src={profilePictureUrl}
-                    alt={`${profile.username}'s profile`}
-                    onError={(e) => {
-                        e.target.src = ""; // Fallback image
-                        e.target.onerror = null; // Prevent infinite loop
-                    }}
-                /> */}
             </div>
                 {/* <p>bio test test i'm so cool test test fashion whatever</p> */}
-            {user && user !== -1 && username === user.username && <Popover renderToggle={(dropdownProps) => <Button {...dropdownProps}>Upload Profile Picture</Button>}>
+            {user && user !== -1 && username === user.username && <Popover renderToggle={(dropdownProps) => <Button text="Upload Profile Picture" {...dropdownProps} />}>
                 <form
                     onSubmit={(e) => {
                         e.preventDefault();
