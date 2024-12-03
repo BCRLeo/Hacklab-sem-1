@@ -7,7 +7,6 @@ Remoire/app/__pycache__
 *.pyc
 *.pyo
 *.pyd
-README.md
 Remoire/app.db
 .node_modules/
 .Remoire/app/run.py
