@@ -27,4 +27,3 @@ class ProductionConfig(Config):
     DEBUG = False
 
 
-
