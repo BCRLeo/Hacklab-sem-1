@@ -26,7 +26,7 @@ export default function Outfit({ outfitId }) {
 
 
     return (
-        <div className="outfit">
+        <div className="outfit" data-outfit-id={outfitId}>
             {images}
         </div>
     );
