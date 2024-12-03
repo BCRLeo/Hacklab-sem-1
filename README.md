@@ -56,7 +56,7 @@ In a new terminal, enter `cd Remoire` and run
 python run.py
 ```
 Click the resulting link to open the web app.
-You will have to signup, the password needs to consist of at least 8 charachters, one upper case letter and one number, NO SPECIAL CHARACHTERS,only alpha numerical
+You will have to signup, the password needs to consist of at least 8 charachters, one upper case letter and one number one special charachter
 
 ---
 # Note
