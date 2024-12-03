@@ -120,6 +120,33 @@ def get_user_wardrobe_image_endpoints(username, item_type):
         "data": image_endpoints
     }), 200
 
+@wardrobe.route("/api/wardrobe/<username>/ids/<item_type>", methods=["GET"])
+def get_user_clothing_ids(username: str, item_type: str):
+    user = User.query.filter_by(UserName=username).first()
+    if not user:
+        return jsonify({"success": False, "message": f"User {username} not found", "data": None}), 404
+    
+    items = None
+    match item_type:
+        case "jacket":
+            items = user.wardrobe.jackets
+        case "shirt":
+            items = user.wardrobe.shirts
+        case "trousers":
+            items = user.wardrobe.trousers
+        case "shoes":
+            items = user.wardrobe.shoes
+        case _:
+            return jsonify({"success": False, "message": "Invalid item type", "data": None}), 400
+
+    ids = [item.id for item in items]
+
+    return jsonify({
+        "success": True,
+        "message": f"Successfully retrieved {item_type} image IDs",
+        "data": ids
+    }), 200
+
 @wardrobe.route("/api/wardrobe/items/<item_type>/<int:item_id>", methods=["GET"])
 def get_wardrobe_image(item_type, item_id):
     item = None
