@@ -120,7 +120,7 @@ export default function FeedPage() {
                     }}
                 >
                     <form onSubmit={handleSubmit} method="post" className="upload">
-                        <Field label="Upload item" onChange={handleFileChange} type="file" name="item" />
+                        <Field label="Upload item" onChange={handleFileChange} type="file" name="item" disabled={isUploading} />
                         <Button text={isUploading ? "Posting..." : "Post"} type="submit" className={isUploading ? "uploading" : "upload"} disabled={isUploading} />
                     </form>
                     <p id="upload-status">{uploadStatus}</p>

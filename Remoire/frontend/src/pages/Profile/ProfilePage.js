@@ -96,6 +96,29 @@ export default function ProfilePage() {
         setIsUploading(false);
     };
 
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+
+        setIsUploading(true);
+        setUploadStatus("");
+
+        if (!selectedFile) {
+            setUploadStatus("Please select a file first.");
+            setIsUploading(false);
+            return;
+        }
+
+        if (uploadProfilePicture(user.username, selectedFile)) {
+            setUploadStatus("Profile picture uploaded successfully.");
+            setSelectedFile(null);
+            event.target.reset();
+        } else {
+            setUploadStatus("Failed to upload profile picture.");
+        }
+        
+        setIsUploading(false);
+    };
+
     if (!profile) {
         return <p>{username}'s profile could not be found.</p>;
     }
@@ -117,10 +140,7 @@ export default function ProfilePage() {
                     onToggle={() => setUploadStatus("")}
                 >
                     <form
-                        onSubmit={(e) => {
-                            e.preventDefault();
-                            handleUpload();
-                        }}
+                        onSubmit={handleSubmit}
                         method="post"
                         className="upload"
                     >
@@ -129,6 +149,7 @@ export default function ProfilePage() {
                             onChange={handleFileChange}
                             type="file"
                             name="item"
+                            disabled={isUploading}
                         />
                         <Button
                             text={isUploading ? 'Uploading...' : 'Upload'}

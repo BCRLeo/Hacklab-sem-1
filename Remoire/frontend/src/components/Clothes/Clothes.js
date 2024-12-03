@@ -214,9 +214,9 @@ export default function Clothes() {
                     onToggle={() => setUploadStatus("")}
                 >
                     <form onSubmit={handleSubmit} method="post" className="upload">
-                        <Field label="Upload item" onChange={handleFileChange} type="file" name="item" accept="image/png, image/jpeg, image/webp" multiple />
+                        <Field label="Upload item" onChange={handleFileChange} type="file" name="item" accept="image/png, image/jpeg, image/webp" multiple disabled={isUploading} />
                         <Field label="Clothing category">
-                            <select name="category" onChange={handleCategoryChange}>
+                            <select name="category" onChange={handleCategoryChange} disabled={isUploading}>
                                 <option value="">Select a clothing category</option>
                                 <option value="jacket">Jacket</option>
                                 <option value="shirt">Shirt</option>
