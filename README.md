@@ -1,8 +1,11 @@
+# Live website at Remoi.re
+
 # Hacklab-sem-1 - Remoire
 
 ----
 # Setting up the project
 Instructions on *running* the project are further down, in the "Building and running the project" section
+
 *disclaimer* This code is being hosted, so to run locally, some minor changes need to be made to the code (one line needs to be commented out), I will go over it in the following section)
 Ensure that Python 3.12 is installed, as well as pip to allow you to execute "Step 0 - install python libraries".
 Then, install Node.js and React. 
@@ -23,7 +26,8 @@ and now you should have all the python libraries needed to run this project!
 
 ## Step 1 - setting up to run locally
 
-run the __init__db.py file to innitialise a db locally, then in the run.py file uncomment the line os.env line to set your environment to development
+in the Remoire/app folder, in init_db.py and run.py uncomment the line os.env line to set your environment to development, then run the init_db.py file to innitialise a db locally 
+
 
 ## Step 2 - locating the directory
 Assuming you're in the `Hacklab-sem-1` directory, run
