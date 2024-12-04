@@ -20,7 +20,7 @@
 .nav-link.active {
     background-color: var(--hex__background);
     color: var(--hex__text);
-    border-radius: 1.5rem;
+    border-radius: 2rem;
 }
 
 .nav-item.search {

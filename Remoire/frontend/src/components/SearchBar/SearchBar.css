@@ -75,6 +75,7 @@
     border-bottom: 1px solid #f0f0f0;
     color: black;
     cursor: pointer;
+    list-style-type: none;
 }
 
 .search-results li:hover {

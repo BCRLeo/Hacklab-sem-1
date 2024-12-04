@@ -5,7 +5,6 @@ import { getOutfitImageUrls } from "../../api/wardrobe";
 import { useEffect, useState } from "react";
 
 export default function Outfit({ outfitId }) {
-    const [imageUrls, setImageUrls] = useState({});
     const [images, setImages] = useState(null);
 
     useEffect(() => {
@@ -14,11 +13,19 @@ export default function Outfit({ outfitId }) {
             if (!data) {
                 return;
             }
-            setImageUrls(data);
 
-            const imageArray = Object.keys(data).map(type => (
-                <img className="outfit-image" key={type} src={data[type]} alt={type} />
-            ));
+            let typedImages = {
+                "jacket": null,
+                "shirt": null,
+                "trouser": null,
+                "shoe": null
+            };
+
+            for (const [type, url] of Object.entries(data)) {
+                typedImages = {...typedImages, [type]: <img className="outfit-image" key={type} src={url} alt={type} data-item-type={type} />};
+            }
+            const imageArray = [typedImages.jacket, typedImages.shirt, typedImages.trouser, typedImages.shoe];
+            
             setImages(imageArray);
         })();
     }, [outfitId]);

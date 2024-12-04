@@ -1,6 +1,7 @@
 import "./Clothes.css";
 
 import { getClothingImageEndpoints, getUserClothingImageEndpoints, createOutfit, uploadClothingImages } from "../../api/wardrobe";
+import { uploadClothingImage } from "../../api/wardrobe";
 
 import Bar from "../../components/Bar/Bar";
 import Button from "../../components/Button/Button";
@@ -23,7 +24,7 @@ export default function Clothes() {
     const { username } = useParams();
     const { user, setUser } = useContext(UserContext);
     const [files, setFiles] = useState([]);
-    const [category, setCategory] = useState("");
+    const [itemType, setItemType] = useState("");
     const [uploadStatus, setUploadStatus] = useState("");
 
     const [isUploadPopoverToggled, setIsUploadPopoverToggled] = useState(false);
@@ -170,7 +171,7 @@ export default function Clothes() {
     };
 
     const handleCategoryChange = (event) => {
-        setCategory(event.target.value);
+        setItemType(event.target.value);
     };
 
     const handleSubmit = async (event) => {
@@ -187,12 +188,42 @@ export default function Clothes() {
             setUploadStatus("Uploading file...");
         }
 
+        let successfulUploads = 0;
+        let failedUploads = 0;
+
+        for (let i = 0; i < files.length; i++) {
+            const result = await uploadClothingImage(files[i], itemType);
+            if (result.success) {
+                successfulUploads++;
+                console.log(`Successfully uploaded: ${result.fileName}`);
+            } else {
+                failedUploads++;
+                console.log(`Failed to upload: ${result.fileName}`);
+            }
+
+            if (failedUploads === files.length) {
+                setUploadStatus(`Failed to upload ${files.length > 1 ? `${files.length} of ${files.length} files` : "file"}.`);
+            } else if (successfulUploads === files.length) {
+                setUploadStatus(`Successfully uploaded ${files.length === 1 ? "file" : `all ${files.length} files`}.`);
+                setIsPendingUpdate(true);
+            } else if (failedUploads) {
+                setUploadStatus(`Uploaded ${successfulUploads} of ${files.length} files. Failed to upload ${failedUploads > 1 ? `${failedUploads} files` : "1 file"}.`);
+                setIsPendingUpdate(true);
+            } else {
+                setUploadStatus(`Uploaded ${successfulUploads} of ${files.length} files.`);
+                setIsPendingUpdate(true);
+            }
+        }
+        setIsUploading(false);
+        event.target.reset();
+
+        /* concurrent image uploads which currently are not supported on our server
         (async () => {
             const data = await uploadClothingImages(files, category);
             if (data === 0) {
                 setUploadStatus(`Failed to upload ${files.length > 1 ? `${files.length} of ${files.length} files` : "file"}.`);
             } else if (data < files.length) {
-                setUploadStatus(`Uploaded ${data} of ${files.length} files. Failed to upload ${data > 1 ? `${data} files` : "1 file"}.`);
+                setUploadStatus(`Uploaded ${data} of ${files.length} files. Failed to upload ${files.length - data > 1 ? `${files.length - data} files` : "1 file"}.`);
                 setIsPendingUpdate(true);
             } else {
                 setUploadStatus(`${files.length === 1 ? "File" : `All ${files.length} files`} uploaded successfully.`);
@@ -200,7 +231,7 @@ export default function Clothes() {
             }
             setIsUploading(false);
             event.target.reset();
-        })();
+        })(); */
     };
 
     return (
@@ -214,7 +245,7 @@ export default function Clothes() {
                     <form onSubmit={handleSubmit} method="post" className="upload">
                         <Field label="Upload item" onChange={handleFileChange} type="file" name="item" accept="image/png, image/jpeg, image/webp" multiple disabled={isUploading} />
                         <Field label="Clothing category">
-                            <select name="category" onChange={handleCategoryChange} disabled={isUploading}>
+                            <select name="category" onChange={handleCategoryChange} disabled={isUploading} required>
                                 <option value="">Select a clothing category</option>
                                 <option value="jacket">Jacket</option>
                                 <option value="shirt">Shirt</option>

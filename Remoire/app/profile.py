@@ -31,7 +31,7 @@ def get_profile(username):
             "message": f"${username}'s profile successfully retreived"
             })
     else:
-        return jsonify({"success": False, "message": f"Failed to retreive ${username}'s profile"})
+        return jsonify({"success": False, "message": f"Failed to retreive {username}'s profile"})
 
 @profile.route('/api/profile/<username>/picture', methods=['POST'])
 def upload_profile_picture(username):
