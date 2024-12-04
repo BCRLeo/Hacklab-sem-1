@@ -1,12 +1,16 @@
+.outfits-carousel-container {
+    margin: auto;
+    padding: 2rem;
+    width: fit-content;
+    background-color: var(--hex__inset);
+    border-radius: 2rem;
+}
+
 .outfits {
     display: flex;
     width: min(50dvw, 950px);
 
     margin: auto;
-    padding: 2rem;
-
-    background-color: var(--hex__inset);
-    border-radius: 2rem;
 
     overflow-x: scroll;
     scroll-snap-type: x mandatory;

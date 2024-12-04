@@ -89,7 +89,12 @@ export async function getUserPosts(username) {
                 <Post key={postMetadata.id} postId={postMetadata.id} />
             );
         }));
-        return postComponents.filter(Boolean);
+
+        const filteredPosts = postComponents.filter(Boolean);
+        if (filteredPosts.length > 0) {
+            return filteredPosts;
+        }
+        return null;
     } catch (error) {
         console.error(`Error retrieving ${username}'s posts: `, error);
         return null;

@@ -58,8 +58,14 @@ export default function Outfits() {
                 <ToggleButton labels={{"before": "Edit", "after": "Done"}} content={{"before": <Icon name="editIcon" />, "after": <Icon name="checkIcon" />}} isToggled={isEditing} onClick={() => setIsEditing(isEditing => !isEditing)} />
             </Bar>}
 
-            <div className="outfits" onClick={handleOutfitClick}>
-                {outfitIds.map((outfitId) => <Outfit outfitId={outfitId} />)}
+            <div className="outfits-carousel-container">
+                {outfitIds?.length > 0 ? (
+                    <div className="outfits" onClick={handleOutfitClick}>
+                        {outfitIds.map((outfitId) => <Outfit outfitId={outfitId} />)}
+                    </div>
+                ) : (
+                    <p>No outfits available.</p>
+                )}
             </div>
         </>
     );

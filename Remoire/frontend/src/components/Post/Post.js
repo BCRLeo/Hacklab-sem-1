@@ -6,6 +6,7 @@ import { getProfilePictureUrl } from "../../api/profile";
 import Icon from "../Icon/Icon";
 import Likes from "../Likes/Likes";
 
+import { NavLink } from "react-router-dom";
 import React, { useState, useEffect } from 'react';
 
 export default function Post({ postId, className = "" }) {
@@ -50,10 +51,12 @@ export default function Post({ postId, className = "" }) {
     return (
         <div className={`post ${className}`}>
             <div id={`post-${postId}`} className="post-container">
-                <span className="post-user-info">
-                    {profilePictureUrl ? <img src={profilePictureUrl} className="post-profile-picture" alt={`${username}'s profile`} /> : <Icon className="profile-icon" name="accountIcon" size="sm" />}
-                    <h4 className="post-username">{username}</h4>
-                </span>
+                <NavLink to={`/${username}`} className="nav-link user-info">
+                    <span className="post-user-info">
+                        {profilePictureUrl ? <img src={profilePictureUrl} className="post-profile-picture" alt={`${username}'s profile`} /> : <Icon className="profile-icon" name="accountIcon" size="sm" />}
+                        <h4 className="post-username">{username}</h4>
+                    </span>
+                </NavLink>
                 <img src={imageUrl} className="post-image" alt="Post" />
                 <Likes postId={postId} />
             </div>

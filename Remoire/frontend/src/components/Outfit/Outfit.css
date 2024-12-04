@@ -6,7 +6,7 @@
 .outfit-image {
     display: block;
     margin: auto;
-    height: 15dvw;
+    height: clamp(75px, 15dvh, 200px);
     aspect-ratio: 4 / 5;
     object-fit: contain;
 }

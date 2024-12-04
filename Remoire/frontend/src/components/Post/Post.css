@@ -34,6 +34,13 @@ span.post-user-info {
     gap: 1rem;
 }
 
+.nav-link.user-info {
+    display: block;
+    margin: auto auto auto 0;
+    padding: 0;
+    color: var(--hex__text);
+}
+
 .post-username {
     margin: auto;
 }
