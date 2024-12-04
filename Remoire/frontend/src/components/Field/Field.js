@@ -1,5 +1,12 @@
 import "./Field.css"
 
+/**
+ * 
+ * @param {string} className 
+ * @param {string} label
+ * @param {React.ReactNode} children
+ * @returns {JSX.Element}
+ */
 export default function Field(props) {
     const { className="", label, children, ...rest } = props;
 

@@ -5,6 +5,7 @@ import Header from './components/Header/Header';
 import Outfits from './components/Outfits/Outfits';
 import Posts from './components/Posts/Posts';
 
+import AccessPage from './pages/Access/AccessPage';
 import FeedPage from './pages/Feed/FeedPage';
 import HomePage from "./pages/Home/HomePage"
 import LogInPage from './pages/LogIn/LogInPage';
@@ -18,6 +19,49 @@ import { UserContext } from './UserContext';
 
 export default function App() {
 	const { user } = useContext(UserContext);
+
+	const [hasAccess, setHasAccess] = useState(false);
+	const handleAccessGranted = () => {
+		setHasAccess(true);
+	};
+
+	return (
+		<>
+			{hasAccess ? (
+				<Router>
+					<Header />
+					<Routes>
+						{/* <Route index element={user && user !== -1 ? <Navigate to="feed" replace /> : <HomePage />} /> */}
+						<Route index element={<Navigate to="feed" replace />} />
+						<Route path="feed" element={<FeedPage />} />
+						<Route path="login" element={<LogInPage />} />
+						<Route path="signup" element={<SignUpPage />} />
+						<Route path=":username" element={<ProfilePage />}>
+							<Route index element={<Navigate to="posts" replace />} />
+							<Route path="posts" element={<Posts />} />
+							<Route path="clothes" element={<Clothes />} />
+							<Route path="outfits" element={<Outfits />} />
+						</Route>
+						<Route path="wardrobe" element={<WardrobePage />}>
+							<Route index element={<Navigate to="clothes" replace />} />
+							<Route path="clothes" element={<Clothes />} />
+							<Route path="outfits" element={<Outfits />} />
+						</Route>
+						<Route path="search" element={<SearchPage />} />
+						{/* Catch-all route to redirect to feed */}
+						<Route path="*" element={<Navigate to="/" />} />
+					</Routes>
+				</Router>
+			) : (
+				<Router>
+					<Routes>
+						<Route index element={<AccessPage onAccessGranted={handleAccessGranted} />} />
+						<Route path="*" element={<AccessPage onAccessGranted={handleAccessGranted} />} />
+					</Routes>
+				</Router>
+			)}
+		</>
+	);
 
 	return (
 		<Router>

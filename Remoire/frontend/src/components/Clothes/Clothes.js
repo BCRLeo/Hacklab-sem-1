@@ -205,15 +205,16 @@ export default function Clothes() {
                 setUploadStatus(`Failed to upload ${files.length > 1 ? `${files.length} of ${files.length} files` : "file"}.`);
             } else if (successfulUploads === files.length) {
                 setUploadStatus(`Successfully uploaded ${files.length === 1 ? "file" : `all ${files.length} files`}.`);
-                setIsPendingUpdate(true);
+                //setIsPendingUpdate(true); disabled bc server doesn't have enough RAM to retrieve images while removing background of uploaded images
             } else if (failedUploads) {
                 setUploadStatus(`Uploaded ${successfulUploads} of ${files.length} files. Failed to upload ${failedUploads > 1 ? `${failedUploads} files` : "1 file"}.`);
-                setIsPendingUpdate(true);
+                //setIsPendingUpdate(true); disabled bc server doesn't have enough RAM to retrieve images while removing background of uploaded images
             } else {
                 setUploadStatus(`Uploaded ${successfulUploads} of ${files.length} files.`);
-                setIsPendingUpdate(true);
+                //setIsPendingUpdate(true); disabled bc server doesn't have enough RAM to retrieve images while removing background of uploaded images
             }
         }
+        setIsPendingUpdate(true);
         setIsUploading(false);
         event.target.reset();
 
