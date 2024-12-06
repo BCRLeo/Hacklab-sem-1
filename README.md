@@ -1,4 +1,4 @@
-# Live website at Remoi.re
+# Live website at Remoi.re, access code Remoire3
 
 # Hacklab-sem-1 - Remoire
 
