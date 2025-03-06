@@ -1,5 +1,5 @@
 # Live website at Remoi.re, access code Remoire3
-
+# IMPORTANT: as of March 2025 we have stopped hosting this website, sorry for the inconvenience
 # Hacklab-sem-1 - Remoire
 
 ----
